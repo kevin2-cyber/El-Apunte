@@ -1,5 +1,6 @@
 package kevin.codelab.el_apunte.view
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.firebase.auth.FirebaseAuth
@@ -17,5 +18,12 @@ class MainActivity : AppCompatActivity() {
 
         // init firebase
         var auth = FirebaseAuth.getInstance()
+
+        binding.welcomeBtn.setOnClickListener {
+            startActivity(
+                Intent(this,SignUpActivity::class.java)
+            )
+            finish()
+        }
     }
 }
