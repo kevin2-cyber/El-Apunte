@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">El-Apunte</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="tvText">A simple note app with firebase</string>
+    <string name="welcome">Get Started</string>
 </resources>
