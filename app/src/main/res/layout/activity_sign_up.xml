@@ -13,6 +13,7 @@
         android:layout_marginTop="88dp"
         android:fontFamily="@font/poppins"
         android:text="@string/sign_up"
+        android:textColor="@color/grey"
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,6 +57,8 @@
         android:layout_marginTop="44dp"
         android:fontFamily="@font/poppins"
         android:text="@string/sign_up"
+        android:textAllCaps="false"
+        android:textColor="@color/grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_pass" />
@@ -71,13 +74,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/existing_account"/>
+            android:text="@string/existing_account"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/grey"
+            android:textSize="15sp"/>
 
         <TextView
             android:id="@+id/tv_sign_in_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sign_in"
+            android:fontFamily="@font/poppins"
+            android:textSize="15sp"
+            android:textColor="@color/grey"
             android:layout_marginStart="10dp"/>
 
 
