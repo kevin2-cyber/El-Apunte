@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main"
+    android:background="@drawable/name"
     tools:context=".view.LoginActivity">
 
     <TextView
@@ -54,6 +54,7 @@
         android:layout_marginTop="44dp"
         android:fontFamily="@font/poppins"
         android:text="@string/login"
+        android:background="@drawable/btn_style"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
