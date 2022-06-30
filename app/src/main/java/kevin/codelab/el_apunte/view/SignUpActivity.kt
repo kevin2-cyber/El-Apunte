@@ -1,6 +1,6 @@
 package kevin.codelab.el_apunte.view
 
-import android.content.Intent
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.firebase.auth.FirebaseAuth
@@ -21,7 +21,11 @@ class SignUpActivity : AppCompatActivity() {
 
 
         binding.tvSignInActivity.setOnClickListener {
-            startActivity(Intent(this,LoginActivity::class.java))
+            firebaseSignUp()
         }
+    }
+
+    private fun firebaseSignUp() {
+
     }
 }

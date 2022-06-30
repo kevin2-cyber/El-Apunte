@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Kevin/Desktop/github/El-Apunte/app/src/main/res/drawable/btn_hover_style.xml" value="0.118" />
+        <entry key="..\:/Users/Kevin/Desktop/github/El-Apunte/app/src/main/res/drawable/btn_sttyle.xml" value="0.119" />
         <entry key="..\:/Users/Kevin/Desktop/github/El-Apunte/app/src/main/res/layout/activity_home.xml" value="0.24635416666666668" />
         <entry key="..\:/Users/Kevin/Desktop/github/El-Apunte/app/src/main/res/layout/activity_login.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/Kevin/Desktop/github/El-Apunte/app/src/main/res/layout/activity_main.xml" value="0.24635416666666668" />

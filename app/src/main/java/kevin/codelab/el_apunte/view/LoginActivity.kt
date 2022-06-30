@@ -23,6 +23,11 @@ class LoginActivity : AppCompatActivity() {
 
         binding.tvSignUp.setOnClickListener {
             startActivity(Intent(this, SignUpActivity::class.java))
+            firebaseLogin()
         }
+    }
+
+    private fun firebaseLogin() {
+        TODO("Not yet implemented")
     }
 }
