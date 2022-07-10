@@ -35,29 +35,43 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="TextFields" />
 
+
     <EditText
         android:id="@+id/et_pass"
         android:layout_width="300dp"
-        android:labelFor="@id/et_pass"
         android:layout_height="wrap_content"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="384dp"
         android:autofillHints="password"
-        android:inputType="text"
+        android:inputType="textVisiblePassword"
+        android:labelFor="@id/et_pass"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.531"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="TextFields" />
 
+    <EditText
+        android:id="@+id/et_pass_conf"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="476dp"
+        android:autofillHints="password"
+        android:inputType="textVisiblePassword"
+        android:labelFor="@id/et_pass"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.531"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TextFields" />
 
     <Button
         android:id="@+id/sign_up_btn"
         android:layout_width="193dp"
         android:layout_height="51dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="148dp"
+        android:background="@drawable/btn_style"
         android:fontFamily="@font/poppins"
         android:text="@string/sign_up"
-        android:background="@drawable/btn_style"
         android:textAllCaps="false"
         android:textColor="@color/grey"
         app:layout_constraintEnd_toEndOf="parent"
