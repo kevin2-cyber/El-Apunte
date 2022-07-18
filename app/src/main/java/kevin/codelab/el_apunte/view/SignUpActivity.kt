@@ -25,7 +25,5 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun firebaseSignUp() {
-
-    }
+    private fun firebaseSignUp() {}
 }
