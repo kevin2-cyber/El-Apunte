@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.AppCompat.SplashThemeLight" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">#272525</item>
+        <item name="windowSplashScreenBackground">#ffffff</item>
 
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_baseline_account_circle_24</item>
 
