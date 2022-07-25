@@ -21,8 +21,6 @@
             android:src="@drawable/logo"/>
 
 
-
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
