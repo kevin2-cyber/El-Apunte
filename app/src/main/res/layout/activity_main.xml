@@ -41,7 +41,7 @@
         android:layout_height="51dp"
         android:layout_marginTop="472dp"
         android:paddingTop="5dp"
-        android:paddingStart="5dp"
+        android:paddingStart="10dp"
         android:paddingEnd="5dp"
         android:fontFamily="@font/poppins"
         android:text="@string/welcome"
