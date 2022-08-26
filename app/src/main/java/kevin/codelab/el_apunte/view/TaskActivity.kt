@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kevin.codelab.el_apunte.databinding.ActivityHomeBinding
 
-class HomeActivity : AppCompatActivity() {
+class TaskActivity : AppCompatActivity() {
 
     // enable viewBinding
     private lateinit var binding: ActivityHomeBinding

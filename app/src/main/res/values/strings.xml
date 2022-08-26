@@ -2,7 +2,12 @@
     <string name="app_name">El-Apunte</string>
     <string name="login">Login</string>
     <string name="sign_up">Sign Up</string>
-    <string name="tvText">A simple note app with firebase</string>
+    <string name="tvText">A fast and simple way to journal and</string>
+    <string name="tvText2">keep track of your ideas all in one place</string>
+<!--    <string-array name="tvText2">-->
+<!--        <item name="tvTest">A Fast and simple way to journal</item>-->
+<!--        <item name="tv"></item>-->
+<!--    </string-array>-->
     <string name="welcome">Get Started</string>
     <string name="no_account">Not having an account</string>
     <string name="existing_account">Already having an account</string>
