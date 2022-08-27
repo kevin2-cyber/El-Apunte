@@ -10,4 +10,14 @@
     <color name="windowColor">#202020</color>
     <color name="grey">#666966</color>
     <color name="kPrimary">#1191DA</color>
+    <color name="kBackground">#F9E7E7</color>
+    <color name="kButtonBackgroundSelected">#230336</color>
+    <color name="violet">#740CB4</color>
+    <color name="indigo">#270A7C</color>
+    <color name="red">#F20808</color>
+    <color name="lightGreen">#08F22E</color>
+    <color name="amber">#BF9F62</color>
+    <color name="cardView">#F3F3EB</color>
+    <color name="you">#1E1E1E</color>
+    <color name="kFontColor">#373333</color>
 </resources>

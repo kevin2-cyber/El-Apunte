@@ -17,4 +17,8 @@
     <string name="confirm_your_password">Confirm your password</string>
     <string name="enter_your_email">Enter your email</string>
     <string name="todo">TODO</string>
+    <string name="date">August 7, 2022</string>
+    <string name="find_your_notes">Find your notes</string>
+    <string name="java_practice">Java practice</string>
+    <string name="name">Name</string>
 </resources>
