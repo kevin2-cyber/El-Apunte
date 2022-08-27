@@ -2,6 +2,7 @@
     <string name="app_name">El-Apunte</string>
     <string name="login">Login</string>
     <string name="sign_up">Sign Up</string>
+    <string name="welcome_text">Welcome to El-Apunte</string>
     <string name="tvText">A fast and simple way to journal and</string>
     <string name="tvText2">keep track of your ideas all in one place</string>
 <!--    <string-array name="tvText2">-->
