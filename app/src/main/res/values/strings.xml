@@ -12,4 +12,7 @@
     <string name="no_account">Not having an account</string>
     <string name="existing_account">Already having an account</string>
     <string name="sign_in">Sign in</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="confirm_your_password">Confirm your password</string>
+    <string name="enter_your_email">Enter your email</string>
 </resources>

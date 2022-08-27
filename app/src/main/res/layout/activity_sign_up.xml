@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/name"
     tools:context=".view.SignUpActivity">
 
     <TextView
@@ -20,28 +19,34 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-
     <EditText
         android:id="@+id/et_email"
         android:layout_width="300dp"
-        android:labelFor="@id/et_email"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="304dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="184dp"
         android:autofillHints="emailAddress"
+        android:background="@drawable/edit_text_background_normal"
         android:inputType="text"
+        android:labelFor="@id/et_email"
+        android:hint="@string/enter_your_email"
+        android:padding="10dp"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.531"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="TextFields" />
 
-
     <EditText
         android:id="@+id/et_pass"
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="384dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="264dp"
         android:autofillHints="password"
+        android:textAlignment="center"
+        android:padding="10dp"
+        android:hint="@string/enter_your_password"
+        android:background="@drawable/edit_text_background_normal"
         android:inputType="textVisiblePassword"
         android:labelFor="@id/et_pass"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,28 +58,36 @@
     <EditText
         android:id="@+id/et_pass_conf"
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="476dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="340dp"
         android:autofillHints="password"
+        android:hint="@string/confirm_your_password"
+        android:textAlignment="center"
+        android:padding="10dp"
+        android:background="@drawable/edit_text_background_normal"
         android:inputType="textVisiblePassword"
         android:labelFor="@id/et_pass"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.531"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="TextFields" />
 
     <Button
         android:id="@+id/sign_up_btn"
-        android:layout_width="193dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="148dp"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="104dp"
         android:background="@drawable/btn_style"
         android:fontFamily="@font/poppins"
+        android:paddingTop="10dp"
         android:text="@string/sign_up"
+        android:textAlignment="center"
         android:textAllCaps="false"
-        android:textColor="@color/grey"
+        android:textColor="@color/white"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.531"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_pass" />
 
@@ -101,7 +114,7 @@
             android:text="@string/sign_in"
             android:fontFamily="@font/poppins"
             android:textSize="15sp"
-            android:textColor="@color/grey"
+            android:textColor="@color/kPrimary"
             android:layout_marginStart="10dp"/>
 
 

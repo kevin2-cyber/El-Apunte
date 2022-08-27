@@ -8,11 +8,21 @@
     tools:context=".view.MainActivity">
 
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_marginBottom="32dp"
+        android:src="@drawable/undraw"
+        app:layout_constraintBottom_toTopOf="@+id/tv_Text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
         android:id="@+id/tvHello"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/poppins"
         android:gravity="center"
         android:padding="20dp"
@@ -27,14 +37,15 @@
         android:id="@+id/tv_Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="376dp"
+        android:layout_marginTop="384dp"
         android:fontFamily="@font/poppins"
         android:text="@string/tvText"
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        android:textStyle="bold"
         android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvHello" />
 
@@ -42,14 +53,14 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="28dp"
         android:text="@string/tvText2"
         android:textAlignment="center"
         android:textColor="@color/black"
+        android:textSize="17sp"
         android:textStyle="bold"
-        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_Text" />
 
@@ -57,7 +68,7 @@
         android:id="@+id/welcomeBtn"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="68dp"
         android:background="@drawable/btn_style"
         android:fontFamily="@font/poppins"
         android:padding="15dp"
