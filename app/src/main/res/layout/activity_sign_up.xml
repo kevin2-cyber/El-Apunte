@@ -26,16 +26,14 @@
         android:layout_marginTop="184dp"
         android:autofillHints="emailAddress"
         android:background="@drawable/edit_text_background_normal"
-        android:inputType="text"
-        android:labelFor="@id/et_email"
+        android:inputType="textEmailAddress"
         android:hint="@string/enter_your_email"
         android:padding="10dp"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.531"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="TextFields" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/et_pass"
@@ -48,12 +46,10 @@
         android:hint="@string/enter_your_password"
         android:background="@drawable/edit_text_background_normal"
         android:inputType="textVisiblePassword"
-        android:labelFor="@id/et_pass"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.531"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="TextFields" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/et_pass_conf"
@@ -66,12 +62,10 @@
         android:padding="10dp"
         android:background="@drawable/edit_text_background_normal"
         android:inputType="textVisiblePassword"
-        android:labelFor="@id/et_pass"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="TextFields" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/sign_up_btn"
