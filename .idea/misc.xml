@@ -10,15 +10,24 @@
         <entry key="..\:/Users/Kevin/Desktop/github/El-Apunte/app/src/main/res/layout/activity_main.xml" value="0.24635416666666668" />
         <entry key="..\:/Users/Kevin/Desktop/github/El-Apunte/app/src/main/res/layout/activity_sign_up.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/Kimi/Desktop/github/El-Apunte/app/src/main/res/drawable/btn_style.xml" value="0.2245" />
+        <entry key="..\:/Users/Kimi/Desktop/github/El-Apunte/app/src/main/res/drawable/card_item.xml" value="0.2215" />
         <entry key="..\:/Users/Kimi/Desktop/github/El-Apunte/app/src/main/res/drawable/edit_text_background_normal.xml" value="0.2215" />
+        <entry key="..\:/Users/Kimi/Desktop/github/El-Apunte/app/src/main/res/drawable/fab_icon.xml" value="0.2215" />
+        <entry key="..\:/Users/Kimi/Desktop/github/El-Apunte/app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.2215" />
         <entry key="..\:/Users/Kimi/Desktop/github/El-Apunte/app/src/main/res/drawable/layout_bg.xml" value="0.2215" />
         <entry key="..\:/Users/Kimi/Desktop/github/El-Apunte/app/src/main/res/drawable/layout_title.xml" value="0.2215" />
+        <entry key="..\:/Users/Kimi/Desktop/github/El-Apunte/app/src/main/res/drawable/pallet_normal.xml" value="0.2215" />
+        <entry key="..\:/Users/Kimi/Desktop/github/El-Apunte/app/src/main/res/drawable/red.xml" value="0.2215" />
+        <entry key="..\:/Users/Kimi/Desktop/github/El-Apunte/app/src/main/res/drawable/search_edit_text.xml" value="0.2215" />
         <entry key="..\:/Users/Kimi/Desktop/github/El-Apunte/app/src/main/res/layout/activity_home.xml" value="0.17708333333333334" />
         <entry key="..\:/Users/Kimi/Desktop/github/El-Apunte/app/src/main/res/layout/activity_login.xml" value="0.264" />
         <entry key="..\:/Users/Kimi/Desktop/github/El-Apunte/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/Kimi/Desktop/github/El-Apunte/app/src/main/res/layout/activity_sign_up.xml" value="0.264" />
+        <entry key="..\:/Users/Kimi/Desktop/github/El-Apunte/app/src/main/res/layout/activity_task.xml" value="0.264" />
+        <entry key="..\:/Users/Kimi/Desktop/github/El-Apunte/app/src/main/res/layout/card_item.xml" value="0.24635416666666668" />
         <entry key="..\:/Users/Kimi/Desktop/github/El-Apunte/app/src/main/res/layout/list_item.xml" value="0.24635416666666668" />
         <entry key="..\:/Users/Kimi/Desktop/github/El-Apunte/app/src/main/res/layout/list_tile.xml" value="0.2453125" />
+        <entry key="..\:/Users/Kimi/Desktop/github/El-Apunte/app/src/main/res/layout/save_area.xml" value="0.17980072463768115" />
       </map>
     </option>
   </component>
