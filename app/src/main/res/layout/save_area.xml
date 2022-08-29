@@ -21,12 +21,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:ignore="UselessParent">
 
-<!--            <GridView-->
-<!--                android:id="@+id/grid_view"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:padding="10dp"-->
-<!--                android:numColumns="2"/>-->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
