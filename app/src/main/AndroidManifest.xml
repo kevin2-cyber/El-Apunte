@@ -19,16 +19,16 @@
             android:name=".WorkSpaceActivity"
             android:exported="false" />
         <activity
-            android:name=".view.SignUpActivity"
+            android:name=".view.ui.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".view.LoginActivity"
+            android:name=".view.ui.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".view.TaskActivity"
+            android:name=".view.ui.TaskActivity"
             android:exported="false" />
         <activity
-            android:name=".view.MainActivity"
+            android:name=".view.ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

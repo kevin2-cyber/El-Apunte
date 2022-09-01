@@ -1,4 +1,4 @@
-package kevin.codelab.el_apunte.view
+package kevin.codelab.el_apunte.view.ui
 
 
 import androidx.appcompat.app.AppCompatActivity

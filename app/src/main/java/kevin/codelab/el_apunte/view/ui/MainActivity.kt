@@ -1,4 +1,4 @@
-package kevin.codelab.el_apunte.view
+package kevin.codelab.el_apunte.view.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.welcomeBtn.setOnClickListener {
             startActivity(
-                Intent(this,SignUpActivity::class.java)
+                Intent(this, SignUpActivity::class.java)
             )
             finish()
         }
