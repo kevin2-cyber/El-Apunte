@@ -20,4 +20,5 @@
     <color name="cardView">#F3F3EB</color>
     <color name="you">#2E2E2E</color>
     <color name="kFontColor">#373333</color>
+    <color name="kWorkSpaceColor">#F9E7E7</color>
 </resources>
