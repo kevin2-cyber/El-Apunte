@@ -16,6 +16,7 @@ class RecyclerViewAdapter(options: FirestoreRecyclerOptions<NoteModel>) :
     class RecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
         val view: RecyclerView = itemView.findViewById(R.id.recyclerView)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
