@@ -10,7 +10,12 @@ class SignUpActivity : AppCompatActivity() {
 
     // enable viewBinding
     private lateinit var binding: ActivitySignUpBinding
+    // FirebaseAuth
     private lateinit var auth: FirebaseAuth
+
+    private lateinit var email: String
+    private lateinit var password: String
+    private lateinit var confPassword: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
