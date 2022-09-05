@@ -10,6 +10,7 @@ class SignUpActivity : AppCompatActivity() {
 
     // enable viewBinding
     private lateinit var binding: ActivitySignUpBinding
+
     // FirebaseAuth
     private lateinit var auth: FirebaseAuth
 
