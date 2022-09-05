@@ -31,9 +31,6 @@ class SignUpActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
 
-        binding.tvSignInActivity.setOnClickListener {
-            firebaseSignUp()
-        }
     }
 
     private fun firebaseSignUp() {}
