@@ -10,14 +10,14 @@ class SignUpActivity : AppCompatActivity() {
 
     // enable viewBinding
     private lateinit var binding: ActivitySignUpBinding
-    private lateinit var mAuth: FirebaseAuth
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        var auth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
 
 
         binding.tvSignInActivity.setOnClickListener {
