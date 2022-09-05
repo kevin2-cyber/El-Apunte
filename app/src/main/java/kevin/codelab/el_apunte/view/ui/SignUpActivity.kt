@@ -18,6 +18,7 @@ class SignUpActivity : AppCompatActivity() {
     // progress bar
     private lateinit var bar: ProgressBar
 
+    // user inputs
     private lateinit var email: String
     private lateinit var password: String
     private lateinit var confPassword: String
