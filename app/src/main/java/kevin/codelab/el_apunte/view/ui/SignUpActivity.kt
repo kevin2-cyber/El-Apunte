@@ -43,7 +43,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun validateData() {
-        TODO("Not yet implemented")
+
     }
 
     private fun firebaseSignUp() {}
