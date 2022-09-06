@@ -10,7 +10,7 @@ import kevin.codelab.el_apunte.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var mAuth: FirebaseAuth
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // init firebase
-        var auth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
 
         binding.welcomeBtn.setOnClickListener {
             startActivity(

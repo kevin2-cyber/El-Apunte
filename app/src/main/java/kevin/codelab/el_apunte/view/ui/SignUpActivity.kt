@@ -31,6 +31,7 @@ class SignUpActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
 
+        binding.signUpBtn.setOnClickListener {  }
     }
 
     private fun firebaseSignUp() {}
