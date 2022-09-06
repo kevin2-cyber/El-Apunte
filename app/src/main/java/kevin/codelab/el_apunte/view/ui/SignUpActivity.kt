@@ -3,6 +3,7 @@ package kevin.codelab.el_apunte.view.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ProgressBar
 import com.google.firebase.auth.FirebaseAuth
 import kevin.codelab.el_apunte.databinding.ActivitySignUpBinding
@@ -28,10 +29,21 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        // init firebase auth
         auth = FirebaseAuth.getInstance()
 
+        // configure progress bar
+        bar = ProgressBar(this)
+        bar.visibility = View.INVISIBLE
 
-        binding.signUpBtn.setOnClickListener {  }
+
+        binding.signUpBtn.setOnClickListener {
+            validateData()
+        }
+    }
+
+    private fun validateData() {
+        TODO("Not yet implemented")
     }
 
     private fun firebaseSignUp() {}
