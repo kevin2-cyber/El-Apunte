@@ -74,5 +74,18 @@ class SignUpActivity : AppCompatActivity() {
 
     }
 
-    private fun firebaseSignUp() {}
+    private fun firebaseSignUp() {
+
+        // show progress
+        bar.visibility = View.VISIBLE
+
+        //        if (binding.etEmail.getText().equals(email)
+        //    && binding.etPassword.getText().equals(password)
+        //    && binding.etPasswordConfirm.getText().equals(password)) {
+        //    startActivity(new Intent(this, WorkSpaceActivity.class));
+        //  } else {
+        //   Toast.makeText(this,"Sign Up unsuccessful", Toast.LENGTH_LONG).show();
+        //}
+
+    }
 }
