@@ -29,12 +29,13 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        // init firebase auth
-        auth = FirebaseAuth.getInstance()
 
         // configure progress bar
         bar = ProgressBar(this)
         bar.visibility = View.INVISIBLE
+
+        // init firebase auth
+        auth = FirebaseAuth.getInstance()
 
 
         binding.signUpBtn.setOnClickListener {
