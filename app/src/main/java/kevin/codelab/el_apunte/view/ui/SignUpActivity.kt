@@ -1,6 +1,7 @@
 package kevin.codelab.el_apunte.view.ui
 
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -9,6 +10,7 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import kevin.codelab.el_apunte.databinding.ActivitySignUpBinding
 import java.util.*
 
@@ -87,5 +89,38 @@ class SignUpActivity : AppCompatActivity() {
         //   Toast.makeText(this,"Sign Up unsuccessful", Toast.LENGTH_LONG).show();
         //}
 
+
+        // create account
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnSuccessListener {
+
+                // dismiss progress
+                bar.visibility = View.GONE
+
+                val user: FirebaseUser? = auth.currentUser
+                val email: String? = user!!.email
+
+                Toast.makeText(this, "Account created with $email",
+                        Toast.LENGTH_LONG).show()
+
+                // open profile
+                startActivity(Intent(this, TaskActivity::class.java))
+                finish()
+            }
+            .addOnFailureListener {
+
+                // sign up failed
+                bar.visibility = View.GONE
+                Toast.makeText(this, "Sign up failed due to ${it.message}",
+                        Toast.LENGTH_LONG).show()
+            }
+
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+
+        // go back to previous activity, when back button of actionbar clicked
+        onBackPressed()
+        return super.onSupportNavigateUp()
     }
 }
