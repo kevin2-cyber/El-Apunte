@@ -19,11 +19,11 @@ class RecyclerViewAdapter(options: FirestoreRecyclerOptions<NoteModel>) :
 
     class RecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
-        private var note: CardView? = null
-        private var title: TextView? = null
-        private var date: TextView? = null
-        private var colorPallet: ImageButton? = null
-        private var deleteBtn: ImageButton? = null
+         var note: CardView = itemView.findViewById(R.id.card_view)
+         var title: TextView = itemView.findViewById(R.id.et_title)
+         var date: TextView = itemView.findViewById(R.id.tv_date)
+         var colorPallet: ImageButton = itemView.findViewById(R.id.ib_pallet)
+         var deleteBtn: ImageButton = itemView.findViewById(R.id.ib_delete)
 
         val view: RecyclerView = itemView.findViewById(R.id.recyclerView)
 
