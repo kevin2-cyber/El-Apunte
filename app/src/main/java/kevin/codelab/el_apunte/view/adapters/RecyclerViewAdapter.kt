@@ -49,6 +49,7 @@ class RecyclerViewAdapter(options: FirestoreRecyclerOptions<NoteModel>) :
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int, model: NoteModel) {
         val utils: Utils? = null
         holder.title.text = model.title
+        holder.note.cardElevation = 0.5F
         holder.date.text = utils?.timeStampToString(model.timestamp)
         holder.colorPallet.setImageResource(model.color)
         holder.itemView.setOnClickListener {
