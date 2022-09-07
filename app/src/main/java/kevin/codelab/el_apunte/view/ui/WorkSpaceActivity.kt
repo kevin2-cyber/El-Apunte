@@ -16,6 +16,26 @@ class WorkSpaceActivity : AppCompatActivity() {
         binding = ActivityWorkSpaceBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        binding.red.setOnClickListener {
+            paintClicked(it)
+        }
+
+        binding.amber.setOnClickListener {
+            paintClicked(it)
+        }
+
+        binding.green.setOnClickListener {
+            paintClicked(it)
+        }
+
+        binding.violet.setOnClickListener {
+            paintClicked(it)
+        }
+
+        binding.indigo.setOnClickListener {
+            paintClicked(it)
+        }
     }
 
     private fun paintClicked(view: View) {
