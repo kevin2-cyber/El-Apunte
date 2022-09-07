@@ -9,13 +9,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
 
-class Utils {
+ class Utils {
 
     fun showToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
-    fun getCollectionReferenceForNotes(): CollectionReference {
+     fun getCollectionReferenceForNotes(): CollectionReference {
         val currentUser = FirebaseAuth.getInstance().currentUser
 
         return FirebaseFirestore.getInstance().collection("notes")

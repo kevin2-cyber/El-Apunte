@@ -11,6 +11,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import kevin.codelab.el_apunte.R
 import kevin.codelab.el_apunte.model.NoteModel
+import kevin.codelab.el_apunte.utils.Utils
 
 class RecyclerViewAdapter(options: FirestoreRecyclerOptions<NoteModel>) :
     FirestoreRecyclerAdapter<NoteModel, RecyclerViewAdapter.RecyclerViewHolder>(options) {
@@ -36,6 +37,7 @@ class RecyclerViewAdapter(options: FirestoreRecyclerOptions<NoteModel>) :
     }
 
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int, model: NoteModel) {
-
+        holder.title.text = model.title
+        holder.date.text = Utils.timeStampToString(model.timestamp)
     }
 }
