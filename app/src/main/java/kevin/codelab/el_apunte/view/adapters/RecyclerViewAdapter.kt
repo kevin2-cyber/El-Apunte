@@ -1,5 +1,7 @@
 package kevin.codelab.el_apunte.view.adapters
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +14,13 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import kevin.codelab.el_apunte.R
 import kevin.codelab.el_apunte.model.NoteModel
 import kevin.codelab.el_apunte.utils.Utils
+import kevin.codelab.el_apunte.view.ui.WorkSpaceActivity
 
 class RecyclerViewAdapter(options: FirestoreRecyclerOptions<NoteModel>) :
     FirestoreRecyclerAdapter<NoteModel, RecyclerViewAdapter.RecyclerViewHolder>(options) {
+
+    private lateinit var context: Context
+    private lateinit var noteList: ArrayList<NoteModel>
 
 
 
@@ -36,8 +42,23 @@ class RecyclerViewAdapter(options: FirestoreRecyclerOptions<NoteModel>) :
         return RecyclerViewHolder(view)
     }
 
+    override fun getItemCount(): Int {
+        return noteList.size
+    }
+
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int, model: NoteModel) {
+        val utils: Utils? = null
         holder.title.text = model.title
-        holder.date.text = Utils.timeStampToString(model.timestamp)
+        holder.date.text = utils?.timeStampToString(model.timestamp)
+        holder.colorPallet.setImageResource(model.color)
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, WorkSpaceActivity::class.java)
+            intent.putExtra("title", model.title)
+            intent.putExtra("content", model.content)
+            intent.putExtra("color", model.color)
+            val docId: String = this.snapshots.getSnapshot(position).id
+            intent.putExtra("docId", docId)
+            context.startActivity(intent)
+        }
     }
 }

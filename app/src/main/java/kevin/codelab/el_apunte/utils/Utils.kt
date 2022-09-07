@@ -9,7 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
 
- class Utils {
+ open class Utils {
 
     fun showToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
