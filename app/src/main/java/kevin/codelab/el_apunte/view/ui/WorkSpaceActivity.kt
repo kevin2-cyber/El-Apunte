@@ -4,7 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.view.get
+import kevin.codelab.el_apunte.R
 import kevin.codelab.el_apunte.databinding.ActivityWorkSpaceBinding
 
 class WorkSpaceActivity : AppCompatActivity() {
@@ -36,6 +40,15 @@ class WorkSpaceActivity : AppCompatActivity() {
         binding.indigo.setOnClickListener {
             paintClicked(it)
         }
+
+        val linearLayoutPaintColors = findViewById<LinearLayout>(R.id.ll_colors)
+        mImageButtonCurrentPaint = linearLayoutPaintColors[1] as ImageButton
+        mImageButtonCurrentPaint!!.setImageDrawable(
+            ContextCompat.getDrawable(
+                this,
+                R.drawable.pallet_pressed
+            )
+        )
     }
 
     private fun paintClicked(view: View) {
