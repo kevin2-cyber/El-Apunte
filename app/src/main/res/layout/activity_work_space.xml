@@ -42,6 +42,70 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <LinearLayout
+        android:id="@+id/ll_colors"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:paddingStart="100dp"
+        android:paddingEnd="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/save_btn">
+
+        <ImageButton
+            android:id="@+id/violet"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/pallet_pressed"
+            android:background="@drawable/violet"
+            android:tag="violet"
+            android:contentDescription="@string/app_name" />
+
+        <ImageButton
+            android:id="@+id/indigo"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/indigo"
+            android:src="@drawable/pallet_normal"
+            android:tag="indigo"
+            android:contentDescription="@string/app_name" />
+        <ImageButton
+            android:id="@+id/red"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/pallet_normal"
+            android:background="@drawable/red"
+            android:tag="red"
+            android:contentDescription="@string/app_name" />
+        <ImageButton
+            android:id="@+id/green"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/pallet_normal"
+            android:background="@drawable/green"
+            android:tag="green"
+            android:contentDescription="@string/app_name" />
+        <ImageButton
+            android:id="@+id/amber"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/pallet_normal"
+            android:background="@drawable/amber"
+            android:tag="amber"
+            android:contentDescription="@string/app_name" />
+
+
+
+    </LinearLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="550dp"
