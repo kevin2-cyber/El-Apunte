@@ -16,7 +16,7 @@ import kevin.codelab.el_apunte.model.NoteModel
 import kevin.codelab.el_apunte.utils.Utils
 import kevin.codelab.el_apunte.view.ui.WorkSpaceActivity
 
-class RecyclerViewAdapter(context: Context, noteList: ArrayList<NoteModel>,options: FirestoreRecyclerOptions<NoteModel>,) :
+class RecyclerViewAdapter(context: Context, noteList: ArrayList<NoteModel>, options: FirestoreRecyclerOptions<NoteModel>,) :
     FirestoreRecyclerAdapter<NoteModel, RecyclerViewAdapter.RecyclerViewHolder>(options) {
 
     private lateinit var context: Context
