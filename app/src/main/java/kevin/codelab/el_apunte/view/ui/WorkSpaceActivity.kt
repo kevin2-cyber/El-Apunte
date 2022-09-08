@@ -46,7 +46,7 @@ class WorkSpaceActivity : AppCompatActivity() {
         }
 
         binding.saveBtn.setOnClickListener {
-            TODO("To be implemented")
+            saveNote()
         }
 
         val linearLayoutPaintColors = findViewById<LinearLayout>(R.id.ll_colors)
@@ -57,6 +57,13 @@ class WorkSpaceActivity : AppCompatActivity() {
                 R.drawable.pallet_pressed
             )
         )
+
+        val etTitle = binding.etTitle
+        val etContent = binding.etContent
+    }
+
+    private fun saveNote() {
+        TODO("Not yet implemented")
     }
 
     private fun paintClicked(view: View) {
