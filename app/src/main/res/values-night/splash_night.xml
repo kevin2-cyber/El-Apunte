@@ -3,7 +3,7 @@
     <style name="Theme.AppCompat.SplashThemeDark" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">#272525</item>
 
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_baseline_notes_24</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/elapunte</item>
 
         <item name="postSplashScreenTheme">@style/Theme.AppCompat.ElApunte</item>
     </style>
