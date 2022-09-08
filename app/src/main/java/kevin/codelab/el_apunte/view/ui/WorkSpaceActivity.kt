@@ -64,6 +64,21 @@ class WorkSpaceActivity : AppCompatActivity() {
         if (view !== mImageButtonCurrentPaint) {
             val imageButton = view as ImageButton
             val colorTag = imageButton.tag
+            imageButton.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this,
+                    R.drawable.pallet_pressed
+                )
+            )
+
+            mImageButtonCurrentPaint?.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this,
+                    R.drawable.pallet_normal
+                )
+            )
+
+            mImageButtonCurrentPaint = view
         }
     }
 
