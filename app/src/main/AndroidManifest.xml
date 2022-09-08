@@ -9,9 +9,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/ic_baseline_notes_24"
+        android:icon="@drawable/elapunte"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/ic_baseline_notes_24"
+        android:roundIcon="@drawable/elapunte"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.SplashThemeLight"
         tools:targetApi="31">

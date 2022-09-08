@@ -55,7 +55,7 @@ class WorkSpaceActivity : AppCompatActivity() {
         Toast.makeText(this, "paint clicked", Toast.LENGTH_LONG).show()
         if (view !== mImageButtonCurrentPaint) {
             val imageButton = view as ImageButton
-            val colorTag = imageButton.tag.toString()
+            val colorTag = imageButton.tag
         }
     }
 }
