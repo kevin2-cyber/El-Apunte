@@ -41,6 +41,10 @@ class WorkSpaceActivity : AppCompatActivity() {
             paintClicked(it)
         }
 
+        binding.backBtn.setOnClickListener {
+            onBackPressed()
+        }
+
         val linearLayoutPaintColors = findViewById<LinearLayout>(R.id.ll_colors)
         mImageButtonCurrentPaint = linearLayoutPaintColors[1] as ImageButton
         mImageButtonCurrentPaint!!.setImageDrawable(
