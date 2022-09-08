@@ -42,7 +42,7 @@ class WorkSpaceActivity : AppCompatActivity() {
         }
 
         binding.backBtn.setOnClickListener {
-            onBackPressed()
+            onSupportNavigateUp()
         }
 
         binding.saveBtn.setOnClickListener {
@@ -65,5 +65,10 @@ class WorkSpaceActivity : AppCompatActivity() {
             val imageButton = view as ImageButton
             val colorTag = imageButton.tag
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return super.onSupportNavigateUp()
     }
 }
