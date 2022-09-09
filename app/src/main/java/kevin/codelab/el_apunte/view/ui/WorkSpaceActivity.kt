@@ -61,8 +61,8 @@ class WorkSpaceActivity : AppCompatActivity() {
             )
         )
 
-        val etTitle = binding.etTitle.toString()
-        val etContent = binding.etContent.toString()
+        val etTitle = binding.etTitle
+        val etContent = binding.etContent
         val mImageButtonCurrentPaint = findViewById<ImageButton>(R.id.ib_pallet)
 
         // receive data
