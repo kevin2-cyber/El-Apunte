@@ -70,6 +70,10 @@ class WorkSpaceActivity : AppCompatActivity() {
         var content = intent.getStringExtra("content")
         var docId = intent.getStringExtra("docId")
         var color = intent.getIntExtra("color", model!!.color)
+
+        if(docId != null && docId.isNotEmpty()) {
+            isEditMode = true
+        }
     }
 
     private fun saveNote() {
