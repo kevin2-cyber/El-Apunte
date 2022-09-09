@@ -10,11 +10,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import kevin.codelab.el_apunte.R
 import kevin.codelab.el_apunte.databinding.ActivityWorkSpaceBinding
+import kevin.codelab.el_apunte.model.NoteModel
 
 class WorkSpaceActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWorkSpaceBinding
     private var mImageButtonCurrentPaint: ImageButton? = null
+    private var model: NoteModel? = null
+    private var isEditMode: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityWorkSpaceBinding.inflate(layoutInflater)
@@ -60,6 +63,12 @@ class WorkSpaceActivity : AppCompatActivity() {
 
         val etTitle = binding.etTitle
         val etContent = binding.etContent
+
+        // receive data
+        var title = intent.getStringExtra("title")
+        var content = intent.getStringExtra("content")
+        var docId = intent.getStringExtra("docId")
+        var color = intent.getIntExtra("color", model!!.color)
     }
 
     private fun saveNote() {
