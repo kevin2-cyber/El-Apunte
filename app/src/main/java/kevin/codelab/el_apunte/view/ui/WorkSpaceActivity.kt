@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
+import com.google.firebase.Timestamp
 import kevin.codelab.el_apunte.R
 import kevin.codelab.el_apunte.databinding.ActivityWorkSpaceBinding
 import kevin.codelab.el_apunte.model.NoteModel
@@ -90,6 +91,11 @@ class WorkSpaceActivity : AppCompatActivity() {
             etTitle.error = "Title cannot be empty"
             etContent.error = "Please type something"
         }
+
+        model?.title = noteTitle
+        model?.content = noteContent
+        model?.color = color
+        model?.timestamp = Timestamp.now()
     }
 
     private fun paintClicked(view: View) {
