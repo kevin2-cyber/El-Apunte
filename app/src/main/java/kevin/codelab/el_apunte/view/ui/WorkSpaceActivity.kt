@@ -18,6 +18,8 @@ class WorkSpaceActivity : AppCompatActivity() {
     private var mImageButtonCurrentPaint: ImageButton? = null
     private var model: NoteModel? = null
     private var isEditMode: Boolean = false
+    private val etTitle = binding.etTitle
+    private val etContent = binding.etContent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityWorkSpaceBinding.inflate(layoutInflater)
@@ -61,8 +63,6 @@ class WorkSpaceActivity : AppCompatActivity() {
             )
         )
 
-        val etTitle = binding.etTitle
-        val etContent = binding.etContent
         val mImageButtonCurrentPaint = findViewById<ImageButton>(R.id.ib_pallet)
 
         // receive data
@@ -82,7 +82,14 @@ class WorkSpaceActivity : AppCompatActivity() {
     }
 
     private fun saveNote() {
-        TODO("Not yet implemented")
+        val noteTitle = etTitle.text.toString()
+        val noteContent = etContent.text.toString()
+        val color = mImageButtonCurrentPaint!!.solidColor
+
+        if (noteTitle.isEmpty() && noteContent.isEmpty()) {
+            etTitle.error = "Title cannot be empty"
+            etContent.error = "Please type something"
+        }
     }
 
     private fun paintClicked(view: View) {
