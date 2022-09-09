@@ -61,8 +61,8 @@ class WorkSpaceActivity : AppCompatActivity() {
             )
         )
 
-        val etTitle = binding.etTitle
-        val etContent = binding.etContent
+        var etTitle = binding.etTitle
+        var etContent = binding.etContent
         val mImageButtonCurrentPaint = findViewById<ImageButton>(R.id.ib_pallet)
 
         // receive data
@@ -74,6 +74,11 @@ class WorkSpaceActivity : AppCompatActivity() {
         if(docId != null && docId.isNotEmpty()) {
             isEditMode = true
         }
+
+        etTitle.text = title
+        etContent.text = content
+
+        mImageButtonCurrentPaint.setImageResource(color)
     }
 
     private fun saveNote() {
