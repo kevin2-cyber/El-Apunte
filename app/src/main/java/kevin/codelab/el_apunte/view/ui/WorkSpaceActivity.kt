@@ -71,8 +71,8 @@ class WorkSpaceActivity : AppCompatActivity() {
         val mImageButtonCurrentPaint = findViewById<ImageButton>(R.id.ib_pallet)
 
         // receive data
-        val title = intent.getStringExtra("title")
-        val content = intent.getStringExtra("content")
+        val title = intent.getStringExtra("title").toString()
+        val content = intent.getStringExtra("content").toString()
         docId = intent.getStringExtra("docId").toString()
         val color = intent.getIntExtra("color", model!!.color)
 
