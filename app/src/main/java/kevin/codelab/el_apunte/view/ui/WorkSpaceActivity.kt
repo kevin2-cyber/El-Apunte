@@ -9,9 +9,11 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentReference
 import kevin.codelab.el_apunte.R
 import kevin.codelab.el_apunte.databinding.ActivityWorkSpaceBinding
 import kevin.codelab.el_apunte.model.NoteModel
+import kevin.codelab.el_apunte.utils.Utils
 
 class WorkSpaceActivity : AppCompatActivity() {
 
@@ -21,6 +23,8 @@ class WorkSpaceActivity : AppCompatActivity() {
     private var isEditMode: Boolean = false
     private val etTitle = binding.etTitle
     private val etContent = binding.etContent
+    private var utils: Utils? = null
+    private lateinit var docId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityWorkSpaceBinding.inflate(layoutInflater)
@@ -69,10 +73,10 @@ class WorkSpaceActivity : AppCompatActivity() {
         // receive data
         val title = intent.getStringExtra("title")
         val content = intent.getStringExtra("content")
-        val docId = intent.getStringExtra("docId")
+        docId = intent.getStringExtra("docId").toString()
         val color = intent.getIntExtra("color", model!!.color)
 
-        if(docId != null && docId.isNotEmpty()) {
+        if(docId.isNotEmpty()) {
             isEditMode = true
         }
 
@@ -96,6 +100,27 @@ class WorkSpaceActivity : AppCompatActivity() {
         model?.content = noteContent
         model?.color = color
         model?.timestamp = Timestamp.now()
+
+        model?.let { saveNoteToFirebase(it) }
+    }
+
+    private fun saveNoteToFirebase(model: NoteModel) {
+        var documentReference: DocumentReference
+        if (isEditMode) {
+            // update the note
+            documentReference = utils!!.getCollectionReferenceForNotes().document(docId)
+        } else {
+            // create a new note
+            documentReference = utils!!.getCollectionReferenceForNotes().document()
+        }
+
+        documentReference.set(model)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    utils!!.showToast(this, "Note added successfully")
+                    finish()
+                } else utils!!.showToast(this, "Failed whilst adding note")
+            }
     }
 
     private fun paintClicked(view: View) {
