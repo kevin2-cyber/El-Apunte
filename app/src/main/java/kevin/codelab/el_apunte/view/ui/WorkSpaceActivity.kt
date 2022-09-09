@@ -61,15 +61,15 @@ class WorkSpaceActivity : AppCompatActivity() {
             )
         )
 
-        var etTitle = binding.etTitle
-        var etContent = binding.etContent
+        val etTitle = binding.etTitle
+        val etContent = binding.etContent
         val mImageButtonCurrentPaint = findViewById<ImageButton>(R.id.ib_pallet)
 
         // receive data
-        var title = intent.getStringExtra("title")
-        var content = intent.getStringExtra("content")
-        var docId = intent.getStringExtra("docId")
-        var color = intent.getIntExtra("color", model!!.color)
+        val title = intent.getStringExtra("title")
+        val content = intent.getStringExtra("content")
+        val docId = intent.getStringExtra("docId")
+        val color = intent.getIntExtra("color", model!!.color)
 
         if(docId != null && docId.isNotEmpty()) {
             isEditMode = true
