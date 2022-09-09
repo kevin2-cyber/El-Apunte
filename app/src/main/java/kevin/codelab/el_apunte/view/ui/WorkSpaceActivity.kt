@@ -105,13 +105,12 @@ class WorkSpaceActivity : AppCompatActivity() {
     }
 
     private fun saveNoteToFirebase(model: NoteModel) {
-        var documentReference: DocumentReference
-        if (isEditMode) {
+        val documentReference: DocumentReference = if (isEditMode) {
             // update the note
-            documentReference = utils!!.getCollectionReferenceForNotes().document(docId)
+            utils!!.getCollectionReferenceForNotes().document(docId)
         } else {
             // create a new note
-            documentReference = utils!!.getCollectionReferenceForNotes().document()
+            utils!!.getCollectionReferenceForNotes().document()
         }
 
         documentReference.set(model)
