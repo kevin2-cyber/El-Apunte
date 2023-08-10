@@ -5,5 +5,7 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.ElApunte" parent="Base.Theme.ElApunte" />
+    <style name="Theme.ElApunte" parent="Base.Theme.ElApunte">
+        <item name="android:fontFamily">@font/space_grotesk</item>
+    </style>
 </resources>
