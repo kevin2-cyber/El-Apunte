@@ -12,14 +12,14 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentReference
 import kevin.codelab.el_apunte.R
 import kevin.codelab.el_apunte.databinding.ActivityWorkSpaceBinding
-import kevin.codelab.el_apunte.model.NoteModel
+import kevin.codelab.el_apunte.model.Note
 import kevin.codelab.el_apunte.utils.Utils
 
 class WorkSpaceActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWorkSpaceBinding
     private var mImageButtonCurrentPaint: ImageButton? = null
-    private var model: NoteModel? = null
+    private var model: Note? = null
     private var isEditMode: Boolean = false
     private val etTitle = binding.etTitle
     private val etContent = binding.etContent
@@ -71,8 +71,8 @@ class WorkSpaceActivity : AppCompatActivity() {
         val mImageButtonCurrentPaint = findViewById<ImageButton>(R.id.ib_pallet)
 
         // receive data
-        val title = intent.getStringExtra("title").toString()
-        val content = intent.getStringExtra("content").toString()
+        var title = intent.getStringExtra("title").toString()
+        var content = intent.getStringExtra("content").toString()
         docId = intent.getStringExtra("docId").toString()
         val color = intent.getIntExtra("color", model!!.color)
 
@@ -80,8 +80,9 @@ class WorkSpaceActivity : AppCompatActivity() {
             isEditMode = true
         }
 
-        etTitle.text = title
-        etContent.text = content
+        title = etTitle.text.toString()
+        content = etContent.text.toString()
+
 
         mImageButtonCurrentPaint.setImageResource(color)
     }
@@ -104,7 +105,7 @@ class WorkSpaceActivity : AppCompatActivity() {
         model?.let { saveNoteToFirebase(it) }
     }
 
-    private fun saveNoteToFirebase(model: NoteModel) {
+    private fun saveNoteToFirebase(model: Note) {
         val documentReference: DocumentReference = if (isEditMode) {
             // update the note
             utils!!.getCollectionReferenceForNotes().document(docId)

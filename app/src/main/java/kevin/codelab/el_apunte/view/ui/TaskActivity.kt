@@ -9,7 +9,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.Query
 import kevin.codelab.el_apunte.R
 import kevin.codelab.el_apunte.databinding.ActivityTaskBinding
-import kevin.codelab.el_apunte.model.NoteModel
+import kevin.codelab.el_apunte.model.Note
 import kevin.codelab.el_apunte.utils.Utils
 import kevin.codelab.el_apunte.view.adapters.RecyclerViewAdapter
 
@@ -18,8 +18,8 @@ class TaskActivity : AppCompatActivity() {
     // enable viewBinding
     private lateinit var binding: ActivityTaskBinding
 
-    private lateinit var noteList: ArrayList<NoteModel>
-    val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+    private lateinit var noteList: ArrayList<Note>
+    private val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
     private lateinit var recyclerViewAdapter: RecyclerViewAdapter
     private var utils: Utils? = null
 
@@ -33,10 +33,10 @@ class TaskActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         val query: Query? = utils?.getCollectionReferenceForNotes()?.orderBy("timestamp", Query.Direction.DESCENDING)
-        val options: FirestoreRecyclerOptions<NoteModel> = query?.let {
-            FirestoreRecyclerOptions.Builder<NoteModel>()
-                .setQuery(it, NoteModel::class.java).build()
-        } as FirestoreRecyclerOptions<NoteModel>
+        val options: FirestoreRecyclerOptions<Note> = query?.let {
+            FirestoreRecyclerOptions.Builder<Note>()
+                .setQuery(it, Note::class.java).build()
+        } as FirestoreRecyclerOptions<Note>
 
         val gridLayoutManager: GridLayoutManager = GridLayoutManager(this, 2)
         recyclerView.layoutManager = gridLayoutManager

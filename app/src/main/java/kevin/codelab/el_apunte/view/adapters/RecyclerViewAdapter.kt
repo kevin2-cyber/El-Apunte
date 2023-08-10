@@ -12,15 +12,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import kevin.codelab.el_apunte.R
-import kevin.codelab.el_apunte.model.NoteModel
+import kevin.codelab.el_apunte.model.Note
 import kevin.codelab.el_apunte.utils.Utils
 import kevin.codelab.el_apunte.view.ui.WorkSpaceActivity
 
-class RecyclerViewAdapter(context: Context, noteList: ArrayList<NoteModel>, options: FirestoreRecyclerOptions<NoteModel>,) :
-    FirestoreRecyclerAdapter<NoteModel, RecyclerViewAdapter.RecyclerViewHolder>(options) {
+class RecyclerViewAdapter(context: Context, noteList: ArrayList<Note>, options: FirestoreRecyclerOptions<Note>,) :
+    FirestoreRecyclerAdapter<Note, RecyclerViewAdapter.RecyclerViewHolder>(options) {
 
     private lateinit var context: Context
-    private lateinit var noteList: ArrayList<NoteModel>
+    private lateinit var noteList: ArrayList<Note>
 
 
 
@@ -46,7 +46,7 @@ class RecyclerViewAdapter(context: Context, noteList: ArrayList<NoteModel>, opti
         return noteList.size
     }
 
-    override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int, model: NoteModel) {
+    override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int, model: Note) {
         val utils: Utils? = null
         holder.title.text = model.title
         holder.note.cardElevation = 0.5F
