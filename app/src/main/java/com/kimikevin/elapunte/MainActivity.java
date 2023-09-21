@@ -1,18 +1,26 @@
 package com.kimikevin.elapunte;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 
 import com.kimikevin.elapunte.databinding.ActivityMainBinding;
+import com.kimikevin.elapunte.model.entity.Note;
+import com.kimikevin.elapunte.viewmodel.MainActivityViewModel;
 
 public class MainActivity extends AppCompatActivity {
-
-    ActivityMainBinding binding;
+    private ActivityMainBinding binding;
+    private MainActivityViewModel viewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
         super.onCreate(savedInstanceState);
-        setContentView(binding.getRoot());
+        setContentView(R.layout.activity_main);
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding.setNote(new Note());
+
+        viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
     }
 }

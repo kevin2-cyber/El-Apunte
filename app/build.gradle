@@ -3,13 +3,21 @@ plugins {
 }
 
 android {
+
+    configurations {
+        configureEach {
+            resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib:1.8.10'
+            resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib:1.6.21'
+        }
+    }
+
     namespace 'com.kimikevin.elapunte'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.kimikevin.elapunte"
         minSdk 30
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -24,17 +32,20 @@ android {
     }
 
     buildFeatures{
-        viewBinding true
+        dataBinding true
     }
     
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 }
 
 dependencies {
+    def room_version = "2.5.2"
 
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
