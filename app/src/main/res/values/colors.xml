@@ -1,24 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="windowColor">#202020</color>
-    <color name="grey">#666966</color>
-    <color name="kPrimary">#1191DA</color>
-    <color name="kBackground">#F9E7E7</color>
-    <color name="kButtonBackgroundSelected">#230336</color>
-    <color name="violet">#740CB4</color>
-    <color name="indigo">#270A7C</color>
-    <color name="red">#F20808</color>
-    <color name="lightGreen">#08F22E</color>
-    <color name="amber">#BF9F62</color>
-    <color name="cardView">#F3F3EB</color>
-    <color name="you">#2E2E2E</color>
-    <color name="kFontColor">#373333</color>
-    <color name="kWorkSpaceColor">#F9E7E7</color>
+    <color name="light_blue">#FFCCE5FF</color>
+    <color name="pale_green">#FFD7F9E9</color>
+    <color name="pale_yellow">#FFFFF8E1</color>
+    <color name="beige">#FFF5E6CC</color>
+    <color name="light_pink">#FFFFD6D6</color>
+    <color name="light_grey">#FFE5E5E5</color>
+    <color name="pale_pink">#FFFFF0F0</color>
+    <color name="pale_blue">#FFE6F9FF</color>
+    <color name="mint_green">#FFD4EDDA</color>
+    <color name="pale_orange">#FFFFF3CD</color>
 </resources>

@@ -1,27 +1,3 @@
 <resources>
     <string name="app_name">El-Apunte</string>
-    <string name="login">Login</string>
-    <string name="sign_up">Sign Up</string>
-    <string name="welcome_text">Welcome to El-Apunte</string>
-    <string name="tvText">A fast and simple way to journal and</string>
-    <string name="tvText2">keep track of your ideas all in one place</string>
-    <!--    <string-array name="tvText2">-->
-    <!--        <item name="tvTest">A Fast and simple way to journal</item>-->
-    <!--        <item name="tv"></item>-->
-    <!--    </string-array>-->
-    <string name="welcome">Get Started</string>
-    <string name="no_account">Not having an account</string>
-    <string name="existing_account">Already having an account</string>
-    <string name="sign_in">Sign in</string>
-    <string name="enter_your_password">Enter your password</string>
-    <string name="confirm_your_password">Confirm your password</string>
-    <string name="enter_your_email">Enter your email</string>
-    <string name="todo">TODO</string>
-    <string name="date">August 7, 2022</string>
-    <string name="find_your_notes">Find your notes</string>
-    <string name="java_practice">Java practice</string>
-    <string name="name">Name</string>
-    <string name="save">Save</string>
-    <string name="title">Title</string>
-    <string name="content">Go ahead and type something......</string>
 </resources>
