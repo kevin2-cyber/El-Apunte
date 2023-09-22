@@ -1,10 +1,10 @@
-package com.kimikevin.elapunte.util;
+package com.kimikevin.elapunte.view.ui.util;
 
 import com.kimikevin.elapunte.R;
 
 import java.util.Random;
 
-public class ColorUtil {
+public class NoteUtil {
 
     public int[] colors = {R.color.beige,R.color.pale_blue,R.color.pale_green,
             R.color.pale_orange,R.color.pale_yellow,R.color.pale_pink,
