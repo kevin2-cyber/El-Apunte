@@ -17,11 +17,14 @@ public class Note extends BaseObservable {
     private String title;
     @ColumnInfo(name = "content")
     private String content;
+    @ColumnInfo(defaultValue = "CURRENT_TIMESTAMP")
+    private String dateTime;
 
-    public Note(int id, String title, String content) {
+    public Note(int id, String title, String content, String dateTime) {
         this.id = id;
         this.title = title;
         this.content = content;
+        this.dateTime = dateTime;
     }
 
     @Ignore
@@ -55,5 +58,15 @@ public class Note extends BaseObservable {
     public void setContent(String content) {
         this.content = content;
         notifyPropertyChanged(BR.content);
+    }
+
+    @Bindable
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+        notifyPropertyChanged(BR.dateTime);
     }
 }
