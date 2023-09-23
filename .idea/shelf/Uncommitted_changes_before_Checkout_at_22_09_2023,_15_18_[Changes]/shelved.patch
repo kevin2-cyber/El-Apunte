@@ -1,0 +1,39 @@
+Index: app/src/main/java/kevin/codelab/el_apunte/view/adapters/RecyclerViewAdapter.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package kevin.codelab.el_apunte.view.adapters\n\nimport android.content.Context\nimport android.content.Intent\nimport android.view.LayoutInflater\nimport android.view.View\nimport android.view.ViewGroup\nimport android.widget.ImageButton\nimport android.widget.TextView\nimport androidx.cardview.widget.CardView\nimport androidx.recyclerview.widget.RecyclerView\nimport com.firebase.ui.firestore.FirestoreRecyclerAdapter\nimport com.firebase.ui.firestore.FirestoreRecyclerOptions\nimport kevin.codelab.el_apunte.R\nimport kevin.codelab.el_apunte.model.NoteModel\nimport kevin.codelab.el_apunte.utils.Utils\nimport kevin.codelab.el_apunte.view.ui.WorkSpaceActivity\n\nclass RecyclerViewAdapter(context: Context, noteList: ArrayList<NoteModel>, options: FirestoreRecyclerOptions<NoteModel>,) :\n    FirestoreRecyclerAdapter<NoteModel, RecyclerViewAdapter.RecyclerViewHolder>(options) {\n\n    private lateinit var context: Context\n    private lateinit var noteList: ArrayList<NoteModel>\n\n\n\n    class RecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){\n\n         var note: CardView = itemView.findViewById(R.id.card_view)\n         var title: TextView = itemView.findViewById(R.id.et_title)\n         var date: TextView = itemView.findViewById(R.id.tv_date)\n         var colorPallet: ImageButton = itemView.findViewById(R.id.ib_pallet)\n         var deleteBtn: ImageButton = itemView.findViewById(R.id.ib_delete)\n\n        val view: RecyclerView = itemView.findViewById(R.id.recyclerView)\n\n\n    }\n\n    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {\n        val view = LayoutInflater.from(parent.context).inflate(R.layout.card_item, parent, false)\n        return RecyclerViewHolder(view)\n    }\n\n    override fun getItemCount(): Int {\n        return noteList.size\n    }\n\n    override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int, model: NoteModel) {\n        val utils: Utils? = null\n        holder.title.text = model.title\n        holder.note.cardElevation = 0.5F\n        holder.date.text = utils?.timeStampToString(model.timestamp)\n        holder.colorPallet.setImageResource(model.color)\n        holder.itemView.setOnClickListener {\n            val intent = Intent(context, WorkSpaceActivity::class.java)\n            intent.putExtra(\"title\", model.title)\n            intent.putExtra(\"content\", model.content)\n            intent.putExtra(\"color\", model.color)\n            val docId: String = this.snapshots.getSnapshot(position).id\n            intent.putExtra(\"docId\", docId)\n            context.startActivity(intent)\n        }\n    }\n}
+===================================================================
+diff --git a/app/src/main/java/kevin/codelab/el_apunte/view/adapters/RecyclerViewAdapter.kt b/app/src/main/java/kevin/codelab/el_apunte/view/adapters/RecyclerViewAdapter.kt
+--- a/app/src/main/java/kevin/codelab/el_apunte/view/adapters/RecyclerViewAdapter.kt	
++++ b/app/src/main/java/kevin/codelab/el_apunte/view/adapters/RecyclerViewAdapter.kt	
+@@ -47,10 +47,10 @@
+     }
+ 
+     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int, model: NoteModel) {
+-        val utils: Utils? = null
++        val utils: Utils = Utils()
+         holder.title.text = model.title
+         holder.note.cardElevation = 0.5F
+-        holder.date.text = utils?.timeStampToString(model.timestamp)
++        holder.date.text = utils.timeStampToString(model.timestamp)
+         holder.colorPallet.setImageResource(model.color)
+         holder.itemView.setOnClickListener {
+             val intent = Intent(context, WorkSpaceActivity::class.java)
+Index: app/src/main/java/kevin/codelab/el_apunte/utils/Utils.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package kevin.codelab.el_apunte.utils\n\nimport android.content.Context\nimport android.widget.Toast\nimport com.google.firebase.Timestamp\nimport com.google.firebase.auth.FirebaseAuth\nimport com.google.firebase.firestore.CollectionReference\nimport com.google.firebase.firestore.FirebaseFirestore\nimport java.text.SimpleDateFormat\nimport java.util.*\n\n open class Utils {\n\n    fun showToast(context: Context, message: String) {\n        Toast.makeText(context, message, Toast.LENGTH_LONG).show()\n    }\n\n     fun getCollectionReferenceForNotes(): CollectionReference {\n        val currentUser = FirebaseAuth.getInstance().currentUser\n\n        return FirebaseFirestore.getInstance().collection(\"notes\")\n            .document(currentUser!!.uid).collection(\"my_notes\")\n    }\n\n    fun timeStampToString(timestamp: Timestamp): String {\n        return SimpleDateFormat(\"MM/dd/yyyy\", Locale.ENGLISH).format(timestamp.toDate())\n    }\n}
+===================================================================
+diff --git a/app/src/main/java/kevin/codelab/el_apunte/utils/Utils.kt b/app/src/main/java/kevin/codelab/el_apunte/utils/Utils.kt
+--- a/app/src/main/java/kevin/codelab/el_apunte/utils/Utils.kt	
++++ b/app/src/main/java/kevin/codelab/el_apunte/utils/Utils.kt	
+@@ -22,7 +22,7 @@
+             .document(currentUser!!.uid).collection("my_notes")
+     }
+ 
+-    fun timeStampToString(timestamp: Timestamp): String {
++    fun timeStampToString(timestamp: Timestamp): String? {
+         return SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).format(timestamp.toDate())
+     }
+ }
+\ No newline at end of file
