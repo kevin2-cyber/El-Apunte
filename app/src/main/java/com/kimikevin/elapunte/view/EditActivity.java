@@ -1,4 +1,4 @@
-package com.kimikevin.elapunte.view.ui;
+package com.kimikevin.elapunte.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
