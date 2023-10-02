@@ -6,6 +6,10 @@
         <variable
             name="note"
             type="com.kimikevin.elapunte.model.entity.Note" />
+
+        <variable
+            name="clickHandler"
+            type="com.kimikevin.elapunte.MainActivity.MainClickHandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,6 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:contentDescription="@string/app_name"
+            android:onClick="@{clickHandler::onButtonClick}"
             android:src="@drawable/baseline_add_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/rv_notes" />
