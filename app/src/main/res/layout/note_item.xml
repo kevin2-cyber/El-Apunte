@@ -4,6 +4,10 @@
         <variable
             name="note"
             type="com.kimikevin.elapunte.model.entity.Note" />
+
+        <variable
+            name="util"
+            type="com.kimikevin.elapunte.view.util.NoteUtil" />
     </data>
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -14,7 +18,7 @@
         android:layout_marginEnd="16dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="5dp"
-        app:cardBackgroundColor="@color/beige"
+        app:cardBackgroundColor="@{util::getColor}"
         android:layout_margin="10dp">
 
         <TextView

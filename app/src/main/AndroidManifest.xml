@@ -13,7 +13,7 @@
         android:theme="@style/Theme.ElApunte"
         tools:targetApi="31">
         <activity
-            android:name=".view.ui.EditActivity"
+            android:name=".view.EditActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
