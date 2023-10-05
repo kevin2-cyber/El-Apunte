@@ -8,7 +8,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "note")
+@Entity(tableName = "note_table")
 public class Note extends BaseObservable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
