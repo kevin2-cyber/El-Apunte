@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.kimikevin.elapunte.databinding.ActivityMainBinding;
 import com.kimikevin.elapunte.model.entity.Note;
+import com.kimikevin.elapunte.view.util.NoteUtil;
 import com.kimikevin.elapunte.viewmodel.MainActivityViewModel;
 
 public class MainActivity extends AppCompatActivity {

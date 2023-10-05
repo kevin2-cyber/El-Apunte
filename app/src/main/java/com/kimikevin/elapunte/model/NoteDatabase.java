@@ -11,16 +11,19 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.kimikevin.elapunte.model.dao.NoteDao;
 import com.kimikevin.elapunte.model.entity.Note;
 
-@Database(entities = {Note.class}, version = 1)
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+@Database(entities = {Note.class}, version = 1, exportSchema = false)
 public abstract class NoteDatabase extends RoomDatabase {
     public abstract NoteDao getNoteDao();
 
     // Singleton
-    private static NoteDatabase INSTANCE;
+    private static NoteDatabase instance;
 
     public static synchronized NoteDatabase getInstance(Context context) {
-        if (INSTANCE == null) {
-            INSTANCE = Room.databaseBuilder(
+        if (instance == null) {
+            instance = Room.databaseBuilder(
                     context.getApplicationContext(),
                     NoteDatabase.class,
                     "note_db")
@@ -28,7 +31,7 @@ public abstract class NoteDatabase extends RoomDatabase {
                     .addCallback(roomCallback)
                     .build();
         }
-        return INSTANCE;
+        return instance;
     }
 
     private static RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {
@@ -37,6 +40,25 @@ public abstract class NoteDatabase extends RoomDatabase {
             super.onCreate(db);
 
             // insert data when database is created
+            initializeData();
         }
     };
+
+    private static void initializeData() {
+        NoteDao noteDao = instance.getNoteDao();
+
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                // notes
+                Note noteOne = new Note();
+                noteOne.setTitle("Health");
+                noteOne.setContent("Hello My Friend");
+                noteOne.setDateTime("August, 7, 2023");
+
+                noteDao.insert(noteOne);
+            }
+        });
+    }
 }
