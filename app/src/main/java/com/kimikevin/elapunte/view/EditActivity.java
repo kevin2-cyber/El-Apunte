@@ -7,7 +7,6 @@ import android.os.Bundle;
 import com.kimikevin.elapunte.R;
 
 public class EditActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

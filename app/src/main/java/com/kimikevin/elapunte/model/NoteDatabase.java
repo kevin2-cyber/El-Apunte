@@ -16,11 +16,11 @@ public abstract class NoteDatabase extends RoomDatabase {
     public abstract NoteDao getNoteDao();
 
     // Singleton
-    private static NoteDatabase INSTANCE;
+    private static NoteDatabase instance;
 
     public static synchronized NoteDatabase getInstance(Context context) {
-        if (INSTANCE == null) {
-            INSTANCE = Room.databaseBuilder(
+        if (instance == null) {
+            instance = Room.databaseBuilder(
                     context.getApplicationContext(),
                     NoteDatabase.class,
                     "note_db")
@@ -28,7 +28,7 @@ public abstract class NoteDatabase extends RoomDatabase {
                     .addCallback(roomCallback)
                     .build();
         }
-        return INSTANCE;
+        return instance;
     }
 
     private static RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {

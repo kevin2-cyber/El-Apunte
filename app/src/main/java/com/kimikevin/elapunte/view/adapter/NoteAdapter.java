@@ -10,24 +10,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kimikevin.elapunte.R;
 import com.kimikevin.elapunte.databinding.NoteItemBinding;
 import com.kimikevin.elapunte.model.entity.Note;
+import com.kimikevin.elapunte.view.util.NoteUtil;
 
 import java.util.ArrayList;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder> {
+public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
 
     private ArrayList<Note> notes;
 
     @NonNull
     @Override
-    public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         NoteItemBinding itemBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),R.layout.note_item, parent, false);
 
-        return new RecyclerViewHolder(itemBinding);
+        return new NoteViewHolder(itemBinding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note currentNote = notes.get(position);
         holder.binding.setNote(currentNote);
     }
@@ -42,12 +43,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         notifyDataSetChanged();
     }
 
-    public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
+    public static class NoteViewHolder extends RecyclerView.ViewHolder {
         private NoteItemBinding binding;
 
-        public RecyclerViewHolder(@NonNull NoteItemBinding binding) {
+        public NoteViewHolder(@NonNull NoteItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+
+            binding.getRoot().setBackgroundColor(NoteUtil.getColor());
         }
     }
 }
