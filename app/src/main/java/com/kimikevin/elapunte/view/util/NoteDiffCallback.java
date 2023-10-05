@@ -7,11 +7,11 @@ import com.kimikevin.elapunte.model.entity.Note;
 
 import java.util.ArrayList;
 
-public class NoteDiffCallBack extends DiffUtil.Callback {
+public class NoteDiffCallback extends DiffUtil.Callback {
     ArrayList<Note> newNoteList;
     ArrayList<Note> oldNoteList;
 
-    public NoteDiffCallBack(ArrayList<Note> newNoteList, ArrayList<Note> oldNoteList) {
+    public NoteDiffCallback(ArrayList<Note> newNoteList, ArrayList<Note> oldNoteList) {
         this.newNoteList = newNoteList;
         this.oldNoteList = oldNoteList;
     }

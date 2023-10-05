@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kimikevin.elapunte.R;
 import com.kimikevin.elapunte.databinding.NoteItemBinding;
 import com.kimikevin.elapunte.model.entity.Note;
-import com.kimikevin.elapunte.view.util.NoteDiffCallBack;
+import com.kimikevin.elapunte.view.util.NoteDiffCallback;
 import com.kimikevin.elapunte.view.util.NoteUtil;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
     public void setNotes(ArrayList<Note> newNotes) {
         final DiffUtil.DiffResult result =
-                DiffUtil.calculateDiff(new NoteDiffCallBack(notes, newNotes), false);
+                DiffUtil.calculateDiff(new NoteDiffCallback(notes, newNotes), false);
 
         notes = newNotes;
         result.dispatchUpdatesTo(NoteAdapter.this);
