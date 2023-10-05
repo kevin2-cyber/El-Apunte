@@ -1,29 +1,31 @@
 package com.kimikevin.elapunte.view.adapter;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kimikevin.elapunte.R;
 import com.kimikevin.elapunte.databinding.NoteItemBinding;
 import com.kimikevin.elapunte.model.entity.Note;
+import com.kimikevin.elapunte.view.util.NoteDiffCallBack;
 import com.kimikevin.elapunte.view.util.NoteUtil;
 
 import java.util.ArrayList;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
-
-    private ArrayList<Note> notes;
+    private OnItemClickListener listener;
+    private ArrayList<Note> notes = new ArrayList<>();
 
     @NonNull
     @Override
     public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         NoteItemBinding itemBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),R.layout.note_item, parent, false);
-
         return new NoteViewHolder(itemBinding);
     }
 
@@ -38,12 +40,15 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         return notes != null ? notes.size() : 0;
     }
 
-    public void setNotes(ArrayList<Note> notes) {
-        this.notes = notes;
-        notifyDataSetChanged();
+    public void setNotes(ArrayList<Note> newNotes) {
+        final DiffUtil.DiffResult result =
+                DiffUtil.calculateDiff(new NoteDiffCallBack(notes, newNotes), false);
+
+        notes = newNotes;
+        result.dispatchUpdatesTo(NoteAdapter.this);
     }
 
-    public static class NoteViewHolder extends RecyclerView.ViewHolder {
+    public class NoteViewHolder extends RecyclerView.ViewHolder {
         private NoteItemBinding binding;
 
         public NoteViewHolder(@NonNull NoteItemBinding binding) {
@@ -51,6 +56,23 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             this.binding = binding;
 
             binding.getRoot().setBackgroundColor(NoteUtil.getColor());
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int clickedPosition = getAdapterPosition();
+                    if (listener != null && clickedPosition != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(notes.get(clickedPosition));
+                    }
+                }
+            });
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Note note);
+    }
+
+    public void setListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 }
