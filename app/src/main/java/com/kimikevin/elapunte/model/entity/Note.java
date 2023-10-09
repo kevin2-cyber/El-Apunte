@@ -1,5 +1,7 @@
 package com.kimikevin.elapunte.model.entity;
 
+import android.icu.text.SimpleDateFormat;
+
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.library.baseAdapters.BR;
@@ -11,16 +13,16 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "note_table")
 public class Note extends BaseObservable {
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
+    @ColumnInfo(name = "note_id")
     private int id;
     @ColumnInfo(name = "title")
     private String title;
     @ColumnInfo(name = "content")
     private String content;
     @ColumnInfo(defaultValue = "CURRENT_TIMESTAMP")
-    private String dateTime;
+    private SimpleDateFormat dateTime;
 
-    public Note(int id, String title, String content, String dateTime) {
+    public Note(int id, String title, String content, SimpleDateFormat dateTime) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -61,11 +63,11 @@ public class Note extends BaseObservable {
     }
 
     @Bindable
-    public String getDateTime() {
+    public SimpleDateFormat getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(String dateTime) {
+    public void setDateTime(SimpleDateFormat dateTime) {
         this.dateTime = dateTime;
         notifyPropertyChanged(BR.dateTime);
     }

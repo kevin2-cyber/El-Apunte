@@ -14,4 +14,6 @@ public class NoteUtil {
         Random random = new Random();
         return colors[random.nextInt(colors.length)];
     }
+
+    //TODO: search and filter functionalities
 }
