@@ -22,7 +22,7 @@ public interface NoteDao {
     @Delete
     void delete(Note note);
 
-    @Query("SELECT * FROM notes WHERE note_id ==:noteId")
+    @Query("SELECT * FROM note_table WHERE note_id ==:noteId")
     LiveData<Note> getNote(int noteId);
 
     @Query("SELECT * FROM note_table")
