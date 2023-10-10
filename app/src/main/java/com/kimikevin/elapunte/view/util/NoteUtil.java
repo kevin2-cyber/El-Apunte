@@ -4,8 +4,6 @@ import android.content.Context;
 
 import com.kimikevin.elapunte.R;
 
-import java.util.Random;
-
 public class NoteUtil {
 
     private static final int[] colors = {R.color.beige,R.color.pale_blue,R.color.pale_green,
@@ -17,12 +15,14 @@ public class NoteUtil {
 //        return colors[random.nextInt(colors.length)];
 //    }
 
-    public static int getColor(Context context) {
+    public static int getColor() {
         int[] colors;
         if (Math.random() >= 0.6) {
-            colors = context.getResources().getIntArray(R.array.note_accent_colors);
+//            colors = context.getResources().getIntArray(R.array.note_accent_colors);
+            colors = new int[]{R.array.note_accent_colors};
         } else {
-            colors = context.getResources().getIntArray(R.array.note_neutral_colors);
+//            colors = context.getResources().getIntArray(R.array.note_neutral_colors);
+            colors = new int[]{R.array.note_neutral_colors};
         }
         return colors[((int) (Math.random() * colors.length))];
     }

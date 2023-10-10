@@ -1,5 +1,6 @@
 package com.kimikevin.elapunte.view.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note currentNote = notes.get(position);
         holder.binding.setNote(currentNote);
-//        holder.binding.card.setCardBackgroundColor(NoteUtil.getColor(NoteAdapter.this));
+        holder.binding.card.setCardBackgroundColor(NoteUtil.getColor());
     }
 
     @Override

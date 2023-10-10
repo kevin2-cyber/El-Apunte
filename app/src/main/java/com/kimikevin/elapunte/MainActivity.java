@@ -76,23 +76,20 @@ public class MainActivity extends AppCompatActivity {
 
         noteAdapter = new NoteAdapter();
         notesRecyclerView.setAdapter(noteAdapter);
-        notesRecyclerView.getChildAt(selectedNoteId).setBackgroundColor(NoteUtil.getColor(this));
+//        notesRecyclerView.setBackgroundColor(NoteUtil.getColor(this));
 
         noteAdapter.setNotes(noteList);
 
         // edit the note
-        noteAdapter.setListener(new NoteAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Note note) {
-                selectedNoteId = note.getId();
-                Intent intent = new Intent(MainActivity.this, EditActivity.class);
+        noteAdapter.setListener(note -> {
+            selectedNoteId = note.getId();
+            Intent intent = new Intent(MainActivity.this, EditActivity.class);
 
-                intent.putExtra(EditActivity.NOTE_ID, selectedNoteId);
-                intent.putExtra(EditActivity.NOTE_TITLE, note.getTitle());
-                intent.putExtra(EditActivity.NOTE_CONTENT, note.getContent());
+            intent.putExtra(EditActivity.NOTE_ID, selectedNoteId);
+            intent.putExtra(EditActivity.NOTE_TITLE, note.getTitle());
+            intent.putExtra(EditActivity.NOTE_CONTENT, note.getContent());
 
-                startActivityIfNeeded(intent, EDIT_NOTE_REQUEST_CODE);
-            }
+            startActivityIfNeeded(intent, EDIT_NOTE_REQUEST_CODE);
         });
 
         // delete a note
