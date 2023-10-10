@@ -10,6 +10,9 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Entity(tableName = "note_table")
 public class Note extends BaseObservable {
     @PrimaryKey(autoGenerate = true)
@@ -20,13 +23,12 @@ public class Note extends BaseObservable {
     @ColumnInfo(name = "content")
     private String content;
     @ColumnInfo(defaultValue = "CURRENT_TIMESTAMP")
-    private SimpleDateFormat dateTime;
+    private LocalDateTime dateTime = LocalDateTime.now();
 
-    public Note(int id, String title, String content, SimpleDateFormat dateTime) {
+    public Note(int id, String title, String content) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.dateTime = dateTime;
     }
 
     @Ignore
@@ -62,13 +64,15 @@ public class Note extends BaseObservable {
         notifyPropertyChanged(BR.content);
     }
 
-    @Bindable
-    public SimpleDateFormat getDateTime() {
+    public LocalDateTime getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(SimpleDateFormat dateTime) {
+    public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
-        notifyPropertyChanged(BR.dateTime);
+    }
+
+    public String createDateFormatted() {
+        return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss"));
     }
 }

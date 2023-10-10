@@ -7,16 +7,19 @@ import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.kimikevin.elapunte.model.dao.NoteDao;
 import com.kimikevin.elapunte.model.entity.Note;
+import com.kimikevin.elapunte.view.util.Converters;
 
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Database(entities = {Note.class}, version = 1, exportSchema = false)
+@TypeConverters(Converters.class)
 public abstract class NoteDatabase extends RoomDatabase {
     public abstract NoteDao getNoteDao();
 
@@ -57,7 +60,7 @@ public abstract class NoteDatabase extends RoomDatabase {
                 Note noteOne = new Note();
                 noteOne.setTitle("Health");
                 noteOne.setContent("Hello My Friend");
-                noteOne.setDateTime(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT));
+                noteOne.createDateFormatted();
 
                 noteDao.insert(noteOne);
             }

@@ -33,6 +33,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note currentNote = notes.get(position);
         holder.binding.setNote(currentNote);
+        holder.binding.card.setCardBackgroundColor(NoteUtil.getColor());
     }
 
     @Override
@@ -55,14 +56,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             super(binding.getRoot());
             this.binding = binding;
 
-            binding.getRoot().setBackgroundColor(NoteUtil.getColor());
-            binding.getRoot().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int clickedPosition = getAdapterPosition();
-                    if (listener != null && clickedPosition != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(notes.get(clickedPosition));
-                    }
+//            binding.getRoot().setBackgroundColor(NoteUtil.getColor());
+            binding.getRoot().setOnClickListener(v -> {
+                int clickedPosition = getAdapterPosition();
+                if (listener != null && clickedPosition != RecyclerView.NO_POSITION) {
+                    listener.onItemClick(notes.get(clickedPosition));
                 }
             });
         }

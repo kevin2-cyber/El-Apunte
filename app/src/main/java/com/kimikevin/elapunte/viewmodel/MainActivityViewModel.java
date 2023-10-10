@@ -23,8 +23,12 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Note>> getAllNotes() {
-        allNotes = repository.getNotes();
+        allNotes = repository.getAllNotes();
         return allNotes;
+    }
+
+    public LiveData<Note> getNoteById(int id) {
+        return repository.getNoteById(id);
     }
 
     public void insertNote(Note note) {

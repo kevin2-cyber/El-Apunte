@@ -61,12 +61,20 @@ public class MainActivity extends AppCompatActivity {
                 for (Note note  : notes) {
                     Log.i(TAG, note.getTitle());
                 }
-                loadRecyclerView();
+                loadData();
             }
         });
     }
 
-    private void loadData() {}
+    private void loadData() {
+        viewModel.getNoteById(selectedNoteId).observe(this, new Observer<Note>() {
+            @Override
+            public void onChanged(Note note) {
+                selectedNote = noteList.get(note.getId());
+                loadRecyclerView();
+            }
+        });
+    }
 
     private void loadRecyclerView() {
         notesRecyclerView = binding.rvNotes;
