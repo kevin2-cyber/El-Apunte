@@ -24,6 +24,16 @@
         <item>#3D51B3</item>
         <item>#689f38</item>
         <item>#FD7044</item>
+        <item>@color/beige</item>
+        <item>@color/light_blue</item>
+        <item>@color/pale_green</item>
+        <item>@color/pale_yellow</item>
+        <item>@color/pale_pink</item>
+        <item>@color/light_pink</item>
+        <item>@color/light_grey</item>
+        <item>@color/pale_blue</item>
+        <item>@color/mint_green</item>
+        <item>@color/pale_orange</item>
     </array>
 
     <array name="note_other_colors">

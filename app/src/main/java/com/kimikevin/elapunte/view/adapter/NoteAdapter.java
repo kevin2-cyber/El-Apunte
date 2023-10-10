@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.kimikevin.elapunte.MainActivity;
 import com.kimikevin.elapunte.R;
 import com.kimikevin.elapunte.databinding.NoteItemBinding;
 import com.kimikevin.elapunte.model.entity.Note;
@@ -33,7 +34,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note currentNote = notes.get(position);
         holder.binding.setNote(currentNote);
-        holder.binding.card.setCardBackgroundColor(NoteUtil.getRandomColor());
+//        holder.binding.card.setCardBackgroundColor(NoteUtil.getColor(NoteAdapter.this));
     }
 
     @Override

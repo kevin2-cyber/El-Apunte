@@ -22,6 +22,7 @@ import com.kimikevin.elapunte.databinding.ActivityMainBinding;
 import com.kimikevin.elapunte.model.entity.Note;
 import com.kimikevin.elapunte.view.EditActivity;
 import com.kimikevin.elapunte.view.adapter.NoteAdapter;
+import com.kimikevin.elapunte.view.util.NoteUtil;
 import com.kimikevin.elapunte.viewmodel.MainActivityViewModel;
 
 import java.util.ArrayList;
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
         noteAdapter = new NoteAdapter();
         notesRecyclerView.setAdapter(noteAdapter);
+        notesRecyclerView.getChildAt(selectedNoteId).setBackgroundColor(NoteUtil.getColor(this));
 
         noteAdapter.setNotes(noteList);
 
