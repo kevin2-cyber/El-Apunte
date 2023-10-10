@@ -1,7 +1,6 @@
 package com.kimikevin.elapunte.model;
 
 import android.content.Context;
-import android.icu.text.SimpleDateFormat;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -14,7 +13,6 @@ import com.kimikevin.elapunte.model.dao.NoteDao;
 import com.kimikevin.elapunte.model.entity.Note;
 import com.kimikevin.elapunte.view.util.Converters;
 
-import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
