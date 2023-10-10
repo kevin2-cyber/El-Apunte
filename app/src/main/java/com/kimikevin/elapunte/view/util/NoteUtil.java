@@ -29,17 +29,4 @@ public class NoteUtil {
 
     //TODO: search and filter functionalities
 
-//     private int color;
-//
-//    public NoteUtil(int color) {
-//        this.color = color;
-//    }
-//
-//    public int getColor() {
-//        return color;
-//    }
-//
-//    public void setColor(int color) {
-//        this.color = color;
-//    }
 }
