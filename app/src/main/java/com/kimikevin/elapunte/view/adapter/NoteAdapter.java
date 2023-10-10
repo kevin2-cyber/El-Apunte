@@ -33,8 +33,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note currentNote = notes.get(position);
         holder.binding.setNote(currentNote);
-//        NoteUtil noteUtil = new NoteUtil();
-//        holder.binding.card.setCardBackgroundColor(noteUtil.getColor());
+        holder.binding.card.setCardBackgroundColor(NoteUtil.getRandomColor());
     }
 
     @Override
