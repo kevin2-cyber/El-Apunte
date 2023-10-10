@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onFabClick(View view) {
-            Toast.makeText(context, "Fab clicked", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "Fab clicked", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(MainActivity.this, EditActivity.class);
             startActivityIfNeeded(intent,ADD_NOTE_REQUEST_CODE);
         }
