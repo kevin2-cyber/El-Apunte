@@ -56,11 +56,33 @@ public abstract class NoteDatabase extends RoomDatabase {
             public void run() {
                 // notes
                 Note noteOne = new Note();
-                noteOne.setTitle("Health");
-                noteOne.setContent("Hello My Friend");
+                noteOne.setTitle("Like and Subscribe");
+                noteOne.setContent("A FREE way to support the channel is to give us a LIKE . It does not cost you but means a lot to us.\nIf you are new here please Subscribe");
+                noteOne.setId(0);
                 noteOne.createDateFormatted();
 
+                Note noteTwo = new Note();
+                noteTwo.setTitle("Recipes to Try");
+                noteTwo.setContent("1. Chicken Alfredo\n2. Vegan chili\n3. Spaghetti carbonara\n4. Chocolate lava cake");
+                noteTwo.setId(1);
+                noteTwo.createDateFormatted();
+
+                Note noteThree = new Note();
+                noteThree.setTitle("Books to Read");
+                noteThree.setContent("1. To Kill a Mockingbird\n2. 1984\n3. The Great Gatsby\n4. The Catcher in the Rye");
+                noteThree.setId(2);
+                noteThree.createDateFormatted();
+
+                Note noteFour = new Note();
+                noteFour.setTitle("Gift Ideas for Mom");
+                noteFour.setContent("1. Jewelry box\n2. Cookbook\n3. Scarf\n4. Spa day gift card");
+                noteFour.setId(3);
+                noteFour.createDateFormatted();
+
                 noteDao.insert(noteOne);
+                noteDao.insert(noteTwo);
+                noteDao.insert(noteThree);
+                noteDao.insert(noteFour);
             }
         });
     }
