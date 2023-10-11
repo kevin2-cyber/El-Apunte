@@ -3,6 +3,7 @@ package com.kimikevin.elapunte.view.adapter;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -47,6 +48,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         int[] androidColors = context.getResources().getIntArray(R.array.note_accent_colors);
         int randomAndroidColor = androidColors[new Random().nextInt(androidColors.length)];
         holder.binding.card.setCardBackgroundColor(randomAndroidColor);
+        holder.binding.card.startAnimation(AnimationUtils.loadAnimation(holder.binding.card.getContext(), R.anim.anim_four));
     }
 
     @Override
