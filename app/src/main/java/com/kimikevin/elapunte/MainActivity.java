@@ -18,13 +18,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.kimikevin.elapunte.databinding.ActivityMainBinding;
 import com.kimikevin.elapunte.model.entity.Note;
 import com.kimikevin.elapunte.view.EditActivity;
 import com.kimikevin.elapunte.view.adapter.NoteAdapter;
-import com.kimikevin.elapunte.view.util.NoteUtil;
 import com.kimikevin.elapunte.viewmodel.MainActivityViewModel;
 
 import java.util.ArrayList;
@@ -79,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         notesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         notesRecyclerView.setHasFixedSize(true);
 
-        noteAdapter = new NoteAdapter();
+        noteAdapter = new NoteAdapter(this);
         notesRecyclerView.setAdapter(noteAdapter);
 //        notesRecyclerView.setBackgroundColor(NoteUtil.getColor(this));
 

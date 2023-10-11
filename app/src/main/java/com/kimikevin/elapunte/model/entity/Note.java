@@ -73,6 +73,6 @@ public class Note extends BaseObservable {
     }
 
     public String createDateFormatted() {
-        return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss"));
+        return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm:ss"));
     }
 }

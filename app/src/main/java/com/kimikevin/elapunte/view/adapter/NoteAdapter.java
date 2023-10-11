@@ -1,7 +1,6 @@
 package com.kimikevin.elapunte.view.adapter;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -14,14 +13,18 @@ import com.kimikevin.elapunte.R;
 import com.kimikevin.elapunte.databinding.NoteItemBinding;
 import com.kimikevin.elapunte.model.entity.Note;
 import com.kimikevin.elapunte.view.util.NoteDiffCallback;
-import com.kimikevin.elapunte.view.util.NoteUtil;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
     private OnItemClickListener listener;
     private ArrayList<Note> notes = new ArrayList<>();
-    Context context;
+   private Context context;
+
+    public NoteAdapter(Context context) {
+        this.context = context;
+    }
 
     @NonNull
     @Override
@@ -35,7 +38,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note currentNote = notes.get(position);
         holder.binding.setNote(currentNote);
-        holder.binding.card.setCardBackgroundColor(NoteUtil.getColor(context));
+        int[] androidColors = context.getResources().getIntArray(R.array.note_accent_colors);
+        int randomAndroidColor = androidColors[new Random().nextInt(androidColors.length)];
+        holder.binding.card.setCardBackgroundColor(randomAndroidColor);
     }
 
     @Override
