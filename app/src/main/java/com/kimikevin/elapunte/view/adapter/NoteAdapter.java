@@ -3,6 +3,7 @@ package com.kimikevin.elapunte.view.adapter;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -15,6 +16,7 @@ import com.kimikevin.elapunte.model.entity.Note;
 import com.kimikevin.elapunte.view.util.NoteDiffCallback;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
@@ -24,6 +26,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
     public NoteAdapter(Context context) {
         this.context = context;
+    }
+
+    public void setFilterList(List<Note> filterList) {
+        this.notes = (ArrayList<Note>) filterList;
+         notifyDataSetChanged();
     }
 
     @NonNull
@@ -41,6 +48,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         int[] androidColors = context.getResources().getIntArray(R.array.note_accent_colors);
         int randomAndroidColor = androidColors[new Random().nextInt(androidColors.length)];
         holder.binding.card.setCardBackgroundColor(randomAndroidColor);
+        holder.binding.card.startAnimation(AnimationUtils.loadAnimation(holder.binding.card.getContext(), R.anim.anim_four));
     }
 
     @Override
@@ -56,6 +64,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         result.dispatchUpdatesTo(NoteAdapter.this);
     }
 
+
     public class NoteViewHolder extends RecyclerView.ViewHolder {
         private NoteItemBinding binding;
 
@@ -63,7 +72,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             super(binding.getRoot());
             this.binding = binding;
 
-//            binding.getRoot().setBackgroundColor(NoteUtil.getColor());
             binding.getRoot().setOnClickListener(v -> {
                 int clickedPosition = getAdapterPosition();
                 if (listener != null && clickedPosition != RecyclerView.NO_POSITION) {

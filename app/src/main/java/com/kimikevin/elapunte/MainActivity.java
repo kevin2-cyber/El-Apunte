@@ -3,6 +3,7 @@ package com.kimikevin.elapunte;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -14,10 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.kimikevin.elapunte.databinding.ActivityMainBinding;
 import com.kimikevin.elapunte.model.entity.Note;
@@ -33,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     private MainActivityViewModel viewModel;
     private MainClickHandler handler;
     public static final String TAG = "TAG";
-    private Note selectedNote;
     private ArrayList<Note> noteList;
     RecyclerView notesRecyclerView;
     NoteAdapter noteAdapter;
@@ -51,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        binding.setNote(new Note());
 
         viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
         handler = new MainClickHandler(this);
@@ -62,12 +64,41 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(List<Note> notes) {
                 noteList = (ArrayList<Note>) notes;
 
-                for (Note note  : notes) {
+                for (Note note : notes) {
                     Log.i(TAG, note.getTitle());
                 }
                 loadRecyclerView();
             }
         });
+
+        binding.searchView.clearFocus();
+        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterList(newText);
+                return true;
+            }
+        });
+    }
+
+    private void filterList(String text) {
+        List<Note> filteredList = new ArrayList<>();
+        for (Note note: noteList) {
+            if (note.getTitle().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(note);
+            }
+        }
+
+        if (filteredList.isEmpty()) {
+            Toast.makeText(this, "No notes", Toast.LENGTH_SHORT).show();
+        } else {
+            noteAdapter.setFilterList(filteredList);
+        }
     }
 
 
@@ -79,9 +110,9 @@ public class MainActivity extends AppCompatActivity {
 
         noteAdapter = new NoteAdapter(this);
         notesRecyclerView.setAdapter(noteAdapter);
-//        notesRecyclerView.setBackgroundColor(NoteUtil.getColor(this));
 
         noteAdapter.setNotes(noteList);
+//        addTextListener();
 
         // edit the note
         noteAdapter.setListener(note -> {
@@ -110,6 +141,32 @@ public class MainActivity extends AppCompatActivity {
         }).attachToRecyclerView(notesRecyclerView);
     }
 
+//    private void addTextListener() {
+//        binding.etSearch.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+//
+//            @Override
+//            public void onTextChanged(CharSequence query, int start, int before, int count) {
+//                query = query.toString().toLowerCase();
+//
+//                final List<Note> filteredList = new ArrayList<>();
+//                for (int i = 0; i < noteList.size(); i++) {
+//                    final String text = noteList.get(i).toString().toLowerCase();
+//                    if (text.contains(query)) {
+//                        filteredList.add(noteList.get(i));
+//                    }
+//                }
+//                notesRecyclerView.removeAllViews();
+////                noteAdapter.notifyDataSetChanged();
+//            }
+//
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {}
+//        });
+//    }
+
 
     public class MainClickHandler {
         private Context context;
@@ -119,7 +176,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onFabClick(View view) {
-//            Toast.makeText(context, "Fab clicked", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(MainActivity.this, EditActivity.class);
             startActivityIfNeeded(intent,ADD_NOTE_REQUEST_CODE);
         }
