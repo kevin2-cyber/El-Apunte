@@ -62,36 +62,15 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(List<Note> notes) {
                 noteList = (ArrayList<Note>) notes;
 
-                for (Note note  : notes) {
+                for (Note note : notes) {
                     Log.i(TAG, note.getTitle());
                 }
                 loadRecyclerView();
             }
         });
-
-        binding.etSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                filter(s.toString().trim());
-            }
-        });
     }
 
-    private void filter(String text) {
-        ArrayList<Note> filteredList = new ArrayList<>();
-        for (Note note : noteList) {
-            if (note.getTitle().contains(text)) {
-                filteredList.add(note);
-            }
-        }
-        noteAdapter.setFilter(filteredList);
-    }
+
 
 
     private void loadRecyclerView() {
