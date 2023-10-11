@@ -68,6 +68,29 @@ public class MainActivity extends AppCompatActivity {
                 loadRecyclerView();
             }
         });
+
+        binding.etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+            }
+        });
+    }
+
+    private void filter(String text) {
+        ArrayList<Note> filteredList = new ArrayList<>();
+        for (Note note : noteList) {
+            if (note.getTitle().contains(text)) {
+                filteredList.add(note);
+            }
+        }
+        noteAdapter.setFilter(filteredList);
     }
 
 
@@ -81,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         notesRecyclerView.setAdapter(noteAdapter);
 
         noteAdapter.setNotes(noteList);
-        addTextListener();
+//        addTextListener();
 
         // edit the note
         noteAdapter.setListener(note -> {
@@ -110,31 +133,31 @@ public class MainActivity extends AppCompatActivity {
         }).attachToRecyclerView(notesRecyclerView);
     }
 
-    private void addTextListener() {
-        binding.etSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence query, int start, int before, int count) {
-                query = query.toString().toLowerCase();
-
-                final List<Note> filteredList = new ArrayList<>();
-                for (int i = 0; i < noteList.size(); i++) {
-                    final String text = noteList.get(i).toString().toLowerCase();
-                    if (text.contains(query)) {
-                        filteredList.add(noteList.get(i));
-                    }
-                }
-                notesRecyclerView.removeAllViews();
-//                noteAdapter.notifyDataSetChanged();
-            }
-
-
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-    }
+//    private void addTextListener() {
+//        binding.etSearch.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+//
+//            @Override
+//            public void onTextChanged(CharSequence query, int start, int before, int count) {
+//                query = query.toString().toLowerCase();
+//
+//                final List<Note> filteredList = new ArrayList<>();
+//                for (int i = 0; i < noteList.size(); i++) {
+//                    final String text = noteList.get(i).toString().toLowerCase();
+//                    if (text.contains(query)) {
+//                        filteredList.add(noteList.get(i));
+//                    }
+//                }
+//                notesRecyclerView.removeAllViews();
+////                noteAdapter.notifyDataSetChanged();
+//            }
+//
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {}
+//        });
+//    }
 
 
     public class MainClickHandler {
