@@ -53,8 +53,8 @@ public class EditActivity extends AppCompatActivity {
         }
 
         public void onSubmitButtonClicked(View view) {
-            if (note.getTitle() == null) {
-                Toast.makeText(context, "Name Cannot be empty", Toast.LENGTH_SHORT).show();
+            if (note.getTitle() == null && note.getContent() == null) {
+                Toast.makeText(context, "Title and content Cannot be empty", Toast.LENGTH_SHORT).show();
             } else {
                 Intent intent = new Intent();
                 intent.putExtra(NOTE_TITLE,note.getTitle());

@@ -12,4 +12,24 @@
     <color name="pale_blue">#FFE6F9FF</color>
     <color name="mint_green">#FFD4EDDA</color>
     <color name="pale_orange">#FFFFF3CD</color>
+
+    <array name="note_accent_colors">
+        <item>#039BE5</item>
+        <item>#3D51B3</item>
+        <item>#689f38</item>
+        <item>#FD7044</item>
+        <item>#9E9E9E</item>
+        <item>#455A64</item>
+        <item>#607D8B</item>
+        <item>@color/beige</item>
+        <item>@color/light_blue</item>
+        <item>@color/pale_green</item>
+        <item>@color/pale_yellow</item>
+        <item>@color/pale_pink</item>
+        <item>@color/light_pink</item>
+        <item>@color/light_grey</item>
+        <item>@color/pale_blue</item>
+        <item>@color/mint_green</item>
+        <item>@color/pale_orange</item>
+    </array>
 </resources>

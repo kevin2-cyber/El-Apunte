@@ -1,7 +1,7 @@
 package com.kimikevin.elapunte.view.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -13,13 +13,18 @@ import com.kimikevin.elapunte.R;
 import com.kimikevin.elapunte.databinding.NoteItemBinding;
 import com.kimikevin.elapunte.model.entity.Note;
 import com.kimikevin.elapunte.view.util.NoteDiffCallback;
-import com.kimikevin.elapunte.view.util.NoteUtil;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
     private OnItemClickListener listener;
     private ArrayList<Note> notes = new ArrayList<>();
+   private Context context;
+
+    public NoteAdapter(Context context) {
+        this.context = context;
+    }
 
     @NonNull
     @Override
@@ -33,6 +38,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note currentNote = notes.get(position);
         holder.binding.setNote(currentNote);
+        int[] androidColors = context.getResources().getIntArray(R.array.note_accent_colors);
+        int randomAndroidColor = androidColors[new Random().nextInt(androidColors.length)];
+        holder.binding.card.setCardBackgroundColor(randomAndroidColor);
     }
 
     @Override
@@ -55,14 +63,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             super(binding.getRoot());
             this.binding = binding;
 
-            binding.getRoot().setBackgroundColor(NoteUtil.getColor());
-            binding.getRoot().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int clickedPosition = getAdapterPosition();
-                    if (listener != null && clickedPosition != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(notes.get(clickedPosition));
-                    }
+//            binding.getRoot().setBackgroundColor(NoteUtil.getColor());
+            binding.getRoot().setOnClickListener(v -> {
+                int clickedPosition = getAdapterPosition();
+                if (listener != null && clickedPosition != RecyclerView.NO_POSITION) {
+                    listener.onItemClick(notes.get(clickedPosition));
                 }
             });
         }

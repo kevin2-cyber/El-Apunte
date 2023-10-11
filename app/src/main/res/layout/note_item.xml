@@ -7,15 +7,13 @@
     </data>
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_gravity="center"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         app:cardCornerRadius="10dp"
-        app:cardElevation="5dp"
         app:cardBackgroundColor="@color/beige"
-        android:layout_margin="10dp">
+        android:layout_marginBottom="10dp"
+        android:id="@+id/card">
 
         <TextView
             android:id="@+id/tv_card_title"
@@ -23,7 +21,7 @@
             android:layout_height="wrap_content"
             android:text="@{note.title}"
             android:textStyle="bold"
-            android:textSize="32sp"
+            android:textSize="24sp"
             android:layout_marginStart="16dp"
             android:textAlignment="center"/>
 
@@ -32,9 +30,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:textSize="24sp"
+            android:textSize="16sp"
             android:layout_marginStart="16dp"
             android:text="@{note.content}"
+            android:textColor="#1B817F7F"
             android:textAlignment="center"/>
 
         <TextView
@@ -44,8 +43,8 @@
             android:layout_marginTop="70dp"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="5dp"
-            android:text="August, 7, 2023"
-            android:textSize="16sp"/>
+            android:text="@{note.createDateFormatted()}"
+            android:textSize="14sp"/>
 
     </androidx.cardview.widget.CardView>
 </layout>

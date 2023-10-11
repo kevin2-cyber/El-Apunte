@@ -24,7 +24,11 @@ public class NoteRepository {
         noteDao = noteDatabase.getNoteDao();
     }
 
-    public LiveData<List<Note>> getNotes() {
+    public LiveData<Note> getNoteById(int id) {
+        return noteDao.getNoteById(id);
+    }
+
+    public LiveData<List<Note>> getAllNotes() {
         return noteDao.getAllNotes();
     }
 
