@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        binding.setNote(new Note());
 
         viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
         handler = new MainClickHandler(this);
@@ -83,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         notesRecyclerView.setAdapter(noteAdapter);
 
         noteAdapter.setNotes(noteList);
+        addTextListener();
 
         // edit the note
         noteAdapter.setListener(note -> {
@@ -109,6 +109,32 @@ public class MainActivity extends AppCompatActivity {
                 viewModel.deleteNote(noteToDelete);
             }
         }).attachToRecyclerView(notesRecyclerView);
+    }
+
+    private void addTextListener() {
+        binding.etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence query, int start, int before, int count) {
+                query = query.toString().toLowerCase();
+
+                final List<Note> filteredList = new ArrayList<>();
+                for (int i = 0; i < noteList.size(); i++) {
+                    final String text = noteList.get(i).toString().toLowerCase();
+                    if (text.contains(query)) {
+                        filteredList.add(noteList.get(i));
+                    }
+                }
+                notesRecyclerView.removeAllViews();
+//                noteAdapter.notifyDataSetChanged();
+            }
+
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
     }
 
 
