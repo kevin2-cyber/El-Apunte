@@ -15,6 +15,7 @@ import com.kimikevin.elapunte.model.entity.Note;
 import com.kimikevin.elapunte.view.util.NoteDiffCallback;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
@@ -24,6 +25,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
     public NoteAdapter(Context context) {
         this.context = context;
+    }
+
+    public void setFilterList(List<Note> filterList) {
+        this.notes = (ArrayList<Note>) filterList;
+         notifyDataSetChanged();
     }
 
     @NonNull

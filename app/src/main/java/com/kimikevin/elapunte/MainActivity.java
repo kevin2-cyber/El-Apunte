@@ -3,6 +3,7 @@ package com.kimikevin.elapunte;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -20,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.kimikevin.elapunte.databinding.ActivityMainBinding;
 import com.kimikevin.elapunte.model.entity.Note;
@@ -68,9 +70,36 @@ public class MainActivity extends AppCompatActivity {
                 loadRecyclerView();
             }
         });
+
+        binding.searchView.clearFocus();
+        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterList(newText);
+                return true;
+            }
+        });
     }
 
+    private void filterList(String text) {
+        List<Note> filteredList = new ArrayList<>();
+        for (Note note: noteList) {
+            if (note.getTitle().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(note);
+            }
+        }
 
+        if (filteredList.isEmpty()) {
+            Toast.makeText(this, "No notes", Toast.LENGTH_SHORT).show();
+        } else {
+            noteAdapter.setFilterList(filteredList);
+        }
+    }
 
 
     private void loadRecyclerView() {
