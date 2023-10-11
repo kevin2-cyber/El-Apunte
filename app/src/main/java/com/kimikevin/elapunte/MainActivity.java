@@ -81,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
 
         noteAdapter = new NoteAdapter(this);
         notesRecyclerView.setAdapter(noteAdapter);
-//        notesRecyclerView.setBackgroundColor(NoteUtil.getColor(this));
 
         noteAdapter.setNotes(noteList);
 

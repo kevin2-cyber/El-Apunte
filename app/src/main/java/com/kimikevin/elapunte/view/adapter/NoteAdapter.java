@@ -56,11 +56,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         result.dispatchUpdatesTo(NoteAdapter.this);
     }
 
-    public void filterList(ArrayList<Note> filteredNotes) {
-        this.notes = filteredNotes;
-//        notifyDataSetChanged();
-    }
-
     public class NoteViewHolder extends RecyclerView.ViewHolder {
         private NoteItemBinding binding;
 
