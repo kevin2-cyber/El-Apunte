@@ -63,7 +63,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             super(binding.getRoot());
             this.binding = binding;
 
-//            binding.getRoot().setBackgroundColor(NoteUtil.getColor());
             binding.getRoot().setOnClickListener(v -> {
                 int clickedPosition = getAdapterPosition();
                 if (listener != null && clickedPosition != RecyclerView.NO_POSITION) {
