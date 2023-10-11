@@ -70,38 +70,6 @@ public class MainActivity extends AppCompatActivity {
                 loadRecyclerView();
             }
         });
-
-
-        // implementing the search functionality
-        binding.etSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                filter(s.toString());
-            }
-        });
-    }
-
-    private void filter(String text) {
-        // new ArrayList that will hold the filtered data
-//        ArrayList<Note> filteredNotes = new ArrayList<>();
-
-        // looping through existing notes
-        for (Note note : noteList) {
-            // if there are existing notes
-            if (note.getTitle().toLowerCase().contains(text.toLowerCase())) {
-                // adding the element to the filtered list
-                noteList.add(note);
-            }
-        }
-
-        // calling a method of the adapter class and passing the filtered list
-        noteAdapter.filterList(noteList);
     }
 
 
