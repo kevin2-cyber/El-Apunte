@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     private MainActivityViewModel viewModel;
     private MainClickHandler handler;
     public static final String TAG = "TAG";
-    private Note selectedNote;
     private ArrayList<Note> noteList;
     RecyclerView notesRecyclerView;
     NoteAdapter noteAdapter;
@@ -146,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onFabClick(View view) {
-//            Toast.makeText(context, "Fab clicked", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(MainActivity.this, EditActivity.class);
             startActivityIfNeeded(intent,ADD_NOTE_REQUEST_CODE);
         }
