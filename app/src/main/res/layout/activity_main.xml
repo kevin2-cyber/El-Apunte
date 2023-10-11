@@ -52,7 +52,7 @@
         <!--            app:layout_constraintStart_toStartOf="parent"-->
         <!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-        <SearchView
+        <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
             android:layout_width="0dp"
             android:layout_height="50dp"
@@ -60,8 +60,8 @@
             android:layout_marginTop="69dp"
             android:layout_marginEnd="3dp"
             android:layout_marginBottom="47dp"
+            app:queryHint="Search here...."
             android:background="@drawable/et_search_bg"
-            android:drawableStart="@drawable/baseline_search_24"
             app:layout_constraintBottom_toTopOf="@+id/rv_notes"
             app:layout_constraintEnd_toStartOf="@+id/iv_filter"
             app:layout_constraintStart_toStartOf="parent"

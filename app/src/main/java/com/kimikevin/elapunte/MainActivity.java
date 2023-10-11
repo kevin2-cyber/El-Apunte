@@ -70,6 +70,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void filter(String query) {
+        noteAdapter = (NoteAdapter) notesRecyclerView.getAdapter();
+    }
+
 
 
 
