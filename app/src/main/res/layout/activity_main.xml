@@ -30,28 +30,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!--        <EditText-->
-        <!--            android:id="@+id/et_search"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="50dp"-->
-        <!--            android:layout_marginStart="16dp"-->
-        <!--            android:layout_marginTop="69dp"-->
-        <!--            android:layout_marginEnd="4dp"-->
-        <!--            android:layout_marginBottom="47dp"-->
-        <!--            android:autofillHints="name"-->
-        <!--            android:background="@drawable/et_search_bg"-->
-        <!--            android:drawableStart="@drawable/baseline_search_24"-->
-        <!--            android:drawablePadding="10dp"-->
-        <!--            android:hint="@string/search"-->
-        <!--            android:inputType="text"-->
-        <!--            android:paddingStart="10dp"-->
-        <!--            android:paddingEnd="0dp"-->
-        <!--            android:textColorHint="@color/cardview_light_background"-->
-        <!--            app:layout_constraintBottom_toTopOf="@+id/rv_notes"-->
-        <!--            app:layout_constraintEnd_toStartOf="@+id/iv_filter"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent" />-->
-
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
             android:layout_width="0dp"
@@ -99,6 +77,7 @@
             android:background="@drawable/filter_bg"
             android:contentDescription="@string/app_name"
             android:scaleType="fitXY"
+            android:onClick="@{clickHandler::onFilterClick}"
             android:src="@drawable/baseline_filter_list_24"
             app:layout_constraintBottom_toTopOf="@+id/rv_notes"
             app:layout_constraintEnd_toEndOf="parent"
