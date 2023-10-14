@@ -29,6 +29,7 @@ import com.kimikevin.elapunte.view.EditActivity;
 import com.kimikevin.elapunte.view.adapter.NoteAdapter;
 import com.kimikevin.elapunte.viewmodel.MainActivityViewModel;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -155,7 +156,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onFilterClick(View view) {
-            Toast.makeText(context, "Filter icon clicked", Toast.LENGTH_SHORT).show();
+            if (noteList.get(selectedNoteId).getDateTime() == LocalDateTime.now()) {
+                Toast.makeText(context, "Filter icon clicked", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
