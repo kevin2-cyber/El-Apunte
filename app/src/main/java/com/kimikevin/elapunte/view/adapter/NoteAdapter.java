@@ -29,8 +29,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     }
 
     public void setFilterList(List<Note> filterList) {
-        this.notes = (ArrayList<Note>) filterList;
+//        final DiffUtil.DiffResult result =
+//                DiffUtil.calculateDiff(new NoteDiffCallback(notes, (ArrayList<Note>) filterList), false);
+        notes = (ArrayList<Note>) filterList;
+//        result.dispatchUpdatesTo(NoteAdapter.this);
          notifyDataSetChanged();
+//        notifyItemChanged(filterList.indexOf(pos));
     }
 
     @NonNull
