@@ -29,7 +29,9 @@ import com.kimikevin.elapunte.view.EditActivity;
 import com.kimikevin.elapunte.view.adapter.NoteAdapter;
 import com.kimikevin.elapunte.viewmodel.MainActivityViewModel;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -141,33 +143,6 @@ public class MainActivity extends AppCompatActivity {
         }).attachToRecyclerView(notesRecyclerView);
     }
 
-//    private void addTextListener() {
-//        binding.etSearch.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-//
-//            @Override
-//            public void onTextChanged(CharSequence query, int start, int before, int count) {
-//                query = query.toString().toLowerCase();
-//
-//                final List<Note> filteredList = new ArrayList<>();
-//                for (int i = 0; i < noteList.size(); i++) {
-//                    final String text = noteList.get(i).toString().toLowerCase();
-//                    if (text.contains(query)) {
-//                        filteredList.add(noteList.get(i));
-//                    }
-//                }
-//                notesRecyclerView.removeAllViews();
-////                noteAdapter.notifyDataSetChanged();
-//            }
-//
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {}
-//        });
-//    }
-
-
     public class MainClickHandler {
         private Context context;
 
@@ -178,6 +153,12 @@ public class MainActivity extends AppCompatActivity {
         public void onFabClick(View view) {
             Intent intent = new Intent(MainActivity.this, EditActivity.class);
             startActivityIfNeeded(intent,ADD_NOTE_REQUEST_CODE);
+        }
+
+        public void onFilterClick(View view) {
+            if (noteList.get(selectedNoteId).getDateTime() == LocalDateTime.now()) {
+                Toast.makeText(context, "Filter icon clicked", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

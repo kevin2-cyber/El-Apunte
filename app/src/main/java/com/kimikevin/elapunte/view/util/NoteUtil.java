@@ -1,11 +1,6 @@
 package com.kimikevin.elapunte.view.util;
 
 
-import android.content.Context;
-
-import com.kimikevin.elapunte.R;
-
-import java.util.Random;
 
 public class NoteUtil {
     int color;
@@ -14,7 +9,7 @@ public class NoteUtil {
         this.color = color;
     }
 
-    public int getColor() {
+    public  int getColor() {
         return color;
     }
 
@@ -41,6 +36,6 @@ public class NoteUtil {
 //        return colors[((int) (Math.random() * colors.length))];
 //    }
 
-    //TODO: search and filter functionalities
+    //TODO: filter functionality
 
 }
