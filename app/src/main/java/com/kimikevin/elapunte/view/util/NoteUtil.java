@@ -3,18 +3,18 @@ package com.kimikevin.elapunte.view.util;
 
 
 public class NoteUtil {
-    static int color;
+    int color;
 
     public NoteUtil(int color) {
-        NoteUtil.color = color;
+        this.color = color;
     }
 
-    public static int getColor() {
+    public  int getColor() {
         return color;
     }
 
     public void setColor(int color) {
-        NoteUtil.color = color;
+        this.color = color;
     }
 
     //    private static final int[] colors = {R.color.beige,R.color.pale_blue,R.color.pale_green,
@@ -37,8 +37,5 @@ public class NoteUtil {
 //    }
 
     //TODO: search and filter functionalities
-    static {
-        getColor();
-    }
 
 }
