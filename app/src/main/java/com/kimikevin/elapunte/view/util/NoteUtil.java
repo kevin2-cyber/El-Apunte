@@ -36,6 +36,6 @@ public class NoteUtil {
 //        return colors[((int) (Math.random() * colors.length))];
 //    }
 
-    //TODO: search and filter functionalities
+    //TODO: filter functionality
 
 }
