@@ -15,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -31,7 +29,6 @@ import com.kimikevin.elapunte.viewmodel.MainActivityViewModel;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -156,8 +153,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onFilterClick(View view) {
+            ArrayList<Note> filterList = new ArrayList<>();
             if (noteList.get(selectedNoteId).getDateTime() == LocalDateTime.now()) {
-                Toast.makeText(context, "Filter icon clicked", Toast.LENGTH_SHORT).show();
+                noteList.add(selectedNoteId, filterList.get(selectedNoteId));
             }
         }
     }
