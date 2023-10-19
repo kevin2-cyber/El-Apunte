@@ -70,7 +70,7 @@
         <Button
             android:id="@+id/iv_filter"
             android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:layout_marginTop="69dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="47dp"
@@ -82,9 +82,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:scaleType="fitXY"
             app:cornerRadius="10dp"
-            android:drawableTint="@color/black"
-            android:src="@drawable/icons8_filter"
-            android:background="@drawable/filter_bg"/>
+            android:src="@drawable/filter_list" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
