@@ -17,54 +17,69 @@
         android:layout_height="match_parent"
         tools:context=".view.EditActivity">
 
+<!--        <Button-->
+<!--            android:id="@+id/save_btn"-->
+<!--            style="@style/Widget.AppCompat.Button.Borderless"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:layout_marginEnd="288dp"-->
+<!--            android:onClick="@{handler::onSubmitButtonClicked}"-->
+<!--            android:src="@drawable/baseline_arrow_back_24"-->
+<!--            app:cornerRadius="10dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
         <Button
             android:id="@+id/save_btn"
+            style="@style/Widget.Material3.Button.TextButton.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="147dp"
-            android:background="@drawable/btn_background"
-            android:text="Save"
+            android:layout_marginTop="32dp"
             android:onClick="@{handler::onSubmitButtonClicked}"
-            app:layout_constraintBottom_toTopOf="@+id/et_content"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:icon="@drawable/baseline_arrow_back_24"
+            app:iconGravity="textStart"
+            app:iconSize="30dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/et_title"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="107dp"
             android:layout_marginEnd="16dp"
-            android:hint="Title"
+            android:autofillHints="name"
+            android:background="@drawable/btn_background"
+            android:inputType="textMultiLine"
             android:text="@={note.title}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:autofillHints="name"
-            android:inputType="textMultiLine" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/et_content"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="70dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="30dp"
-            android:hint="Content"
+            android:autofillHints="name"
+            android:background="@drawable/btn_background"
+            android:gravity="start"
+            android:inputType="textMultiLine"
+            android:maxLines="20"
+            android:singleLine="false"
             android:text="@={note.content}"
             android:textAlignment="textStart"
-            android:gravity="start"
-            android:maxLines="20"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/save_btn"
-            android:autofillHints="name"
-            android:inputType="textMultiLine"
-            android:singleLine="false"/>
+            app:layout_constraintTop_toBottomOf="@+id/et_title"
+            app:layout_constraintVertical_bias="0.787" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
