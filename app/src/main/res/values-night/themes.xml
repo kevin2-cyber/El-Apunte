@@ -4,7 +4,7 @@
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
         <item name="colorPrimaryContainer">@color/light_grey</item>
-        <item name="colorOnPrimaryContainer">@color/light_grey</item>
+        <item name="colorOnPrimaryContainer">@color/ash</item>
         <item name="colorPrimary">@color/light_grey</item>
         <item name="colorOnPrimary">@color/light_grey</item>
 
