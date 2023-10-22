@@ -153,10 +153,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onFilterClick(View view) {
-            ArrayList<Note> filterList = new ArrayList<>();
-            if (noteList.get(selectedNoteId).getDateTime() == LocalDateTime.now()) {
-                noteList.add(selectedNoteId, filterList.get(selectedNoteId));
-            }
+            Toast.makeText(MainActivity.this, "Filter button clicked", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -7,11 +7,15 @@
         <item name="colorPrimaryContainer">#455A64</item>
         <item name="colorOnPrimaryContainer">@color/light_grey</item>
         <item name="colorPrimary">#455A64</item>
+        <item name="colorOnPrimary">@color/light_grey</item>
 
         <item name="android:colorBackground">#FFFDD0</item>
     </style>
 
     <style name="Theme.ElApunte" parent="Base.Theme.ElApunte">
         <item name="android:fontFamily">@font/space_grotesk</item>
+<!--        <item name="android:windowActivityTransitions">true</item>-->
+<!--        <item name="android:windowEnterTransition">@android:transition/slide_right</item>-->
+<!--        <item name="android:windowExitTransition">@android:transition/slide_left</item>-->
     </style>
 </resources>
