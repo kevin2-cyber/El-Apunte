@@ -14,8 +14,8 @@
 
     <style name="Theme.ElApunte" parent="Base.Theme.ElApunte">
         <item name="android:fontFamily">@font/space_grotesk</item>
-        <item name="android:windowActivityTransitions">true</item>
-        <item name="android:windowEnterTransition">@android:transition/slide_right</item>
-        <item name="android:windowExitTransition">@android:transition/slide_left</item>
+<!--        <item name="android:windowActivityTransitions">true</item>-->
+<!--        <item name="android:windowEnterTransition">@android:transition/slide_right</item>-->
+<!--        <item name="android:windowExitTransition">@android:transition/slide_left</item>-->
     </style>
 </resources>
