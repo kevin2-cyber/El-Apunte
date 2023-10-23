@@ -111,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
         notesRecyclerView.setAdapter(noteAdapter);
 
         noteAdapter.setNotes(noteList);
-//        addTextListener();
 
         // edit the note
         noteAdapter.setListener(note -> {
