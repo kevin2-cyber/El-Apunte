@@ -9,6 +9,7 @@
         <item name="colorOnPrimary">@color/light_grey</item>
 
         <item name="colorSecondaryContainer">@color/ash</item>
+        <item name="android:fontFamily">@font/space_grotesk</item>
     </style>
 
     <style name="Theme.ElApunte" parent="Base.Theme.ElApunte">
