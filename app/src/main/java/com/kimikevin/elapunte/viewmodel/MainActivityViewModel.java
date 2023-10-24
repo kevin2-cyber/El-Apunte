@@ -27,6 +27,10 @@ public class MainActivityViewModel extends AndroidViewModel {
         return allNotes;
     }
 
+    public LiveData<List<Note>> getNoteById(int noteId) {
+        return repository.getNoteById(noteId);
+    }
+
     public void insertNote(Note note) {
         repository.insertNote(note);
     }
