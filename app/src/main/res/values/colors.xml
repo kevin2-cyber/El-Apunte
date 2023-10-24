@@ -14,6 +14,7 @@
     <color name="pale_orange">#FFFFF3CD</color>
     <color name="ash">#455A64</color>
 
+    <color name="some">#024377</color>
     <array name="note_accent_colors">
         <item>#039BE5</item>
         <item>#3D51B3</item>
@@ -27,9 +28,9 @@
         <item>@color/pale_yellow</item>
         <item>@color/pale_pink</item>
         <item>@color/light_pink</item>
-        <item>@color/light_grey</item>
         <item>@color/pale_blue</item>
         <item>@color/mint_green</item>
         <item>@color/pale_orange</item>
+        <item>#FFFDD0</item>
     </array>
 </resources>
