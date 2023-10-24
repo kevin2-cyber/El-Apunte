@@ -9,6 +9,12 @@
         <item name="colorPrimary">@color/light_grey</item>
         <item name="colorOnPrimary">@color/white</item>
 
+        <!--Secondary-->
+        <item name="colorOnSecondaryContainer">@color/white</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <item name="colorOnTertiaryContainer">@color/white</item>
+
         <item name="android:colorBackground">@color/some</item>
     </style>
 

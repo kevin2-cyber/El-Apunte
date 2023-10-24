@@ -20,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{note.title}"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
             android:textStyle="bold"
             android:textSize="24sp"
             android:layout_marginStart="16dp"
@@ -33,18 +34,20 @@
             android:textSize="16sp"
             android:layout_marginStart="16dp"
             android:text="@{note.content}"
-            android:textColor="#1B817F7F"
-            android:textAlignment="center"/>
+            android:textColor="?android:attr/textColorSecondary"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/tv_time_stamp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="70dp"
-            android:layout_marginStart="16dp"
             android:layout_marginBottom="5dp"
+            android:layout_marginEnd="16dp"
             android:text="@{note.createDateFormatted()}"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            android:layout_gravity="end"/>
 
     </androidx.cardview.widget.CardView>
 </layout>
