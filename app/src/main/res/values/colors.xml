@@ -27,9 +27,9 @@
         <item>@color/pale_yellow</item>
         <item>@color/pale_pink</item>
         <item>@color/light_pink</item>
-        <item>@color/light_grey</item>
         <item>@color/pale_blue</item>
         <item>@color/mint_green</item>
         <item>@color/pale_orange</item>
+        <item>#FFFDD0</item>
     </array>
 </resources>

@@ -3,12 +3,15 @@
     <style name="Base.Theme.ElApunte" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
-        <item name="colorPrimaryContainer">@color/light_grey</item>
-        <item name="colorOnPrimaryContainer">@color/ash</item>
+        <!--Primary-->
+        <item name="colorPrimaryContainer">@color/ash</item>
+        <item name="colorOnPrimaryContainer">@color/light_grey</item>
         <item name="colorPrimary">@color/light_grey</item>
-        <item name="colorOnPrimary">@color/light_grey</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!--Secondary-->
+<!--        <item name="colorSecondaryContainer">@color/white</item>-->
 
-        <item name="colorSecondaryContainer">@color/ash</item>
+        <item name="android:colorBackground">@color/ash</item>
     </style>
 
     <style name="Theme.ElApunte" parent="Base.Theme.ElApunte">
