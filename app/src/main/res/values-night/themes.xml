@@ -4,14 +4,14 @@
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
         <!--Primary-->
-        <item name="colorPrimaryContainer">@color/ash</item>
+        <item name="colorPrimaryContainer">@color/some</item>
         <item name="colorOnPrimaryContainer">@color/light_grey</item>
         <item name="colorPrimary">@color/light_grey</item>
         <item name="colorOnPrimary">@color/white</item>
         <!--Secondary-->
 <!--        <item name="colorSecondaryContainer">@color/white</item>-->
 
-        <item name="android:colorBackground">@color/ash</item>
+        <item name="android:colorBackground">@color/some</item>
     </style>
 
     <style name="Theme.ElApunte" parent="Base.Theme.ElApunte">
