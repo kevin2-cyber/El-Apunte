@@ -25,7 +25,12 @@ public class NoteRepository {
     }
 
     public LiveData<List<Note>> getAllNotes() {
-        return noteDao.getAllNotes();
+        notes = noteDao.getAllNotes();
+        return notes;
+    }
+
+    public LiveData<List<Note>> getNoteById(int noteId) {
+        return noteDao.getNoteById(noteId);
     }
 
     public void insertNote(Note note) {
@@ -35,7 +40,7 @@ public class NoteRepository {
         executorService.execute(new Runnable() {
             @Override
             public void run() {
-                // inserting notes
+                // inserting note
                 noteDao.insert(note);
             }
         });
@@ -48,7 +53,7 @@ public class NoteRepository {
         executorService.execute(new Runnable() {
             @Override
             public void run() {
-                // inserting notes
+                // updating note
                 noteDao.update(note);
             }
         });
@@ -61,7 +66,7 @@ public class NoteRepository {
         executorService.execute(new Runnable() {
             @Override
             public void run() {
-                // inserting notes
+                // deleting note
                 noteDao.delete(note);
             }
         });

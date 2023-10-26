@@ -79,9 +79,9 @@ public class MainActivity extends AppCompatActivity {
         });
         setContentView(R.layout.activity_main);
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-
         viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         handler = new MainClickHandler(this);
         binding.setClickHandler(handler);
 
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 for (Note note : notes) {
                     Log.i(TAG, note.getTitle());
                 }
-                loadRecyclerView();
+                loadExistingNotes(selectedNoteId);
             }
         });
 
@@ -108,6 +108,16 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 filterList(newText);
                 return true;
+            }
+        });
+    }
+
+    private void loadExistingNotes(int noteId) {
+        viewModel.getNoteById(noteId).observe(this, new Observer<List<Note>>() {
+            @Override
+            public void onChanged(List<Note> notes) {
+                noteList = (ArrayList<Note>) notes;
+                loadRecyclerView();
             }
         });
     }

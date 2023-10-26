@@ -1,6 +1,8 @@
 package com.kimikevin.elapunte.model;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -37,7 +39,7 @@ public abstract class NoteDatabase extends RoomDatabase {
         return instance;
     }
 
-    private static final RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {
+    private static  RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
