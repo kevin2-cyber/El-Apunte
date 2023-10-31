@@ -29,10 +29,6 @@ public class NoteRepository {
         return notes;
     }
 
-    public LiveData<List<Note>> getNoteById(int noteId) {
-        return noteDao.getNoteById(noteId);
-    }
-
     public void insertNote(Note note) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());

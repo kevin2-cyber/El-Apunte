@@ -1,7 +1,5 @@
 package com.kimikevin.elapunte.model.entity;
 
-import android.icu.text.SimpleDateFormat;
-
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.library.baseAdapters.BR;
