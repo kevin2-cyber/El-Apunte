@@ -1,4 +1,4 @@
-package com.kimikevin.elapunte.view.util;
+package com.kimikevin.elapunte.model;
 
 import androidx.room.TypeConverter;
 import java.time.LocalDateTime;

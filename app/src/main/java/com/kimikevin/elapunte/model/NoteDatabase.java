@@ -1,8 +1,6 @@
 package com.kimikevin.elapunte.model;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -13,7 +11,6 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.kimikevin.elapunte.model.dao.NoteDao;
 import com.kimikevin.elapunte.model.entity.Note;
-import com.kimikevin.elapunte.view.util.Converters;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
