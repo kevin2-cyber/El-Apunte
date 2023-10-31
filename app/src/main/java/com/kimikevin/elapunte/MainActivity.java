@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 for (Note note : notes) {
                     Log.i(TAG, note.getTitle());
                 }
-                loadExistingNotes(selectedNoteId);
+                loadRecyclerView();
             }
         });
 
@@ -108,16 +108,6 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 filterList(newText);
                 return true;
-            }
-        });
-    }
-
-    private void loadExistingNotes(int noteId) {
-        viewModel.getNoteById(noteId).observe(this, new Observer<List<Note>>() {
-            @Override
-            public void onChanged(List<Note> notes) {
-                noteList = (ArrayList<Note>) notes;
-                loadRecyclerView();
             }
         });
     }
