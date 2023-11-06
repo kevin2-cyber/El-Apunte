@@ -38,7 +38,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private MainActivityViewModel viewModel;
-    private MainClickHandler handler;
+    MainClickHandler handler;
     public static final String TAG = "TAG";
     private ArrayList<Note> noteList;
     RecyclerView notesRecyclerView;

@@ -20,8 +20,8 @@ public class EditActivity extends AppCompatActivity {
     public static final String NOTE_ID = "note_id";
     public static final String NOTE_TITLE = "note_title";
     public static final String NOTE_CONTENT = "note_content";
-    private ActivityEditBinding binding;
-    private EditClickHandler handler;
+   ActivityEditBinding binding;
+   EditClickHandler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
