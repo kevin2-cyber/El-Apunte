@@ -4,13 +4,6 @@ plugins {
 
 android {
 
-    configurations {
-        configureEach {
-            resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib:1.8.10'
-            resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib:1.6.21'
-        }
-    }
-
     namespace 'com.kimikevin.elapunte'
     compileSdk 34
 
@@ -38,6 +31,13 @@ android {
 
     buildFeatures{
         dataBinding true
+    }
+
+    configurations {
+        configureEach {
+            resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib:1.8.10'
+            resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib:1.6.21'
+        }
     }
 }
 
