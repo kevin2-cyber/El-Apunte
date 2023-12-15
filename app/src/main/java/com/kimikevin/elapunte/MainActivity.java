@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadRecyclerView() {
         notesRecyclerView = binding.rvNotes;
-        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true);
+        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         manager.setStackFromEnd(false);
         notesRecyclerView.scrollToPosition(noteList.size() - 1);
         notesRecyclerView.setLayoutManager(manager);
@@ -182,7 +182,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onFilterClick(View view) {
-            Toast.makeText(MainActivity.this, "Filter button clicked", Toast.LENGTH_SHORT).show();
+            LinearLayoutManager manager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, true);
+            notesRecyclerView.setLayoutManager(manager);
+            manager.setStackFromEnd(false);
+            notesRecyclerView.scrollToPosition(noteList.size() - 1);
         }
     }
 
