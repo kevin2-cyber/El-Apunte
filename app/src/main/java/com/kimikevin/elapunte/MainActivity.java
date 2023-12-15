@@ -130,7 +130,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadRecyclerView() {
         notesRecyclerView = binding.rvNotes;
-        notesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true);
+        manager.setStackFromEnd(false);
+        notesRecyclerView.scrollToPosition(noteList.size() - 1);
+        notesRecyclerView.setLayoutManager(manager);
         notesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         notesRecyclerView.setHasFixedSize(true);
 
