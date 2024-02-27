@@ -13,7 +13,7 @@ import java.util.List;
 
 public class MainActivityViewModel extends AndroidViewModel {
     // repository
-    private NoteRepository repository;
+    private final NoteRepository repository;
 
     // live data
     private LiveData<List<Note>> allNotes;
