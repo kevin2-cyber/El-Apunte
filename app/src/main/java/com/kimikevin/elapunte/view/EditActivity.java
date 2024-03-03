@@ -25,10 +25,7 @@ public class EditActivity extends AppCompatActivity {
    EditClickHandler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-//                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_edit);
 
