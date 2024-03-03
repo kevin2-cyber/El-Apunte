@@ -4,8 +4,8 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <!-- Primary -->
-        <item name="colorPrimaryContainer">@color/light_grey</item>
-        <item name="colorOnPrimaryContainer">@color/some</item>
+        <item name="colorPrimaryContainer">@color/some</item>
+        <item name="colorOnPrimaryContainer">@color/light_grey</item>
         <item name="colorPrimary">#455A64</item>
         <item name="colorOnPrimary">@color/light_grey</item>
 

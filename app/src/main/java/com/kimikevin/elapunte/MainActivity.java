@@ -1,5 +1,6 @@
 package com.kimikevin.elapunte;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -38,7 +40,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private MainActivityViewModel viewModel;
-    private MainClickHandler handler;
+    MainClickHandler handler;
     public static final String TAG = "TAG";
     private ArrayList<Note> noteList;
     RecyclerView notesRecyclerView;
@@ -50,33 +52,33 @@ public class MainActivity extends AppCompatActivity {
     public int selectedNoteId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         super.onCreate(savedInstanceState);
         setTheme(R.style.Theme_ElApunte);
+        EdgeToEdge.enable(this);
 
-        getSplashScreen().setOnExitAnimationListener(splashScreenView -> {
-            final ObjectAnimator slideUp = ObjectAnimator.ofFloat(
-                    splashScreenView,
-                    View.TRANSLATION_Y,
-                    0f,
-                    -splashScreenView.getHeight()
-            );
-            slideUp.setInterpolator(new AnticipateInterpolator());
-            slideUp.setDuration(500L);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            getSplashScreen().setOnExitAnimationListener(splashScreenView -> {
+                final ObjectAnimator slideUp = ObjectAnimator.ofFloat(
+                        splashScreenView,
+                        View.TRANSLATION_Y,
+                        0f,
+                        -splashScreenView.getHeight()
+                );
+                slideUp.setInterpolator(new AnticipateInterpolator());
+                slideUp.setDuration(500L);
 
-            // Call SplashScreenView.remove at the end of your custom animation.
-            slideUp.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    splashScreenView.remove();
-                }
+                // Call SplashScreenView.remove at the end of your custom animation.
+                slideUp.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        splashScreenView.remove();
+                    }
+                });
+
+                // Run your animation.
+                slideUp.start();
             });
-
-            // Run your animation.
-            slideUp.start();
-        });
+        }
         setContentView(R.layout.activity_main);
 
         viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
@@ -93,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 for (Note note : notes) {
                     Log.i(TAG, note.getTitle());
                 }
-                loadExistingNotes(selectedNoteId);
+                loadRecyclerView();
             }
         });
 
@@ -108,16 +110,6 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 filterList(newText);
                 return true;
-            }
-        });
-    }
-
-    private void loadExistingNotes(int noteId) {
-        viewModel.getNoteById(noteId).observe(this, new Observer<List<Note>>() {
-            @Override
-            public void onChanged(List<Note> notes) {
-                noteList = (ArrayList<Note>) notes;
-                loadRecyclerView();
             }
         });
     }
@@ -140,7 +132,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadRecyclerView() {
         notesRecyclerView = binding.rvNotes;
-        notesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        manager.setStackFromEnd(false);
+        notesRecyclerView.scrollToPosition(noteList.size() - 1);
+        notesRecyclerView.setLayoutManager(manager);
         notesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         notesRecyclerView.setHasFixedSize(true);
 
@@ -189,7 +184,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onFilterClick(View view) {
-            Toast.makeText(MainActivity.this, "Filter button clicked", Toast.LENGTH_SHORT).show();
+            LinearLayoutManager manager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, true);
+            notesRecyclerView.setLayoutManager(manager);
+            manager.setStackFromEnd(false);
+            notesRecyclerView.scrollToPosition(noteList.size() - 1);
         }
     }
 

@@ -1,5 +1,6 @@
 package com.kimikevin.elapunte.view;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
@@ -20,14 +21,12 @@ public class EditActivity extends AppCompatActivity {
     public static final String NOTE_ID = "note_id";
     public static final String NOTE_TITLE = "note_title";
     public static final String NOTE_CONTENT = "note_content";
-    private ActivityEditBinding binding;
-    private EditClickHandler handler;
+   ActivityEditBinding binding;
+   EditClickHandler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_edit);
 
         note = new Note();

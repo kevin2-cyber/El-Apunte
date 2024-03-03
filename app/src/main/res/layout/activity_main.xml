@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="16dp"
+        android:fitsSystemWindows="true"
         tools:context=".MainActivity">
 
         <TextView
@@ -78,8 +79,8 @@
             app:icon="@drawable/filter_list"
             android:gravity="center"
             app:iconGravity="textStart"
-            app:iconSize="50dp"
-            android:contentDescription="@string/app_name"
+            app:iconSize="30dp"
+            android:contentDescription="@string/filter"
             android:onClick="@{clickHandler::onFilterClick}"
             app:layout_constraintBottom_toTopOf="@+id/rv_notes"
             app:layout_constraintEnd_toEndOf="parent"

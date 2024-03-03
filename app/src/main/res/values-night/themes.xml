@@ -4,8 +4,8 @@
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
         <!--Primary-->
-        <item name="colorPrimaryContainer">@color/some</item>
-        <item name="colorOnPrimaryContainer">@color/light_grey</item>
+        <item name="colorPrimaryContainer">@color/light_grey</item>
+        <item name="colorOnPrimaryContainer">@color/some</item>
         <item name="colorPrimary">@color/light_grey</item>
         <item name="colorOnPrimary">@color/white</item>
 

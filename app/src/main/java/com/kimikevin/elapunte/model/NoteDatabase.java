@@ -1,8 +1,6 @@
 package com.kimikevin.elapunte.model;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -13,7 +11,6 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.kimikevin.elapunte.model.dao.NoteDao;
 import com.kimikevin.elapunte.model.entity.Note;
-import com.kimikevin.elapunte.view.util.Converters;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,7 +36,7 @@ public abstract class NoteDatabase extends RoomDatabase {
         return instance;
     }
 
-    private static  RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {
+    private static final RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
@@ -52,7 +49,7 @@ public abstract class NoteDatabase extends RoomDatabase {
     private static void initializeData() {
         NoteDao noteDao = instance.getNoteDao();
 
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        ExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.execute(new Runnable() {
             @Override
             public void run() {
