@@ -187,7 +187,11 @@ public class MainActivity extends AppCompatActivity {
             LinearLayoutManager manager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, true);
             notesRecyclerView.setLayoutManager(manager);
             manager.setStackFromEnd(false);
-            notesRecyclerView.scrollToPosition(noteList.size() - 1);
+            boolean isClicked = false;
+            if (!isClicked) {
+                notesRecyclerView.scrollToPosition(noteList.size() - 1);
+            }
+            notesRecyclerView.scrollToPosition(noteList.get(0).getId());
         }
     }
 
