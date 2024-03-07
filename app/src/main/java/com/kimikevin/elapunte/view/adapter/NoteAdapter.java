@@ -1,5 +1,6 @@
 package com.kimikevin.elapunte.view.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -22,12 +23,13 @@ import java.util.Random;
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
     private OnItemClickListener listener;
     private ArrayList<Note> notes = new ArrayList<>();
-   private Context context;
+   private final Context context;
 
     public NoteAdapter(Context context) {
         this.context = context;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setFilterList(List<Note> filterList) {
         notes = (ArrayList<Note>) filterList;
          notifyDataSetChanged();
