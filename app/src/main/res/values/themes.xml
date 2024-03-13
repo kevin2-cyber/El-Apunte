@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.ElApunte" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.ElApunte" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <!-- Primary -->
@@ -10,9 +10,10 @@
         <item name="colorOnPrimary">@color/light_grey</item>
 
         <item name="android:colorBackground">@color/light_grey</item>
+        <item name="colorSurface">@color/light_grey</item>
     </style>
 
     <style name="Theme.ElApunte" parent="Base.Theme.ElApunte">
-        <item name="android:fontFamily">@font/space_grotesk</item>
+        <item name="android:fontFamily">@font/oneuisans</item>
     </style>
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="SplashTheme" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/some</item>
+        <item name="windowSplashScreenBackground">?attr/colorSurface</item>
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
         <item name="windowSplashScreenAnimationDuration">1000</item>
 <!--        <item name="android:windowSplashScreenBehavior">icon_preferred</item>-->

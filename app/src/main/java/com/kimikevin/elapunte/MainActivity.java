@@ -22,8 +22,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.AnticipateInterpolator;
 import android.widget.Toast;
 
@@ -31,15 +29,14 @@ import com.kimikevin.elapunte.databinding.ActivityMainBinding;
 import com.kimikevin.elapunte.model.entity.Note;
 import com.kimikevin.elapunte.view.EditActivity;
 import com.kimikevin.elapunte.view.adapter.NoteAdapter;
-import com.kimikevin.elapunte.viewmodel.MainActivityViewModel;
+import com.kimikevin.elapunte.viewmodel.MainViewModel;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
-    private MainActivityViewModel viewModel;
+    private MainViewModel viewModel;
     MainClickHandler handler;
     public static final String TAG = "TAG";
     private ArrayList<Note> noteList;
@@ -81,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_main);
 
-        viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         handler = new MainClickHandler(this);
@@ -187,7 +184,11 @@ public class MainActivity extends AppCompatActivity {
             LinearLayoutManager manager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, true);
             notesRecyclerView.setLayoutManager(manager);
             manager.setStackFromEnd(false);
-            notesRecyclerView.scrollToPosition(noteList.size() - 1);
+            boolean isClicked = false;
+            if (!isClicked) {
+                notesRecyclerView.scrollToPosition(noteList.size() - 1);
+            }
+            notesRecyclerView.scrollToPosition(noteList.get(0).getId());
         }
     }
 
