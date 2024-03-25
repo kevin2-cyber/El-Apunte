@@ -22,15 +22,5 @@
         <item>#FD7044</item>
         <item>#9E9E9E</item>
         <item>#607D8B</item>
-        <item>@color/beige</item>
-        <item>@color/light_blue</item>
-        <item>@color/pale_green</item>
-        <item>@color/pale_yellow</item>
-        <item>@color/pale_pink</item>
-        <item>@color/light_pink</item>
-        <item>@color/pale_blue</item>
-        <item>@color/mint_green</item>
-        <item>@color/pale_orange</item>
-        <item>#FFFDD0</item>
     </array>
 </resources>

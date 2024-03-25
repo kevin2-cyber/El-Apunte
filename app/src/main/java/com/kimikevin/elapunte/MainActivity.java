@@ -32,6 +32,7 @@ import com.kimikevin.elapunte.view.adapter.NoteAdapter;
 import com.kimikevin.elapunte.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -129,9 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadRecyclerView() {
         notesRecyclerView = binding.rvNotes;
-        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        manager.setStackFromEnd(false);
-        notesRecyclerView.scrollToPosition(noteList.size() - 1);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
         notesRecyclerView.setLayoutManager(manager);
         notesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         notesRecyclerView.setHasFixedSize(true);
@@ -183,12 +182,12 @@ public class MainActivity extends AppCompatActivity {
         public void onFilterClick(View view) {
             LinearLayoutManager manager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, true);
             notesRecyclerView.setLayoutManager(manager);
-            manager.setStackFromEnd(false);
-            boolean isClicked = false;
-            if (!isClicked) {
-                notesRecyclerView.scrollToPosition(noteList.size() - 1);
-            }
-            notesRecyclerView.scrollToPosition(noteList.get(0).getId());
+            manager.setStackFromEnd(true);
+//            boolean isClicked = false;
+//            if (!isClicked) {
+//                notesRecyclerView.scrollToPosition(noteList.size() - 1);
+//            }
+//            notesRecyclerView.scrollToPosition(noteList.get(0).getId());
         }
     }
 

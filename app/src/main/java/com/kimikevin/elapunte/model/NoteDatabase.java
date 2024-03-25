@@ -39,10 +39,9 @@ public abstract class NoteDatabase extends RoomDatabase {
     private static final RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
-            super.onCreate(db);
-
             // insert data when database is created
             initializeData();
+            super.onCreate(db);
         }
     };
 
