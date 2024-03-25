@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Note> noteList;
     RecyclerView notesRecyclerView;
     NoteAdapter noteAdapter;
+    boolean isClicked;
 
     // request codes
     public static final int ADD_NOTE_REQUEST_CODE = 1;
@@ -183,11 +184,6 @@ public class MainActivity extends AppCompatActivity {
             LinearLayoutManager manager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, true);
             notesRecyclerView.setLayoutManager(manager);
             manager.setStackFromEnd(true);
-//            boolean isClicked = false;
-//            if (!isClicked) {
-//                notesRecyclerView.scrollToPosition(noteList.size() - 1);
-//            }
-//            notesRecyclerView.scrollToPosition(noteList.get(0).getId());
         }
     }
 
