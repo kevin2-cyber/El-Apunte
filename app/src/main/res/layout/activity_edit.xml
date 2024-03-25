@@ -5,17 +5,18 @@
     <data>
         <variable
             name="note"
-            type="com.kimikevin.elapunte.model.entity.Note" />
-        
+            type="com.kimikevin.el_apunte.model.entity.Note" />
+
         <variable
             name="handler"
-            type="com.kimikevin.elapunte.view.EditActivity.EditClickHandler" />
+            type="com.kimikevin.el_apunte.view.EditActivity.EditClickHandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="false"
+        android:id="@+id/edit"
         tools:context=".view.EditActivity">
 
         <Button
@@ -25,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:onClick="@{handler::onSubmitButtonClicked}"
-            app:icon="@drawable/baseline_arrow_back_24"
+            app:icon="@drawable/baseline_arrow_back"
             app:iconGravity="textStart"
             app:iconSize="30dp"
             android:gravity="center"
