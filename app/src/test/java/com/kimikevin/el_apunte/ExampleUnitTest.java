@@ -1,4 +1,4 @@
-package com.kimikevin.elapunte;
+package com.kimikevin.el_apunte;
 
 import org.junit.Test;
 

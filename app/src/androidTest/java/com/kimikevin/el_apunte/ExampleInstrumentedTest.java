@@ -1,4 +1,4 @@
-package com.kimikevin.elapunte;
+package com.kimikevin.el_apunte;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.kimikevin.elapunte", appContext.getPackageName());
+        assertEquals("com.kimikevin.el_apunte", appContext.getPackageName());
     }
 }

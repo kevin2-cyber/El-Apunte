@@ -1,14 +1,13 @@
 plugins {
-    id 'com.android.application'
+    alias(libs.plugins.androidApplication)
 }
 
 android {
-
-    namespace 'com.kimikevin.elapunte'
+    namespace 'com.kimikevin.el_apunte'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.kimikevin.elapunte"
+        applicationId "com.kimikevin.el_apunte"
         minSdk 30
         targetSdk 34
         versionCode 1
@@ -23,34 +22,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
-
-    buildFeatures{
-        dataBinding true
-    }
-
-//    configurations {
-//        configureEach {
-//            resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib:1.8.10'
-//            resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib:1.6.21'
-//        }
-//    }
 }
 
 dependencies {
-    def room_version = "2.6.1"
 
-    implementation "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
-    implementation "androidx.core:core-splashscreen:1.0.1"
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.11.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation libs.appcompat
+    implementation libs.material
+    implementation libs.activity
+    implementation libs.constraintlayout
+    testImplementation libs.junit
+    androidTestImplementation libs.ext.junit
+    androidTestImplementation libs.espresso.core
 }
