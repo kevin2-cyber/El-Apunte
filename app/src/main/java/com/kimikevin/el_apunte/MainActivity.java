@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private MainViewModel viewModel;
     MainClickHandler handler;
     public static final String TAG = "TAG";
-    private ArrayList<Note> noteList;
+    private ArrayList<Note> noteList = new ArrayList<>();
     RecyclerView notesRecyclerView;
     NoteAdapter noteAdapter;
     boolean isClicked;
@@ -94,16 +94,12 @@ public class MainActivity extends AppCompatActivity {
         handler = new MainClickHandler(this);
         binding.setClickHandler(handler);
 
-        viewModel.getAllNotes().observe(this, new Observer<List<Note>>() {
-            @Override
-            public void onChanged(List<Note> notes) {
-                noteList = (ArrayList<Note>) notes;
+        viewModel.getAllNotes().observe(this, notes -> {
+            noteList = (ArrayList<Note>) notes;
 
-                for (Note note : notes) {
-                    Log.i(TAG, note.getTitle());
-                }
-                loadRecyclerView();
-            }
+//            noteList.addAll(notes);
+
+            loadRecyclerView();
         });
 
         binding.searchView.clearFocus();
