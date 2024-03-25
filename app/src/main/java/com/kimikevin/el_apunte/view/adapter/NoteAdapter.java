@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kimikevin.el_apunte.R;
+import com.kimikevin.el_apunte.databinding.NoteItemBinding;
 import com.kimikevin.el_apunte.model.entity.Note;
 import com.kimikevin.el_apunte.view.util.NoteDiffCallback;
 
