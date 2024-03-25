@@ -3,7 +3,16 @@
     <style name="Base.Theme.ElApunte" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Primary -->
+        <!--        <item name="colorPrimaryContainer">@color/some</item>-->
+        <!--        <item name="colorOnPrimaryContainer">@color/light_grey</item>-->
+        <item name="colorPrimary">#455A64</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <item name="colorSurface">@color/light_grey</item>
     </style>
 
-    <style name="Theme.ElApunte" parent="Base.Theme.ElApunte" />
+    <style name="Theme.ElApunte" parent="Base.Theme.ElApunte">
+        <item name="android:fontFamily">@font/oneuisans</item>
+    </style>
 </resources>
