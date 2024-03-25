@@ -1,13 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.ElApunte" parent="Theme.Material3.Light.NoActionBar">
+    <style name="Base.Theme.ElApunte" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <!-- Primary -->
-<!--        <item name="colorPrimaryContainer">@color/some</item>-->
-<!--        <item name="colorOnPrimaryContainer">@color/light_grey</item>-->
+        <!--        <item name="colorPrimaryContainer">@color/some</item>-->
+        <!--        <item name="colorOnPrimaryContainer">@color/light_grey</item>-->
         <item name="colorPrimary">#455A64</item>
         <item name="colorOnPrimary">@color/white</item>
+
+        <item name="colorPrimaryContainer">?attr/colorOnBackground</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
 
         <item name="colorSurface">@color/light_grey</item>
     </style>

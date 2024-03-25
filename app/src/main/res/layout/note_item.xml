@@ -3,7 +3,7 @@
     <data>
         <variable
             name="note"
-            type="com.kimikevin.elapunte.model.entity.Note" />
+            type="com.kimikevin.el_apunte.model.entity.Note" />
     </data>
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
