@@ -10,7 +10,7 @@
         <item name="colorOnPrimary">@color/white</item>
 
         <item name="colorPrimaryContainer">@color/white</item>
-        <item name="colorOnPrimaryContainer">?attr/colorOnBackground</item>
+        <item name="colorOnPrimaryContainer">?android:attr/colorBackground</item>
 
         <!--Secondary-->
         <item name="colorOnSecondaryContainer">@color/white</item>
@@ -19,8 +19,17 @@
         <item name="colorOnTertiaryContainer">@color/white</item>
 
         <item name="colorOnSurface">@color/some</item>
+        <item name="bottomSheetStyle">@style/ModalBottomSheet</item>
     </style>
     <style name="Theme.ElApunte" parent="Base.Theme.ElApunte">
         <item name="android:fontFamily">@font/oneuisans</item>
+    </style>
+
+    <style name="ModalBottomSheet" parent="Widget.Material3.BottomSheet.Modal">
+        <!-- Apply attributes here -->
+    </style>
+
+    <style name="ModalBottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/ModalBottomSheet</item>
     </style>
 </resources>
