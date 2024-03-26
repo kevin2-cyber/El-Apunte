@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AnticipateInterpolator;
-import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -106,19 +105,19 @@ public class MainActivity extends AppCompatActivity {
         });
 
         SharedPreferences sharedPreferences = getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
         updateUI(sharedPreferences);
 
-//        binding.themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-//            if (isChecked) {
-//                editor.putBoolean(SWITCH_BUTTON_KEY, true).apply();
-//                updateUI(sharedPreferences);
-//            } else {
-//                editor.putBoolean(SWITCH_BUTTON_KEY, false).apply();
-//                updateUI(sharedPreferences);
-//            }
-//        });
+        binding.themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                editor.putBoolean(SWITCH_BUTTON_KEY, true).apply();
+                updateUI(sharedPreferences);
+            } else {
+                editor.putBoolean(SWITCH_BUTTON_KEY, false).apply();
+                updateUI(sharedPreferences);
+            }
+        });
 
         binding.searchView.clearFocus();
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -205,19 +204,6 @@ public class MainActivity extends AppCompatActivity {
             LinearLayoutManager manager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, true);
             notesRecyclerView.setLayoutManager(manager);
             manager.setStackFromEnd(true);
-        }
-
-        SharedPreferences sharedPreferences = getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        public void onThemeSwitch(CompoundButton button, boolean isChecked) {
-            if (isChecked) {
-                editor.putBoolean(SWITCH_BUTTON_KEY, true).apply();
-                updateUI(sharedPreferences);
-            } else {
-                editor.putBoolean(SWITCH_BUTTON_KEY, false).apply();
-                updateUI(sharedPreferences);
-            }
         }
     }
 
