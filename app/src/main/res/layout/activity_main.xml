@@ -19,21 +19,27 @@
         android:id="@+id/main"
         tools:context=".MainActivity">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
+
+        <TextView
+            android:id="@+id/app_name"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" >
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/app_name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/themeToolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:title="@string/app_name"
-                app:titleTextAppearance="?attr/textAppearanceTitleLarge" />
-        </com.google.android.material.appbar.AppBarLayout>
-
+        <CheckBox
+            android:id="@+id/themeSwitch"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:button="@drawable/sl_theme"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"

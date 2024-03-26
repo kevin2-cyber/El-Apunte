@@ -12,12 +12,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnticipateInterpolator;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -102,7 +104,17 @@ public class MainActivity extends AppCompatActivity {
             loadRecyclerView();
         });
 
-        setSupportActionBar(binding.themeToolbar);
+//        binding.themeSwitch.setChecked(binding.themeSwitch.isChecked());
+        binding.themeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                }
+            }
+        });
 
         binding.searchView.clearFocus();
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -132,12 +144,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             noteAdapter.setFilterList(filteredList);
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.app_bar_menu, menu);
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
