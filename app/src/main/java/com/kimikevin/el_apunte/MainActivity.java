@@ -23,13 +23,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.kimikevin.el_apunte.databinding.ActivityMainBinding;
 import com.kimikevin.el_apunte.model.entity.Note;
 import com.kimikevin.el_apunte.view.EditActivity;
@@ -228,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
             note.setId(selectedNoteId);
 
             viewModel.updateNote(note);
+            Log.v(TAG, "Updated " + note.getTitle());
         }
     }
 }
