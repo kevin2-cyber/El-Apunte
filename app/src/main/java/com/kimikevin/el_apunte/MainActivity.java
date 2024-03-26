@@ -104,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
             loadRecyclerView();
         });
 
-//        binding.themeSwitch.setChecked(binding.themeSwitch.isChecked());
         binding.themeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -146,14 +145,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.themeSwitch) {
-            ThemeBottomSheet themeBottomSheet = new ThemeBottomSheet();
-            themeBottomSheet.show(getSupportFragmentManager(), ThemeBottomSheet.TAG);
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        if (item.getItemId() == R.id.themeSwitch) {
+//            ThemeBottomSheet themeBottomSheet = new ThemeBottomSheet();
+//            themeBottomSheet.show(getSupportFragmentManager(), ThemeBottomSheet.TAG);
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     private void loadRecyclerView() {
         notesRecyclerView = binding.rvNotes;
