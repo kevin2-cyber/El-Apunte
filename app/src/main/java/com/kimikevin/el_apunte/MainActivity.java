@@ -5,11 +5,10 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnticipateInterpolator;
 import android.widget.CompoundButton;
@@ -34,7 +33,6 @@ import com.kimikevin.el_apunte.databinding.ActivityMainBinding;
 import com.kimikevin.el_apunte.model.entity.Note;
 import com.kimikevin.el_apunte.view.EditActivity;
 import com.kimikevin.el_apunte.view.adapter.NoteAdapter;
-import com.kimikevin.el_apunte.view.util.ThemeBottomSheet;
 import com.kimikevin.el_apunte.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
@@ -45,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     private MainViewModel viewModel;
     MainClickHandler handler;
     public static final String TAG = "TAG";
+
+    private static final String SWITCH_BUTTON_KEY = "switch";
+    private static final String PREF_KEY = "pref";
     private ArrayList<Note> noteList = new ArrayList<>();
     RecyclerView notesRecyclerView;
     NoteAdapter noteAdapter;
@@ -104,13 +105,20 @@ public class MainActivity extends AppCompatActivity {
             loadRecyclerView();
         });
 
+        SharedPreferences sharedPreferences = getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        updateUI(sharedPreferences);
+
         binding.themeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    editor.putBoolean(SWITCH_BUTTON_KEY, true).apply();
+                    updateUI(sharedPreferences);
                 } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    editor.putBoolean(SWITCH_BUTTON_KEY, false).apply();
+                    updateUI(sharedPreferences);
                 }
             }
         });
@@ -232,6 +240,16 @@ public class MainActivity extends AppCompatActivity {
 
             viewModel.updateNote(note);
             Log.v(TAG, "Updated " + note.getTitle());
+        }
+    }
+
+    private void updateUI(SharedPreferences sharedPreferences) {
+        boolean isChecked = sharedPreferences.getBoolean(SWITCH_BUTTON_KEY, false);
+        binding.themeSwitch.setChecked(isChecked);
+        if (isChecked) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
 }
