@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AnticipateInterpolator;
-import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -110,16 +109,13 @@ public class MainActivity extends AppCompatActivity {
 
         updateUI(sharedPreferences);
 
-        binding.themeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    editor.putBoolean(SWITCH_BUTTON_KEY, true).apply();
-                    updateUI(sharedPreferences);
-                } else {
-                    editor.putBoolean(SWITCH_BUTTON_KEY, false).apply();
-                    updateUI(sharedPreferences);
-                }
+        binding.themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                editor.putBoolean(SWITCH_BUTTON_KEY, true).apply();
+                updateUI(sharedPreferences);
+            } else {
+                editor.putBoolean(SWITCH_BUTTON_KEY, false).apply();
+                updateUI(sharedPreferences);
             }
         });
 
