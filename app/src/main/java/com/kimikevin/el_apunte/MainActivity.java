@@ -153,15 +153,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        if (item.getItemId() == R.id.themeSwitch) {
-//            ThemeBottomSheet themeBottomSheet = new ThemeBottomSheet();
-//            themeBottomSheet.show(getSupportFragmentManager(), ThemeBottomSheet.TAG);
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-
     private void loadRecyclerView() {
         notesRecyclerView = binding.rvNotes;
         LinearLayoutManager manager = new LinearLayoutManager(this);
