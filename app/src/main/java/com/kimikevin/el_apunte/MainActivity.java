@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnticipateInterpolator;
 import android.widget.Toast;
@@ -32,6 +34,7 @@ import com.kimikevin.el_apunte.databinding.ActivityMainBinding;
 import com.kimikevin.el_apunte.model.entity.Note;
 import com.kimikevin.el_apunte.view.EditActivity;
 import com.kimikevin.el_apunte.view.adapter.NoteAdapter;
+import com.kimikevin.el_apunte.view.util.ThemeBottomSheet;
 import com.kimikevin.el_apunte.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
@@ -45,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Note> noteList = new ArrayList<>();
     RecyclerView notesRecyclerView;
     NoteAdapter noteAdapter;
-    boolean isClicked;
 
     // request codes
     public static final int ADD_NOTE_REQUEST_CODE = 1;
@@ -102,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
             loadRecyclerView();
         });
 
+        setSupportActionBar(binding.themeToolbar);
+
         binding.searchView.clearFocus();
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -130,6 +134,21 @@ public class MainActivity extends AppCompatActivity {
         } else {
             noteAdapter.setFilterList(filteredList);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.app_bar_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.themeSwitch) {
+            ThemeBottomSheet themeBottomSheet = new ThemeBottomSheet();
+            themeBottomSheet.show(getSupportFragmentManager(), ThemeBottomSheet.TAG);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void loadRecyclerView() {
