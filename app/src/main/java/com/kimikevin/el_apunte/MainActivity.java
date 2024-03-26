@@ -5,29 +5,30 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AnticipateInterpolator;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.kimikevin.el_apunte.databinding.ActivityMainBinding;
 import com.kimikevin.el_apunte.model.entity.Note;
 import com.kimikevin.el_apunte.view.EditActivity;
@@ -42,10 +43,12 @@ public class MainActivity extends AppCompatActivity {
     private MainViewModel viewModel;
     MainClickHandler handler;
     public static final String TAG = "TAG";
+
+    private static final String SWITCH_BUTTON_KEY = "switch";
+    private static final String PREF_KEY = "pref";
     private ArrayList<Note> noteList = new ArrayList<>();
     RecyclerView notesRecyclerView;
     NoteAdapter noteAdapter;
-    boolean isClicked;
 
     // request codes
     public static final int ADD_NOTE_REQUEST_CODE = 1;
@@ -100,6 +103,24 @@ public class MainActivity extends AppCompatActivity {
 //            noteList.addAll(notes);
 
             loadRecyclerView();
+        });
+
+        SharedPreferences sharedPreferences = getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        updateUI(sharedPreferences);
+
+        binding.themeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    editor.putBoolean(SWITCH_BUTTON_KEY, true).apply();
+                    updateUI(sharedPreferences);
+                } else {
+                    editor.putBoolean(SWITCH_BUTTON_KEY, false).apply();
+                    updateUI(sharedPreferences);
+                }
+            }
         });
 
         binding.searchView.clearFocus();
@@ -209,6 +230,17 @@ public class MainActivity extends AppCompatActivity {
             note.setId(selectedNoteId);
 
             viewModel.updateNote(note);
+            Log.v(TAG, "Updated " + note.getTitle());
+        }
+    }
+
+    private void updateUI(SharedPreferences sharedPreferences) {
+        boolean isChecked = sharedPreferences.getBoolean(SWITCH_BUTTON_KEY, false);
+        binding.themeSwitch.setChecked(isChecked);
+        if (isChecked) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
 }
