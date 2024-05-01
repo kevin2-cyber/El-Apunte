@@ -1,5 +1,7 @@
 package com.kimikevin.el_apunte.model.entity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.library.baseAdapters.BR;
@@ -10,6 +12,7 @@ import androidx.room.PrimaryKey;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 @Entity(tableName = "note_table")
 public class Note extends BaseObservable {
@@ -72,5 +75,32 @@ public class Note extends BaseObservable {
 
     public String createDateFormatted() {
         return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm:ss"));
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Note{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", dateTime=" + dateTime +
+                '}';
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+     if (this == obj) return true;
+     if (obj == null || getClass() != obj.getClass()) return false;
+     Note note = (Note) obj;
+     return id == note.id
+             && title.equals(note.title)
+             && content.equals(note.content)
+             && dateTime.equals(note.dateTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id,title,content,dateTime);
     }
 }
