@@ -19,4 +19,8 @@
         <item name="android:fontFamily">@font/oneuisans</item>
     </style>
 
+    <style name="CustomSearchView" parent="Widget.AppCompat.SearchView">
+        <item name="queryBackground">@android:color/transparent</item>
+    </style>
+
 </resources>
