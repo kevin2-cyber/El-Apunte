@@ -73,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:contentDescription="@string/app_name"
+            android:contentDescription="@string/fab"
             android:onClick="@{clickHandler::onFabClick}"
             android:src="@drawable/baseline_add"
             app:layout_constraintBottom_toBottomOf="parent"
