@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class NoteRepository {
-    private NoteDao noteDao;
+    private final NoteDao noteDao;
 
     private LiveData<List<Note>> notes;
 
@@ -33,12 +33,9 @@ public class NoteRepository {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                // inserting note
-                noteDao.insert(note);
-            }
+        executorService.execute(() -> {
+            // inserting note
+            noteDao.insert(note);
         });
     }
 
@@ -46,12 +43,9 @@ public class NoteRepository {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                // updating note
-                noteDao.update(note);
-            }
+        executorService.execute(() -> {
+            // updating note
+            noteDao.update(note);
         });
     }
 
@@ -59,12 +53,9 @@ public class NoteRepository {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                // deleting note
-                noteDao.delete(note);
-            }
+        executorService.execute(() -> {
+            // deleting note
+            noteDao.delete(note);
         });
     }
 }

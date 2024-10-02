@@ -3,4 +3,5 @@
     <string name="search">Search</string>
     <string name="filter">filter</string>
     <string name="theme_switcher">Theme Switcher</string>
+    <string name="fab">fab</string>
 </resources>
