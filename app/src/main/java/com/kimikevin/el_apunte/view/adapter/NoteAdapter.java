@@ -1,6 +1,5 @@
 package com.kimikevin.el_apunte.view.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -30,10 +29,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         this.context = context;
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     public void setFilterList(List<Note> filterList) {
         notes = (ArrayList<Note>) filterList;
-        notifyDataSetChanged();
+        notifyItemRangeChanged(0, filterList.size());
     }
 
     @NonNull
