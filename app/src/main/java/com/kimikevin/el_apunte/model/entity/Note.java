@@ -1,5 +1,6 @@
 package com.kimikevin.el_apunte.model.entity;
 
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.BaseObservable;
@@ -10,8 +11,9 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.kimikevin.el_apunte.model.util.TimeAgoUtil;
+
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 @Entity(tableName = "note_table")
@@ -74,7 +76,7 @@ public class Note extends BaseObservable {
     }
 
     public String createDateFormatted() {
-        return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm:ss"));
+        return TimeAgoUtil.getTimeAgo(dateTime);
     }
 
     @NonNull
@@ -96,7 +98,7 @@ public class Note extends BaseObservable {
      return id == note.id
              && title.equals(note.title)
              && content.equals(note.content)
-             && dateTime.equals(note.dateTime);
+             && dateTime == note.dateTime;
     }
 
     @Override
