@@ -2,16 +2,18 @@ package com.kimikevin.el_apunte.model;
 
 import androidx.room.TypeConverter;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public class Converters {
     @TypeConverter
-    public LocalDateTime fromTimeStamp(String value) {
-        return LocalDateTime.parse(value);
+    public static LocalDateTime fromTimeStamp(Long value) {
+        return value == null ? null : Instant.ofEpochMilli(value).atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 
     @TypeConverter
-    public String dateToTimeStamp(LocalDateTime date) {
-        return date.toString();
+    public static Long dateToTimeStamp(LocalDateTime date) {
+        return date == null ? null : date.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 }
