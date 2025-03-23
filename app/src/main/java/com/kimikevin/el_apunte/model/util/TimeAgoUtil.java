@@ -1,4 +1,4 @@
-package com.kimikevin.el_apunte.model.entity;
+package com.kimikevin.el_apunte.model.util;
 
 import android.text.format.DateUtils;
 

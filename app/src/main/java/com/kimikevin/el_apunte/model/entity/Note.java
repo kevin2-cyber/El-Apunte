@@ -11,8 +11,9 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.kimikevin.el_apunte.model.util.TimeAgoUtil;
+
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 @Entity(tableName = "note_table")
