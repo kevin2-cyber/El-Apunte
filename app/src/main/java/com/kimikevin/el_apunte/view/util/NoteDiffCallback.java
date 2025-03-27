@@ -57,7 +57,7 @@ public class NoteDiffCallback extends DiffUtil.Callback {
      * DiffUtil uses this method to check equality instead of {@link Object#equals(Object)}
      * so that you can change its behavior depending on your UI.
      * For example, if you are using DiffUtil with a
-     * {@link com.kimikevin.elapunte.view.adapter.NoteAdapter RecyclerView.Adapter}, you should
+     * {@link com.kimikevin.el_apunte.view.adapter.NoteAdapter RecyclerView.Adapter}, you should
      * return whether the items' visual representations are the same.
      * <p>
      * This method is called only if {@link #areItemsTheSame(int, int)} returns
