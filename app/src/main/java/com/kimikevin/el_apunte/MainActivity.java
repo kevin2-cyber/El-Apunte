@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -29,6 +30,7 @@ import com.kimikevin.el_apunte.model.entity.Note;
 import com.kimikevin.el_apunte.view.EditActivity;
 import com.kimikevin.el_apunte.view.adapter.NoteAdapter;
 import com.kimikevin.el_apunte.viewmodel.MainViewModel;
+import com.kimikevin.el_apunte.viewmodel.TimeViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private MainViewModel viewModel;
+    private TimeViewModel timeViewModel;
     MainClickHandler handler;
     public static final String TAG = "TAG";
 
@@ -82,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        timeViewModel = new ViewModelProvider(this).get(TimeViewModel.class);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         handler = new MainClickHandler(this);
@@ -93,6 +97,13 @@ public class MainActivity extends AppCompatActivity {
 //            noteList.addAll(notes);
 
             loadRecyclerView();
+        });
+
+        timeViewModel.getTimeAgoLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                //TODO: wrap timestamp in a view model
+            }
         });
 
         SharedPreferences sharedPreferences = getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
