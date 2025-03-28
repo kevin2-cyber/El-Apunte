@@ -24,4 +24,10 @@ public interface NoteDao {
 
     @Query("SELECT * FROM note_table")
     LiveData<List<Note>> getAllNotes();
+
+    @Insert
+    void insertAll(Note... notes);
+
+    @Query("SELECT COUNT(*) FROM note_table")
+    int getCount();
 }

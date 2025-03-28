@@ -148,9 +148,11 @@ public class MainActivity extends AppCompatActivity {
         notesRecyclerView.setHasFixedSize(true);
 
         noteAdapter = new NoteAdapter(this);
-        notesRecyclerView.setAdapter(noteAdapter);
+
 
         noteAdapter.setNotes(noteList);
+
+        notesRecyclerView.setAdapter(noteAdapter);
 
         // edit the note
         noteAdapter.setListener(note -> {
