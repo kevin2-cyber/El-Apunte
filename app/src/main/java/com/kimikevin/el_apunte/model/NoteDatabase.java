@@ -49,7 +49,7 @@ public abstract class NoteDatabase extends RoomDatabase {
         NoteDao noteDao = instance.getNoteDao();
 
         ExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.execute(() -> {
+        executorService.execute(() ->  {
             // notes
             Note noteOne = new Note();
             noteOne.setTitle("Like and Subscribe");
