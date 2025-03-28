@@ -15,6 +15,7 @@ public class TimeViewModel extends ViewModel {
         return timeAgoLiveData;
     }
 
+    // link time Ago to another view model
     public void updateTimeAgo(LocalDateTime dateTime) {
         String timeAgo = TimeAgoUtil.getTimeAgo(dateTime);
         timeAgoLiveData.setValue(timeAgo);
