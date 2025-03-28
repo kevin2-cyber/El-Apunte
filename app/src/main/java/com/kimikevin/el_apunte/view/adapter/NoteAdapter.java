@@ -31,7 +31,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
     public void setFilterList(List<Note> filterList) {
         notes = (ArrayList<Note>) filterList;
-        notifyItemRangeChanged(0, filterList.size());
+        notifyItemRangeChanged(0, filterList.size() - 1);
     }
 
     @NonNull
