@@ -1,5 +1,6 @@
 package com.kimikevin.el_apunte.view.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -29,9 +30,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         this.context = context;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setFilterList(List<Note> filterList) {
         notes = (ArrayList<Note>) filterList;
-        notifyItemRangeChanged(0, filterList.size());
+//        notifyItemRangeChanged(0, filterList.size() - 1);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -49,7 +52,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         int[] androidColors = context.getResources().getIntArray(R.array.note_accent_colors);
         int randomAndroidColor = androidColors[new Random().nextInt(androidColors.length)];
         holder.binding.card.setCardBackgroundColor(randomAndroidColor);
-        holder.binding.card.startAnimation(AnimationUtils.loadAnimation(holder.binding.card.getContext(), R.anim.anim_four));
+        holder.binding.card.startAnimation(
+                AnimationUtils.loadAnimation(holder.binding.card.getContext(), R.anim.anim_four)
+        );
     }
 
     @Override
