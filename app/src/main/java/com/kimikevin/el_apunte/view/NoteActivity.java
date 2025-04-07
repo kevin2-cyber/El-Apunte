@@ -33,7 +33,6 @@ import java.util.List;
 public class NoteActivity extends AppCompatActivity {
     private ActivityNoteBinding binding;
     private NoteViewModel noteViewModel;
-    private TimeViewModel timeViewModel;
     NoteClickHandler handler;
     public static final String TAG = "TAG";
 
@@ -64,17 +63,12 @@ public class NoteActivity extends AppCompatActivity {
         binding.setClickHandler(handler);
 
         noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
-        timeViewModel = new ViewModelProvider(this).get(TimeViewModel.class);
 
         noteViewModel.getAllNotes().observe(this, notes -> {
             noteList = (ArrayList<Note>) notes;
 
             loadRecyclerView();
 
-        });
-
-        timeViewModel.getTimeAgoLiveData().observe(this, s -> {
-            //TODO: wrap timestamp in a view model
         });
 
         binding.themeSwitch.setOnClickListener(view -> {

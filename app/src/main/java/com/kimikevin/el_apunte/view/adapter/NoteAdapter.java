@@ -2,6 +2,7 @@ package com.kimikevin.el_apunte.view.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -34,7 +35,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     @SuppressLint("NotifyDataSetChanged")
     public void setFilterList(List<Note> filterList) {
         notes = (ArrayList<Note>) filterList;
-//        notifyItemRangeChanged(0, filterList.size() - 1);
         notifyDataSetChanged();
     }
 
@@ -83,6 +83,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                     listener.onNoteDelete(note); // Perform deletion
                     notes.remove(position); // Remove from list
                     notifyItemRemoved(position); // Update the RecyclerView
+                    Log.d("NOTE_DEBUG", "Time Deleted: " + note.getFormattedDate());
                 })
                 .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
                 .create()

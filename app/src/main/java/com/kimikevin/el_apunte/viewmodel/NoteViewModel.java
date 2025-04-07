@@ -1,7 +1,6 @@
 package com.kimikevin.el_apunte.viewmodel;
 
 import android.app.Application;
-import android.icu.text.SimpleDateFormat;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -10,10 +9,9 @@ import androidx.lifecycle.LiveData;
 
 import com.kimikevin.el_apunte.model.entity.Note;
 import com.kimikevin.el_apunte.model.repository.NoteRepository;
+import com.kimikevin.el_apunte.model.util.TimeAgoUtil;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class NoteViewModel extends AndroidViewModel {
     // repository
@@ -32,10 +30,12 @@ public class NoteViewModel extends AndroidViewModel {
     }
 
     public void insertNote(Note note) {
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy, h:mm a", Locale.getDefault());
-        String formattedDate = sdf.format(new Date());
+        long currentTimestamp = System.currentTimeMillis();  // Get current time in milliseconds
+        Log.d("NOTE_DEBUG", "Current timestamp: " + currentTimestamp);  // Log the timestamp
 
+        String formattedDate = TimeAgoUtil.getTimeUsing24HourFormat(System.currentTimeMillis());
         note.setFormattedDate(formattedDate);
+
         Log.d("NOTE_DEBUG", "Saved date: " + note.getFormattedDate());
         repository.insertNote(note);
     }
@@ -48,3 +48,5 @@ public class NoteViewModel extends AndroidViewModel {
         repository.deleteNote(note);
     }
 }
+//        SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy, h:mm a", Locale.getDefault());
+//        String formattedDate = sdf.format(new Date());
