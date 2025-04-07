@@ -8,11 +8,11 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.kimikevin.el_apunte.R;
 import com.kimikevin.el_apunte.databinding.NoteItemBinding;
 import com.kimikevin.el_apunte.model.entity.Note;
@@ -76,16 +76,17 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     }
 
     private void showDeleteConfirmationDialog(Context context, Note note, int position) {
-        new AlertDialog.Builder(context)
-                .setTitle("Delete Task")
-                .setMessage("Are you sure you want to delete this task?")
-                .setPositiveButton("Yes", (dialog, which) -> {
+        new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_App_MaterialAlertDialog)
+                .setTitle("Delete Note")
+                .setMessage("Are you sure you want to delete this note?")
+                .setPositiveButton("Yes", ((dialog, which) -> {
                     listener.onNoteDelete(note); // Perform deletion
                     notes.remove(position); // Remove from list
-                    notifyItemRemoved(position); // Update the RecyclerView
+                    notifyItemRemoved(position);
                     Log.d("NOTE_DEBUG", "Time Deleted: " + note.getFormattedDate());
-                })
-                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                }))
+                .setNeutralButton("Cancel", ((dialog, which) -> {}))
+                .setNegativeButton("No", ((dialog, which) -> {dialog.dismiss();}))
                 .create()
                 .show();
     }
