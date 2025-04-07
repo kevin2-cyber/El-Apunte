@@ -11,16 +11,13 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,7 +26,6 @@ import com.kimikevin.el_apunte.databinding.ActivityNoteBinding;
 import com.kimikevin.el_apunte.model.entity.Note;
 import com.kimikevin.el_apunte.view.adapter.NoteAdapter;
 import com.kimikevin.el_apunte.viewmodel.NoteViewModel;
-import com.kimikevin.el_apunte.viewmodel.TimeViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
