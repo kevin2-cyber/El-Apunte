@@ -1,5 +1,7 @@
 package com.kimikevin.el_apunte.view;
 
+import static com.kimikevin.el_apunte.view.ThemeBottomSheet.THEME_KEY;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +13,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
@@ -53,6 +56,11 @@ public class NoteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+
+        // Load saved theme preference and apply
+        SharedPreferences sharedPreferences = getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
+        int savedMode = sharedPreferences.getInt(THEME_KEY, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        AppCompatDelegate.setDefaultNightMode(savedMode);
         setContentView(R.layout.activity_note);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_note);
@@ -73,19 +81,9 @@ public class NoteActivity extends AppCompatActivity {
             //TODO: wrap timestamp in a view model
         });
 
-        SharedPreferences sharedPreferences = getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        updateUI(sharedPreferences);
-
-        binding.themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                editor.putBoolean(SWITCH_BUTTON_KEY, true).apply();
-                updateUI(sharedPreferences);
-            } else {
-                editor.putBoolean(SWITCH_BUTTON_KEY, false).apply();
-                updateUI(sharedPreferences);
-            }
+        binding.themeSwitch.setOnClickListener(view -> {
+            ThemeBottomSheet themeBottomSheet = new ThemeBottomSheet();
+            themeBottomSheet.show(getSupportFragmentManager(), ThemeBottomSheet.TAG);
         });
 
         binding.searchView.clearFocus();
@@ -133,15 +131,24 @@ public class NoteActivity extends AppCompatActivity {
         notesRecyclerView.setAdapter(noteAdapter);
 
         // edit the note
-        noteAdapter.setListener(note -> {
-            selectedNoteId = note.getId();
-            Intent intent = new Intent(NoteActivity.this, EditActivity.class);
+        noteAdapter.setListener(new NoteAdapter.OnItemClickListener() {
+            @Override
+            public void onNoteClick(Note note) {
+                selectedNoteId = note.getId();
+                Intent intent = new Intent(NoteActivity.this, EditActivity.class);
 
-            intent.putExtra(EditActivity.NOTE_ID, selectedNoteId);
-            intent.putExtra(EditActivity.NOTE_TITLE, note.getTitle());
-            intent.putExtra(EditActivity.NOTE_CONTENT, note.getContent());
+                intent.putExtra(EditActivity.NOTE_ID, selectedNoteId);
+                intent.putExtra(EditActivity.NOTE_TITLE, note.getTitle());
+                intent.putExtra(EditActivity.NOTE_CONTENT, note.getContent());
 
-            startActivityIfNeeded(intent, EDIT_NOTE_REQUEST_CODE);
+                startActivityIfNeeded(intent, EDIT_NOTE_REQUEST_CODE);
+            }
+
+            @Override
+            public void onNoteDelete(Note note) {
+                noteViewModel.deleteNote(note);
+                Toast.makeText(NoteActivity.this, "Note Deleted", Toast.LENGTH_SHORT).show();
+            }
         });
 
         // delete a note
@@ -198,16 +205,6 @@ public class NoteActivity extends AppCompatActivity {
 
             noteViewModel.updateNote(note);
             Log.v(TAG, "Updated " + note.getTitle());
-        }
-    }
-
-    private void updateUI(SharedPreferences sharedPreferences) {
-        boolean isChecked = sharedPreferences.getBoolean(SWITCH_BUTTON_KEY, false);
-        binding.themeSwitch.setChecked(isChecked);
-        if (isChecked) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
 }

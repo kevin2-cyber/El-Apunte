@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,6 +56,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         holder.binding.card.startAnimation(
                 AnimationUtils.loadAnimation(holder.binding.card.getContext(), R.anim.anim_four)
         );
+        holder.binding.getRoot().setOnLongClickListener(view -> {
+            showDeleteConfirmationDialog(holder.binding.getRoot().getContext(), currentNote, position);
+            return true;  // Return true to indicate the event is handled
+        });
     }
 
     @Override
@@ -70,6 +75,20 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         result.dispatchUpdatesTo(NoteAdapter.this);
     }
 
+    private void showDeleteConfirmationDialog(Context context, Note note, int position) {
+        new AlertDialog.Builder(context)
+                .setTitle("Delete Task")
+                .setMessage("Are you sure you want to delete this task?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    listener.onNoteDelete(note); // Perform deletion
+                    notes.remove(position); // Remove from list
+                    notifyItemRemoved(position); // Update the RecyclerView
+                })
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .create()
+                .show();
+    }
+
     public class NoteViewHolder extends RecyclerView.ViewHolder {
         private final NoteItemBinding binding;
 
@@ -80,14 +99,15 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             binding.getRoot().setOnClickListener(v -> {
                 int clickedPosition = getAdapterPosition();
                 if (listener != null && clickedPosition != RecyclerView.NO_POSITION) {
-                    listener.onItemClick(notes.get(clickedPosition));
+                    listener.onNoteClick(notes.get(clickedPosition));
                 }
             });
         }
     }
 
     public interface OnItemClickListener {
-        void onItemClick(Note note);
+        void onNoteClick(Note note);
+        void onNoteDelete(Note note);
     }
 
     public void setListener(OnItemClickListener listener) {
