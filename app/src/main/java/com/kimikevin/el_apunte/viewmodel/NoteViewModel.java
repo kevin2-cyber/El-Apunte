@@ -11,13 +11,13 @@ import com.kimikevin.el_apunte.model.repository.NoteRepository;
 
 import java.util.List;
 
-public class MainViewModel extends AndroidViewModel {
+public class NoteViewModel extends AndroidViewModel {
     // repository
     private final NoteRepository repository;
 
     // live data
     private LiveData<List<Note>> allNotes;
-    public MainViewModel(@NonNull Application application) {
+    public NoteViewModel(@NonNull Application application) {
         super(application);
         repository = new NoteRepository(application);
     }
