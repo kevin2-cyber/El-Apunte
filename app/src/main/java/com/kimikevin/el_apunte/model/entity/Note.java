@@ -25,8 +25,9 @@ public class Note extends BaseObservable {
     private String title;
     @ColumnInfo(name = "content")
     private String content;
-    @ColumnInfo(defaultValue = "CURRENT_TIMESTAMP")
-    private LocalDateTime dateTime = LocalDateTime.now();
+    @ColumnInfo(name = "formatted_date")
+    private String formattedDate;
+//    private LocalDateTime dateTime = LocalDateTime.now();
 
     public Note(int id, String title, String content) {
         this.id = id;
@@ -67,17 +68,25 @@ public class Note extends BaseObservable {
         notifyPropertyChanged(BR.content);
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public String getFormattedDate() {
+        return formattedDate;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setFormattedDate(String formattedDate) {
+        this.formattedDate = formattedDate;
     }
 
-    public String createDateFormatted() {
-        return TimeAgoUtil.getTimeAgo(dateTime);
-    }
+    //    public LocalDateTime getDateTime() {
+//        return dateTime;
+//    }
+
+//    public void setDateTime(LocalDateTime dateTime) {
+//        this.dateTime = dateTime;
+//    }
+
+//    public String createDateFormatted() {
+//        return TimeAgoUtil.getTimeAgo(dateTime);
+//    }
 
     @NonNull
     @Override
@@ -86,7 +95,7 @@ public class Note extends BaseObservable {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
-                ", dateTime=" + dateTime +
+                ", formattedDate=" + formattedDate +
                 '}';
     }
 
@@ -98,11 +107,11 @@ public class Note extends BaseObservable {
      return id == note.id
              && title.equals(note.title)
              && content.equals(note.content)
-             && dateTime == note.dateTime;
+             && Objects.equals(formattedDate, note.formattedDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id,title,content,dateTime);
+        return Objects.hash(id,title,content,formattedDate);
     }
 }

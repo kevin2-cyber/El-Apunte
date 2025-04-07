@@ -43,7 +43,7 @@
             android:layout_marginTop="70dp"
             android:layout_marginBottom="5dp"
             android:layout_marginEnd="16dp"
-            android:text="@{note.createDateFormatted()}"
+            android:text="@{note.formattedDate}"
             android:textSize="14sp"
             android:layout_gravity="end"/>
 

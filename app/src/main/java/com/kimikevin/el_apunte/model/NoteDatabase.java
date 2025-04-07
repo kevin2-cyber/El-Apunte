@@ -1,22 +1,23 @@
 package com.kimikevin.el_apunte.model;
 
 import android.content.Context;
+import android.icu.text.SimpleDateFormat;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.kimikevin.el_apunte.model.dao.NoteDao;
 import com.kimikevin.el_apunte.model.entity.Note;
 
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Note.class}, version = 3, exportSchema = false)
-@TypeConverters(Converters.class)
+@Database(entities = {Note.class}, version = 4, exportSchema = false)
 public abstract class NoteDatabase extends RoomDatabase {
     public abstract NoteDao getNoteDao();
 
@@ -47,6 +48,8 @@ public abstract class NoteDatabase extends RoomDatabase {
 
     private static void initializeData() {
         NoteDao noteDao = instance.getNoteDao();
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy, h:mm a", Locale.getDefault());
+        String formattedDate = sdf.format(new Date());
 
         ExecutorService executorService = Executors.newFixedThreadPool(4);
         executorService.execute(() ->  {
@@ -56,22 +59,22 @@ public abstract class NoteDatabase extends RoomDatabase {
                 Note noteOne = new Note();
                 noteOne.setTitle("Like and Subscribe");
                 noteOne.setContent("A FREE way to support the channel is to give us a LIKE . It does not cost you but means a lot to us.\nIf you are new here please Subscribe");
-                noteOne.createDateFormatted();
+                noteOne.setFormattedDate(formattedDate);
 
                 Note noteTwo = new Note();
                 noteTwo.setTitle("Recipes to Try");
                 noteTwo.setContent("1. Chicken Alfredo\n2. Vegan chili\n3. Spaghetti carbonara\n4. Chocolate lava cake");
-                noteTwo.createDateFormatted();
+                noteTwo.setFormattedDate(formattedDate);
 
                 Note noteThree = new Note();
                 noteThree.setTitle("Books to Read");
                 noteThree.setContent("1. To Kill a Mockingbird\n2. 1984\n3. The Great Gatsby\n4. The Catcher in the Rye");
-                noteThree.createDateFormatted();
+                noteThree.setFormattedDate(formattedDate);
 
                 Note noteFour = new Note();
                 noteFour.setTitle("Gift Ideas for Mom");
                 noteFour.setContent("1. Jewelry box\n2. Cookbook\n3. Scarf\n4. Spa day gift card");
-                noteFour.createDateFormatted();
+                noteFour.setFormattedDate(formattedDate);
 
                 noteDao.insertAll(noteOne, noteTwo, noteThree, noteFour);
         }
