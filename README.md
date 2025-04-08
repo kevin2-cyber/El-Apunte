@@ -37,19 +37,32 @@
 
 ## 🚀 Getting Started
 
+
 ### Prerequisites
+
 - Android Studio (Flamingo or newer)
+
 - Android SDK 33+
 
-### Installation
-1. **Clone the repository**
+## 🚀 Quick Installation
+1. **Install Android Studio**
+
+   Download from developer.android.com/studio
+2. **Clone & Open**
+
    ```bash
-   git clone https://github.com/kevin2-cyber/el-apunte.git
-   
-2. **Open in Android Studio**
-   File → Open → Select the cloned directory.
-3. **Run the App**
-   Click the ▶️ button or Shift + F10(Windows).
+   git clone https://github.com/your-username/el-apunte.git
+   cd el-apunte
+
+
+  - Windows: Double-click the folder to open in Android Studio
+  - Mac/Linux: Run `open -a "Android Studio" .` or `studio.sh .`
+
+3.  **Run the App**
+   - Click the green ▶️ "Run" button in Android Studio
+   - Select an emulator or connect your Android device
+
+---
 
 ## 🏗 Project Structure
 
@@ -65,6 +78,9 @@
 ├── 📂 gradle/
 └── build.gradle
 ```
+
+---
+
 
 ## 🧩 Key Code Components
 ### 1. Note Entity (`Note.java`)  
@@ -192,6 +208,10 @@ public class EditClickHandler {
     }
 }
 ```
+
+---
+
+
 ## 🤝 Contributing
 #### Pull requests are welcome! For major changes, open an issue first.
 1. Fork the project.
@@ -200,5 +220,15 @@ public class EditClickHandler {
 4. Push to the branch (`git push origin feature/awesome-feature`)
 5. Open a PR.
 
+---
+
 ## 📄 License
 ### MIT License. See LICENSE for details.
+
+---
+
+##  🎉 Acknowledgements
+- Icons by Material Design
+- Built with ❤️ in Java by Kelvin Eduful
+
+---
