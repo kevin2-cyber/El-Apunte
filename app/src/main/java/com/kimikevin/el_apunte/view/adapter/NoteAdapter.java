@@ -55,7 +55,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
     @SuppressLint("NotifyDataSetChanged")
     public void setNotes(List<Note> newNotes) {
-        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new NoteDiffCallback((ArrayList<Note>) notes, (ArrayList<Note>) newNotes));
+        DiffUtil.DiffResult result = DiffUtil
+                .calculateDiff(new NoteDiffCallback((ArrayList<Note>) notes, (ArrayList<Note>) newNotes));
         notes.clear();
         notes.addAll(newNotes);
         result.dispatchUpdatesTo(this);
@@ -72,14 +73,14 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             super(binding.getRoot());
             this.binding = binding;
 
-            itemView.setOnClickListener(v -> {
+            binding.getRoot().setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && listener != null) {
                     listener.onNoteClick(notes.get(position));
                 }
             });
 
-            itemView.setOnLongClickListener(v -> {
+            binding.getRoot().setOnLongClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && listener != null) {
                     showDeleteConfirmationDialog(notes.get(position), position);
