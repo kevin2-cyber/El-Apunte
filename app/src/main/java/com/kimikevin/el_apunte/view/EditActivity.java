@@ -3,14 +3,12 @@ package com.kimikevin.el_apunte.view;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.kimikevin.el_apunte.R;
@@ -18,60 +16,82 @@ import com.kimikevin.el_apunte.databinding.ActivityEditBinding;
 import com.kimikevin.el_apunte.model.entity.Note;
 
 public class EditActivity extends AppCompatActivity {
-    private Note note;
     public static final String NOTE_ID = "note_id";
     public static final String NOTE_TITLE = "note_title";
     public static final String NOTE_CONTENT = "note_content";
-    ActivityEditBinding binding;
-    EditClickHandler handler;
+    public static final String NOTE_TIME = "note_time";
+
+    private ActivityEditBinding binding;
+    private Note note;
+    private String originalTitle;
+    private String originalContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_edit);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.edit), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_edit);
 
         note = new Note();
-
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_edit);
         binding.setNote(note);
+        binding.setHandler(new EditClickHandler(this));
 
-        handler = new EditClickHandler(this);
-        binding.setHandler(handler);
+        setupNoteFromIntent();
+    }
 
-        Intent i = getIntent();
-        if (i.hasExtra(NOTE_ID)) {
-            // RecyclerView item clicked
-            setTitle("Edit Course");
-            note.setTitle(i.getStringExtra(NOTE_TITLE));
-            note.setContent(i.getStringExtra(NOTE_CONTENT));
+    private void setupNoteFromIntent() {
+        Intent intent = getIntent();
+        if (intent.hasExtra(NOTE_ID)) {
+            setTitle(R.string.edit_note);
+            originalTitle = intent.getStringExtra(NOTE_TITLE);
+            originalContent = intent.getStringExtra(NOTE_CONTENT);
+
+            note.setTitle(originalTitle);
+            note.setContent(originalContent);
         } else {
-            // fab clicked
-            setTitle("Create New Course");
+            setTitle(R.string.create_note);
+            originalTitle = "";
+            originalContent = "";
         }
     }
 
     public class EditClickHandler {
-        Context context;
+        private final Context context;
 
         public EditClickHandler(Context context) {
             this.context = context;
         }
 
         public void onSubmitButtonClicked(View view) {
-            if (note.getTitle() == null && note.getContent() == null) {
-                Toast.makeText(context, "Title and content Cannot be empty", Toast.LENGTH_SHORT).show();
-            } else {
-                Intent intent = new Intent();
-                intent.putExtra(NOTE_TITLE,note.getTitle());
-                intent.putExtra(NOTE_CONTENT, note.getContent());
-                setResult(RESULT_OK, intent);
+            String title = note.getTitle() != null ? note.getTitle().trim() : "";
+            String content = note.getContent() != null ? note.getContent().trim() : "";
+
+            if (TextUtils.isEmpty(title) && TextUtils.isEmpty(content)) {
+                Toast.makeText(context, R.string.empty_note_error, Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            // Check if there are actual changes
+            boolean hasChanges = !title.equals(originalTitle) || !content.equals(originalContent);
+
+            if (!hasChanges) {
+                Toast.makeText(context, R.string.no_changes_detected, Toast.LENGTH_SHORT).show();
+                setResult(RESULT_CANCELED);
                 finish();
+                return;
+            }
+
+            try {
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra(NOTE_TITLE, title);
+                resultIntent.putExtra(NOTE_CONTENT, content);
+                resultIntent.putExtra(NOTE_TIME, note.getFormattedDate());
+
+                setResult(RESULT_OK, resultIntent);
+                finish();
+            } catch (Exception e) {
+                Toast.makeText(context, R.string.save_note_error, Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -2,8 +2,9 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/background">
         <shape>
-            <corners android:radius="50px"/>
-            <solid android:color="#A4E3E9E7"/>
+            <corners android:radius="20dp"/>
+            <solid android:color="@android:color/transparent"/>
+            <stroke android:width="0.5dp" android:color="@color/ash"/>
         </shape>
 
     </item>

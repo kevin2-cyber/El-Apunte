@@ -5,47 +5,54 @@
             name="note"
             type="com.kimikevin.el_apunte.model.entity.Note" />
     </data>
-    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_gravity="center"
-        app:cardCornerRadius="10dp"
-        app:cardBackgroundColor="@color/beige"
-        android:layout_marginBottom="10dp"
-        android:id="@+id/card">
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:id="@+id/card"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
 
-        <TextView
-            android:id="@+id/tv_card_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{note.title}"
-            android:textAppearance="?attr/textAppearanceTitleLarge"
-            android:textStyle="bold"
-            android:layout_marginStart="16dp"
-            android:textAlignment="center"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tv_card_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginStart="16dp"
-            android:text="@{note.content}"
-            android:visibility="gone"
-            android:textAppearance="?attr/textAppearanceBodyMedium"
-            android:textAlignment="center" />
+            <TextView
+                android:id="@+id/tv_card_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{note.title}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end"/>
 
-        <TextView
-            android:id="@+id/tv_time_stamp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="16dp"
-            android:text="@{note.createDateFormatted()}"
-            android:textSize="14sp"
-            android:layout_gravity="end"/>
+            <TextView
+                android:id="@+id/tv_card_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="8dp"
+                android:text="@{note.content}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:maxLines="2"
+                android:ellipsize="end"/>
+
+            <TextView
+                android:id="@+id/tv_time_stamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@{note.formattedDate}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:textColor="?android:attr/textColorSecondary"/>
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 </layout>
