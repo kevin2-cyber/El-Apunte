@@ -32,6 +32,7 @@ public class Note extends BaseObservable {
         this.content = content;
     }
 
+    @Ignore
     public Note(String title, String content) {
         this.title = title;
         this.content = content;
