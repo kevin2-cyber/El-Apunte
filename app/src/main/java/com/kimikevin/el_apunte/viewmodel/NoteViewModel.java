@@ -1,5 +1,7 @@
 package com.kimikevin.el_apunte.viewmodel;
 
+import static com.kimikevin.el_apunte.model.util.AppConstants.NOTE_LOG_TAG;
+
 import android.app.Application;
 import android.util.Log;
 
@@ -31,12 +33,12 @@ public class NoteViewModel extends AndroidViewModel {
 
     public void insertNote(Note note) {
         long currentTimestamp = System.currentTimeMillis();  // Get current time in milliseconds
-        Log.d("NOTE_DEBUG", "Current timestamp: " + currentTimestamp);  // Log the timestamp
+        Log.d(NOTE_LOG_TAG, "Current timestamp: " + currentTimestamp);  // Log the timestamp
 
-        String formattedDate = TimeAgoUtil.getTimeUsing24HourFormat(System.currentTimeMillis());
+        String formattedDate = TimeAgoUtil.getTimeUsing24HourFormat(currentTimestamp);
         note.setFormattedDate(formattedDate);
 
-        Log.d("NOTE_DEBUG", "Saved date: " + note.getFormattedDate());
+        Log.d(NOTE_LOG_TAG, "Saved date: " + note.getFormattedDate());
         repository.insertNote(note);
     }
 

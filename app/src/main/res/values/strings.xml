@@ -4,4 +4,14 @@
     <string name="filter">filter</string>
     <string name="theme_switcher">Theme Switcher</string>
     <string name="fab">fab</string>
+    <string name="edit_note_title">Edit Note</string>
+    <string name="create_note_title">New Note</string>
+    <string name="title_hint">Title</string>
+    <string name="content_hint">Start writing…</string>
+    <string name="error_empty_note">Note must have title or content</string>
+    <string name="unsaved_changes">Unsaved Changes</string>
+    <string name="discard_changes_confirmation">Discard changes?</string>
+    <string name="discard">Discard</string>
+    <string name="cancel">Cancel</string>
+    <string name="dismiss">Dismiss</string>
 </resources>

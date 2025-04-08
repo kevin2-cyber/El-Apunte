@@ -1,5 +1,7 @@
 package com.kimikevin.el_apunte.view.adapter;
 
+import static com.kimikevin.el_apunte.model.util.AppConstants.NOTE_LOG_TAG;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
@@ -83,10 +85,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                     listener.onNoteDelete(note); // Perform deletion
                     notes.remove(position); // Remove from list
                     notifyItemRemoved(position);
-                    Log.d("NOTE_DEBUG", "Time Deleted: " + note.getFormattedDate());
+                    Log.d(NOTE_LOG_TAG, "Time Deleted: " + note.getFormattedDate());
                 }))
                 .setNeutralButton("Cancel", ((dialog, which) -> {}))
-                .setNegativeButton("No", ((dialog, which) -> {dialog.dismiss();}))
+                .setNegativeButton("No", ((dialog, which) -> dialog.dismiss()))
                 .create()
                 .show();
     }

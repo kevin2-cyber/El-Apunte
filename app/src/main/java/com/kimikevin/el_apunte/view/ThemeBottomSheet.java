@@ -1,6 +1,9 @@
 package com.kimikevin.el_apunte.view;
 
 
+import static com.kimikevin.el_apunte.model.util.AppConstants.THEME_KEY;
+import static com.kimikevin.el_apunte.model.util.AppConstants.PREF_KEY;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -20,9 +23,6 @@ import com.kimikevin.el_apunte.databinding.ThemeBottomSheetLayoutBinding;
 
 public class ThemeBottomSheet extends BottomSheetDialogFragment {
     ThemeBottomSheetLayoutBinding binding;
-    public static final String TAG = "ModalBottomSheet";
-    public static final String THEME_KEY = "theme_key";
-    private static final String PREF_KEY = "pref";
 
     @Nullable
     @Override

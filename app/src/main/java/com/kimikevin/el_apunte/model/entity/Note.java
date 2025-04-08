@@ -5,15 +5,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
-import androidx.databinding.library.baseAdapters.BR;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.kimikevin.el_apunte.model.util.TimeAgoUtil;
+import com.kimikevin.el_apunte.BR;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity(tableName = "note_table")
@@ -27,10 +25,14 @@ public class Note extends BaseObservable {
     private String content;
     @ColumnInfo(name = "formatted_date")
     private String formattedDate;
-//    private LocalDateTime dateTime = LocalDateTime.now();
 
     public Note(int id, String title, String content) {
         this.id = id;
+        this.title = title;
+        this.content = content;
+    }
+
+    public Note(String title, String content) {
         this.title = title;
         this.content = content;
     }
@@ -68,25 +70,15 @@ public class Note extends BaseObservable {
         notifyPropertyChanged(BR.content);
     }
 
+    @Bindable
     public String getFormattedDate() {
         return formattedDate;
     }
 
     public void setFormattedDate(String formattedDate) {
         this.formattedDate = formattedDate;
+        notifyPropertyChanged(BR.formattedDate);
     }
-
-    //    public LocalDateTime getDateTime() {
-//        return dateTime;
-//    }
-
-//    public void setDateTime(LocalDateTime dateTime) {
-//        this.dateTime = dateTime;
-//    }
-
-//    public String createDateFormatted() {
-//        return TimeAgoUtil.getTimeAgo(dateTime);
-//    }
 
     @NonNull
     @Override
