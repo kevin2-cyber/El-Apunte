@@ -16,39 +16,42 @@ import com.kimikevin.el_apunte.model.util.TimeAgoUtil;
 import java.util.List;
 
 public class NoteViewModel extends AndroidViewModel {
-    // repository
     private final NoteRepository repository;
+    private final LiveData<List<Note>> allNotes;
 
-    // live data
-    private LiveData<List<Note>> allNotes;
     public NoteViewModel(@NonNull Application application) {
         super(application);
         repository = new NoteRepository(application);
+        allNotes = repository.getAllNotes();
     }
 
     public LiveData<List<Note>> getAllNotes() {
-        allNotes = repository.getAllNotes();
         return allNotes;
     }
 
     public void insertNote(Note note) {
-        long currentTimestamp = System.currentTimeMillis();  // Get current time in milliseconds
-        Log.d(NOTE_LOG_TAG, "Current timestamp: " + currentTimestamp);  // Log the timestamp
-
-        String formattedDate = TimeAgoUtil.getTimeUsing24HourFormat(currentTimestamp);
-        note.setFormattedDate(formattedDate);
-
-        Log.d(NOTE_LOG_TAG, "Saved date: " + note.getFormattedDate());
-        repository.insertNote(note);
+        try {
+            long timestamp = System.currentTimeMillis();
+            note.setFormattedDate(TimeAgoUtil.getTimeUsing24HourFormat(timestamp));
+            repository.insertNote(note);
+        } catch (Exception e) {
+            Log.e(NOTE_LOG_TAG, "Error inserting note", e);
+        }
     }
 
     public void updateNote(Note note) {
-        repository.updateNote(note);
+        try {
+            repository.updateNote(note);
+        } catch (Exception e) {
+            Log.e(NOTE_LOG_TAG, "Error updating note", e);
+        }
     }
 
     public void deleteNote(Note note) {
-        repository.deleteNote(note);
+        try {
+            repository.deleteNote(note);
+        } catch (Exception e) {
+            Log.e(NOTE_LOG_TAG, "Error deleting note", e);
+        }
     }
 }
-//        SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy, h:mm a", Locale.getDefault());
-//        String formattedDate = sdf.format(new Date());

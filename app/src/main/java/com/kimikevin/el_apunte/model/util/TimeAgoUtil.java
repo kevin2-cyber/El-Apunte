@@ -1,9 +1,5 @@
 package com.kimikevin.el_apunte.model.util;
 
-import android.icu.text.SimpleDateFormat;
-import android.icu.util.Calendar;
-import android.util.Log;
-
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
