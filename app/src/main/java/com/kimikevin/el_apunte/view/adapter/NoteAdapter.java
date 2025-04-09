@@ -23,7 +23,7 @@ import java.util.Random;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
     private final Context context;
-    private final List<Note> notes = new ArrayList<>();
+    private List<Note> notes = new ArrayList<>();
     private OnItemClickListener listener;
 
     public NoteAdapter(Context context) {
@@ -57,8 +57,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     public void setNotes(List<Note> newNotes) {
         DiffUtil.DiffResult result = DiffUtil
                 .calculateDiff(new NoteDiffCallback((ArrayList<Note>) notes, (ArrayList<Note>) newNotes));
-        notes.clear();
-        notes.addAll(newNotes);
+        notes = newNotes;
         result.dispatchUpdatesTo(this);
     }
 
