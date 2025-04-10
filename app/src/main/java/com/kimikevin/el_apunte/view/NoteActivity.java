@@ -128,32 +128,28 @@ public class NoteActivity extends AppCompatActivity {
 
     private void updateNoteList(List<Note> notes) {
         noteList = new ArrayList<>(notes);
-        noteAdapter.setNotes(noteList);
+        noteAdapter.submitList(noteList);
         binding.emptyState.setVisibility(View.GONE);
     }
 
     private void showEmptyState() {
         noteList.clear();
-        noteAdapter.setNotes(noteList);
+        noteAdapter.submitList(noteList);
         binding.emptyState.setVisibility(View.VISIBLE);
     }
 
     private void filterNotes(String query) {
         try {
-            if (TextUtils.isEmpty(query)) {
-                noteAdapter.setNotes(noteList);
-                return;
-            }
-
             List<Note> filtered = noteList.stream()
-                    .filter(n -> n.getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                    .filter(n -> TextUtils.isEmpty(query) ||
+                            n.getTitle().toLowerCase().contains(query.toLowerCase()) ||
                             n.getContent().toLowerCase().contains(query.toLowerCase()))
                     .collect(Collectors.toList());
 
-            noteAdapter.setNotes(new ArrayList<>(filtered));
+            noteAdapter.submitList(filtered);
             binding.emptyState.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
         } catch (Exception e) {
-            Log.e(NOTE_LOG_TAG, e.toString());
+            Log.e(NOTE_LOG_TAG, "Filter error", e);
         }
     }
 
