@@ -1,4 +1,4 @@
-package com.kimikevin.el_apunte.model.util;
+package com.kimikevin.el_apunte.util;
 
 public class AppConstants {
     public static final String NOTE_LOG_TAG = "NOTE_DEBUG";

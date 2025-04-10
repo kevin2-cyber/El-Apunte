@@ -1,11 +1,11 @@
 package com.kimikevin.el_apunte.view;
 
-import static com.kimikevin.el_apunte.model.util.AppConstants.ADD_NOTE_REQUEST_CODE;
-import static com.kimikevin.el_apunte.model.util.AppConstants.EDIT_NOTE_REQUEST_CODE;
-import static com.kimikevin.el_apunte.model.util.AppConstants.NOTE_LOG_TAG;
-import static com.kimikevin.el_apunte.model.util.AppConstants.PREF_KEY;
-import static com.kimikevin.el_apunte.model.util.AppConstants.THEME_KEY;
-import static com.kimikevin.el_apunte.model.util.AppConstants.TAG;
+import static com.kimikevin.el_apunte.util.AppConstants.ADD_NOTE_REQUEST_CODE;
+import static com.kimikevin.el_apunte.util.AppConstants.EDIT_NOTE_REQUEST_CODE;
+import static com.kimikevin.el_apunte.util.AppConstants.NOTE_LOG_TAG;
+import static com.kimikevin.el_apunte.util.AppConstants.PREF_KEY;
+import static com.kimikevin.el_apunte.util.AppConstants.THEME_KEY;
+import static com.kimikevin.el_apunte.util.AppConstants.TAG;
 import static com.kimikevin.el_apunte.view.EditActivity.NOTE_CONTENT;
 import static com.kimikevin.el_apunte.view.EditActivity.NOTE_TITLE;
 

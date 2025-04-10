@@ -1,4 +1,4 @@
-package com.kimikevin.el_apunte.view.util;
+package com.kimikevin.el_apunte.util;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
