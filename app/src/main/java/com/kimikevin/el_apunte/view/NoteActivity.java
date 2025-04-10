@@ -70,11 +70,8 @@ public class NoteActivity extends AppCompatActivity {
     private void setupViewModel() {
         noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
         noteViewModel.getAllNotes().observe(this, notes -> {
-            if (notes == null || notes.isEmpty()) {
-                showEmptyState();
-            } else {
-                updateNoteList(notes);
-            }
+            noteAdapter.submitList(notes); // Automatic diff handling
+            binding.emptyState.setVisibility(notes.isEmpty() ? View.VISIBLE : View.GONE);
         });
     }
 
@@ -124,18 +121,6 @@ public class NoteActivity extends AppCompatActivity {
         binding.rvNotes.setLayoutManager(layoutManager);
         binding.rvNotes.setItemAnimator(new DefaultItemAnimator());
         binding.rvNotes.setAdapter(noteAdapter);
-    }
-
-    private void updateNoteList(List<Note> notes) {
-        noteList = new ArrayList<>(notes);
-        noteAdapter.submitList(noteList);
-        binding.emptyState.setVisibility(View.GONE);
-    }
-
-    private void showEmptyState() {
-        noteList.clear();
-        noteAdapter.submitList(noteList);
-        binding.emptyState.setVisibility(View.VISIBLE);
     }
 
     private void filterNotes(String query) {

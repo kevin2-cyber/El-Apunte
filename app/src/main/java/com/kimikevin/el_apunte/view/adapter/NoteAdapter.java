@@ -87,7 +87,7 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteViewHolder> {
             binding.getRoot().setOnLongClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && listener != null) {
-                    showDeleteConfirmationDialog(getItem(position), position);
+                    showDeleteConfirmationDialog(getItem(position));
                 }
                 return true;
             });
@@ -107,14 +107,13 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteViewHolder> {
             );
         }
 
-        private void showDeleteConfirmationDialog(Note note, int position) {
+        private void showDeleteConfirmationDialog(Note note) {
             new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_App_MaterialAlertDialog)
                     .setTitle(R.string.delete_note_title)
                     .setMessage(R.string.delete_note_message)
                     .setPositiveButton(R.string.yes, (dialog, which) -> {
                         if (listener != null) {
                             listener.onNoteDelete(note);
-                            notifyItemRemoved(position);
                         }
                     })
                     .setNegativeButton(R.string.no, (dialog, which) -> dialog.dismiss())
