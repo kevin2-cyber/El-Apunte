@@ -1,8 +1,8 @@
 package com.kimikevin.el_apunte.view;
 
 
-import static com.kimikevin.el_apunte.model.util.AppConstants.THEME_KEY;
-import static com.kimikevin.el_apunte.model.util.AppConstants.PREF_KEY;
+import static com.kimikevin.el_apunte.util.AppConstants.THEME_KEY;
+import static com.kimikevin.el_apunte.util.AppConstants.PREF_KEY;
 
 import android.content.Context;
 import android.content.SharedPreferences;

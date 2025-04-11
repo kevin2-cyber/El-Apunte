@@ -1,4 +1,4 @@
-package com.kimikevin.el_apunte.model.util;
+package com.kimikevin.el_apunte.util;
 
 import java.time.Instant;
 import java.time.LocalDate;

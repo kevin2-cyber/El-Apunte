@@ -1,32 +1,50 @@
 package com.kimikevin.el_apunte.view.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.kimikevin.el_apunte.R;
 import com.kimikevin.el_apunte.databinding.NoteItemBinding;
 import com.kimikevin.el_apunte.model.entity.Note;
-import com.kimikevin.el_apunte.view.util.NoteDiffCallback;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
-public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
+public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteViewHolder> {
     private final Context context;
-    private final List<Note> notes = new ArrayList<>();
     private OnItemClickListener listener;
 
+    // Step 1: Implement DiffUtil properly
+    private static final DiffUtil.ItemCallback<Note> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<>() {
+                @Override
+                public boolean areItemsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
+                    return oldItem.getId() == newItem.getId();
+                }
+
+                @Override
+                public boolean areContentsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
+                    return oldItem.equals(newItem);
+                }
+
+                @Nullable
+                @Override
+                public Object getChangePayload(@NonNull Note oldItem, @NonNull Note newItem) {
+                    return super.getChangePayload(oldItem, newItem);
+                }
+            };
+
     public NoteAdapter(Context context) {
+        super(DIFF_CALLBACK);
         this.context = context;
     }
 
@@ -44,22 +62,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
-        Note note = notes.get(position);
+        Note note = getItem(position);
         holder.bind(note);
-    }
-
-    @Override
-    public int getItemCount() {
-        return notes.size();
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    public void setNotes(List<Note> newNotes) {
-        DiffUtil.DiffResult result = DiffUtil
-                .calculateDiff(new NoteDiffCallback((ArrayList<Note>) notes, (ArrayList<Note>) newNotes));
-        notes.clear();
-        notes.addAll(newNotes);
-        result.dispatchUpdatesTo(this);
     }
 
     public void setListener(OnItemClickListener listener) {
@@ -76,14 +80,14 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             binding.getRoot().setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && listener != null) {
-                    listener.onNoteClick(notes.get(position));
+                    listener.onNoteClick(getItem(position));
                 }
             });
 
             binding.getRoot().setOnLongClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && listener != null) {
-                    showDeleteConfirmationDialog(notes.get(position), position);
+                    showDeleteConfirmationDialog(getItem(position));
                 }
                 return true;
             });
@@ -103,14 +107,14 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             );
         }
 
-        private void showDeleteConfirmationDialog(Note note, int position) {
+        private void showDeleteConfirmationDialog(Note note) {
             new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_App_MaterialAlertDialog)
                     .setTitle(R.string.delete_note_title)
                     .setMessage(R.string.delete_note_message)
                     .setPositiveButton(R.string.yes, (dialog, which) -> {
-                        listener.onNoteDelete(note);
-                        notes.remove(position);
-                        notifyItemRemoved(position);
+                        if (listener != null) {
+                            listener.onNoteDelete(note);
+                        }
                     })
                     .setNegativeButton(R.string.no, (dialog, which) -> dialog.dismiss())
                     .create()

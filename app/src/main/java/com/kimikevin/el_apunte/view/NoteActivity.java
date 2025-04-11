@@ -1,11 +1,13 @@
 package com.kimikevin.el_apunte.view;
 
-import static com.kimikevin.el_apunte.model.util.AppConstants.ADD_NOTE_REQUEST_CODE;
-import static com.kimikevin.el_apunte.model.util.AppConstants.EDIT_NOTE_REQUEST_CODE;
-import static com.kimikevin.el_apunte.model.util.AppConstants.NOTE_LOG_TAG;
-import static com.kimikevin.el_apunte.model.util.AppConstants.PREF_KEY;
-import static com.kimikevin.el_apunte.model.util.AppConstants.THEME_KEY;
-import static com.kimikevin.el_apunte.model.util.AppConstants.TAG;
+import static com.kimikevin.el_apunte.util.AppConstants.ADD_NOTE_REQUEST_CODE;
+import static com.kimikevin.el_apunte.util.AppConstants.EDIT_NOTE_REQUEST_CODE;
+import static com.kimikevin.el_apunte.util.AppConstants.NOTE_LOG_TAG;
+import static com.kimikevin.el_apunte.util.AppConstants.PREF_KEY;
+import static com.kimikevin.el_apunte.util.AppConstants.THEME_KEY;
+import static com.kimikevin.el_apunte.util.AppConstants.TAG;
+import static com.kimikevin.el_apunte.view.EditActivity.NOTE_CONTENT;
+import static com.kimikevin.el_apunte.view.EditActivity.NOTE_TITLE;
 
 import android.content.Context;
 import android.content.Intent;
@@ -68,11 +70,8 @@ public class NoteActivity extends AppCompatActivity {
     private void setupViewModel() {
         noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
         noteViewModel.getAllNotes().observe(this, notes -> {
-            if (notes == null || notes.isEmpty()) {
-                showEmptyState();
-            } else {
-                updateNoteList(notes);
-            }
+            noteAdapter.submitList(notes); // Automatic diff handling
+            binding.emptyState.setVisibility(notes.isEmpty() ? View.VISIBLE : View.GONE);
         });
     }
 
@@ -124,38 +123,26 @@ public class NoteActivity extends AppCompatActivity {
         binding.rvNotes.setAdapter(noteAdapter);
     }
 
-    private void updateNoteList(List<Note> notes) {
-        noteList = new ArrayList<>(notes);
-        noteAdapter.setNotes(noteList);
-        binding.emptyState.setVisibility(View.GONE);
-    }
-
-    private void showEmptyState() {
-        noteList.clear();
-        noteAdapter.setNotes(noteList);
-        binding.emptyState.setVisibility(View.VISIBLE);
-    }
-
     private void filterNotes(String query) {
-        if (TextUtils.isEmpty(query)) {
-            noteAdapter.setNotes(noteList);
-            return;
+        try {
+            List<Note> filtered = noteList.stream()
+                    .filter(n -> TextUtils.isEmpty(query) ||
+                            n.getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                            n.getContent().toLowerCase().contains(query.toLowerCase()))
+                    .collect(Collectors.toList());
+
+            noteAdapter.submitList(filtered);
+            binding.emptyState.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
+        } catch (Exception e) {
+            Log.e(NOTE_LOG_TAG, "Filter error", e);
         }
-
-        List<Note> filtered = noteList.stream()
-                .filter(n -> n.getTitle().toLowerCase().contains(query.toLowerCase()) ||
-                        n.getContent().toLowerCase().contains(query.toLowerCase()))
-                .collect(Collectors.toList());
-
-        noteAdapter.setNotes(new ArrayList<>(filtered));
-        binding.emptyState.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     private void openEditActivity(Note note) {
         Intent intent = new Intent(this, EditActivity.class);
         intent.putExtra(EditActivity.NOTE_ID, note.getId());
-        intent.putExtra(EditActivity.NOTE_TITLE, note.getTitle());
-        intent.putExtra(EditActivity.NOTE_CONTENT, note.getContent());
+        intent.putExtra(NOTE_TITLE, note.getTitle());
+        intent.putExtra(NOTE_CONTENT, note.getContent());
         startActivityIfNeeded(intent, EDIT_NOTE_REQUEST_CODE);
     }
 
@@ -173,8 +160,8 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     private void handleAddNoteResult(Intent data) {
-        String title = data.getStringExtra(EditActivity.NOTE_TITLE);
-        String content = data.getStringExtra(EditActivity.NOTE_CONTENT);
+        String title = data.getStringExtra(NOTE_TITLE);
+        String content = data.getStringExtra(NOTE_CONTENT);
 
         if (!TextUtils.isEmpty(title) || !TextUtils.isEmpty(content)) {
             Note note = new Note(title, content);
@@ -187,8 +174,8 @@ public class NoteActivity extends AppCompatActivity {
         if (selectedNoteId == -1) return;
 
         Note note = new Note(
-                data.getStringExtra(EditActivity.NOTE_TITLE),
-                data.getStringExtra(EditActivity.NOTE_CONTENT)
+                data.getStringExtra(NOTE_TITLE),
+                data.getStringExtra(NOTE_CONTENT)
         );
         note.setId(selectedNoteId);
         noteViewModel.updateNote(note);
