@@ -1,5 +1,7 @@
 package com.kimikevin.el_apunte.util;
 
+import android.os.Build;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -8,7 +10,11 @@ import java.time.format.DateTimeFormatter;
 public class TimeAgoUtil {
 
     public static String getTimeUsing24HourFormat(long timestamp) {
-        Instant instant = Instant.ofEpochMilli(timestamp);
+        Instant instant = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            instant = Instant.ofEpochMilli(timestamp);
+        }
+        assert instant != null;
         LocalDate messageDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate today = LocalDate.now();
 
@@ -35,7 +41,10 @@ public class TimeAgoUtil {
         } else if (messageDate.isAfter(today.minusDays(7))) {
             return DateTimeFormatter.ofPattern("EEEE").format(messageDate);
         } else {
-            return DateTimeFormatter.ofPattern("MMM d, yyyy").format(messageDate);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                return DateTimeFormatter.ofPattern("MMM d, yyyy").format(messageDate);
+            }
         }
+        return "";
     }
 }
