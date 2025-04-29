@@ -10,11 +10,8 @@ import java.time.format.DateTimeFormatter;
 public class TimeAgoUtil {
 
     public static String getTimeUsing24HourFormat(long timestamp) {
-        Instant instant = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            instant = Instant.ofEpochMilli(timestamp);
-        }
-        assert instant != null;
+        Instant instant = Instant.ofEpochMilli(timestamp);
+
         LocalDate messageDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate today = LocalDate.now();
 
@@ -41,10 +38,7 @@ public class TimeAgoUtil {
         } else if (messageDate.isAfter(today.minusDays(7))) {
             return DateTimeFormatter.ofPattern("EEEE").format(messageDate);
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 return DateTimeFormatter.ofPattern("MMM d, yyyy").format(messageDate);
-            }
         }
-        return "";
     }
 }
