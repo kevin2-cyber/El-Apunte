@@ -1,6 +1,5 @@
 package com.kimikevin.el_apunte.util;
 
-import android.os.Build;
 
 import java.time.Instant;
 import java.time.LocalDate;
