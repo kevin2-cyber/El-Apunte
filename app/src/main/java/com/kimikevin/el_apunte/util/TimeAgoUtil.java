@@ -1,5 +1,6 @@
 package com.kimikevin.el_apunte.util;
 
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -9,6 +10,7 @@ public class TimeAgoUtil {
 
     public static String getTimeUsing24HourFormat(long timestamp) {
         Instant instant = Instant.ofEpochMilli(timestamp);
+
         LocalDate messageDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate today = LocalDate.now();
 
@@ -35,7 +37,7 @@ public class TimeAgoUtil {
         } else if (messageDate.isAfter(today.minusDays(7))) {
             return DateTimeFormatter.ofPattern("EEEE").format(messageDate);
         } else {
-            return DateTimeFormatter.ofPattern("MMM d, yyyy").format(messageDate);
+                return DateTimeFormatter.ofPattern("MMM d, yyyy").format(messageDate);
         }
     }
 }
