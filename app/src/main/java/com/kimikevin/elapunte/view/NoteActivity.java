@@ -1,13 +1,13 @@
-package com.kimikevin.el_apunte.view;
+package com.kimikevin.elapunte.view;
 
-import static com.kimikevin.el_apunte.util.AppConstants.ADD_NOTE_REQUEST_CODE;
-import static com.kimikevin.el_apunte.util.AppConstants.EDIT_NOTE_REQUEST_CODE;
-import static com.kimikevin.el_apunte.util.AppConstants.NOTE_LOG_TAG;
-import static com.kimikevin.el_apunte.util.AppConstants.PREF_KEY;
-import static com.kimikevin.el_apunte.util.AppConstants.THEME_KEY;
-import static com.kimikevin.el_apunte.util.AppConstants.TAG;
-import static com.kimikevin.el_apunte.view.EditActivity.NOTE_CONTENT;
-import static com.kimikevin.el_apunte.view.EditActivity.NOTE_TITLE;
+import static com.kimikevin.elapunte.util.AppConstants.ADD_NOTE_REQUEST_CODE;
+import static com.kimikevin.elapunte.util.AppConstants.EDIT_NOTE_REQUEST_CODE;
+import static com.kimikevin.elapunte.util.AppConstants.NOTE_LOG_TAG;
+import static com.kimikevin.elapunte.util.AppConstants.PREF_KEY;
+import static com.kimikevin.elapunte.util.AppConstants.THEME_KEY;
+import static com.kimikevin.elapunte.util.AppConstants.TAG;
+import static com.kimikevin.elapunte.view.EditActivity.NOTE_CONTENT;
+import static com.kimikevin.elapunte.view.EditActivity.NOTE_TITLE;
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,11 +28,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.kimikevin.el_apunte.R;
-import com.kimikevin.el_apunte.databinding.ActivityNoteBinding;
-import com.kimikevin.el_apunte.model.entity.Note;
-import com.kimikevin.el_apunte.view.adapter.NoteAdapter;
-import com.kimikevin.el_apunte.viewmodel.NoteViewModel;
+import com.kimikevin.elapunte.R;
+import com.kimikevin.elapunte.databinding.ActivityNoteBinding;
+import com.kimikevin.elapunte.model.entity.Note;
+import com.kimikevin.elapunte.view.adapter.NoteAdapter;
+import com.kimikevin.elapunte.viewmodel.NoteViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

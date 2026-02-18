@@ -1,4 +1,4 @@
-package com.kimikevin.el_apunte.model;
+package com.kimikevin.elapunte.model;
 
 import android.content.Context;
 
@@ -6,8 +6,8 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.kimikevin.el_apunte.model.dao.NoteDao;
-import com.kimikevin.el_apunte.model.entity.Note;
+import com.kimikevin.elapunte.model.dao.NoteDao;
+import com.kimikevin.elapunte.model.entity.Note;
 
 @Database(entities = {Note.class}, version = 4, exportSchema = false)
 public abstract class NoteDatabase extends RoomDatabase {

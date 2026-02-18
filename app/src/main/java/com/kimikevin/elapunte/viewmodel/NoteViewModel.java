@@ -1,6 +1,6 @@
-package com.kimikevin.el_apunte.viewmodel;
+package com.kimikevin.elapunte.viewmodel;
 
-import static com.kimikevin.el_apunte.util.AppConstants.NOTE_LOG_TAG;
+import static com.kimikevin.elapunte.util.AppConstants.NOTE_LOG_TAG;
 
 import android.app.Application;
 import android.util.Log;
@@ -9,9 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.kimikevin.el_apunte.model.entity.Note;
-import com.kimikevin.el_apunte.model.repository.NoteRepository;
-import com.kimikevin.el_apunte.util.TimeAgoUtil;
+import com.kimikevin.elapunte.model.entity.Note;
+import com.kimikevin.elapunte.model.repository.NoteRepository;
+import com.kimikevin.elapunte.util.TimeAgoUtil;
 
 import java.util.List;
 

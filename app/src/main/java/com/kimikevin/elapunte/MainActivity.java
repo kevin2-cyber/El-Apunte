@@ -1,4 +1,4 @@
-package com.kimikevin.el_apunte;
+package com.kimikevin.elapunte;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.splashscreen.SplashScreen;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.kimikevin.el_apunte.view.NoteActivity;
-import com.kimikevin.el_apunte.viewmodel.SplashViewModel;
+import com.kimikevin.elapunte.view.NoteActivity;
+import com.kimikevin.elapunte.viewmodel.SplashViewModel;
 
 
 public class MainActivity extends AppCompatActivity {

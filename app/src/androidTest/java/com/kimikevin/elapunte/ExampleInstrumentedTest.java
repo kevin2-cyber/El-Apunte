@@ -1,4 +1,4 @@
-package com.kimikevin.el_apunte;
+package com.kimikevin.elapunte;
 
 import android.content.Context;
 

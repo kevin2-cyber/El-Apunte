@@ -5,7 +5,7 @@
     <data>
         <variable
             name="clickHandler"
-            type="com.kimikevin.el_apunte.view.NoteActivity.NoteClickHandler" />
+            type="com.kimikevin.elapunte.view.NoteActivity.NoteClickHandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

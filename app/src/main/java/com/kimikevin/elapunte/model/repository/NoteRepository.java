@@ -1,4 +1,4 @@
-package com.kimikevin.el_apunte.model.repository;
+package com.kimikevin.elapunte.model.repository;
 
 import android.app.Application;
 import android.os.Handler;
@@ -6,9 +6,9 @@ import android.os.Looper;
 
 import androidx.lifecycle.LiveData;
 
-import com.kimikevin.el_apunte.model.NoteDatabase;
-import com.kimikevin.el_apunte.model.dao.NoteDao;
-import com.kimikevin.el_apunte.model.entity.Note;
+import com.kimikevin.elapunte.model.NoteDatabase;
+import com.kimikevin.elapunte.model.dao.NoteDao;
+import com.kimikevin.elapunte.model.entity.Note;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
