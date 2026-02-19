@@ -11,7 +11,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.kimikevin.elapunte.view.NoteActivity;
 import com.kimikevin.elapunte.viewmodel.SplashViewModel;
 
+import dagger.hilt.android.AndroidEntryPoint;
 
+
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
     private SplashViewModel splashViewModel;
 

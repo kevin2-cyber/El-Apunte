@@ -10,6 +10,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+
 import com.kimikevin.elapunte.BR;
 
 import java.util.Objects;

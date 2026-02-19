@@ -38,6 +38,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class NoteActivity extends AppCompatActivity {
     private ActivityNoteBinding binding;
     private NoteViewModel noteViewModel;

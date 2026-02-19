@@ -1,12 +1,8 @@
 package com.kimikevin.elapunte.model.repository;
 
-import android.app.Application;
-import android.os.Handler;
-import android.os.Looper;
 
 import androidx.lifecycle.LiveData;
 
-import com.kimikevin.elapunte.model.NoteDatabase;
 import com.kimikevin.elapunte.model.dao.NoteDao;
 import com.kimikevin.elapunte.model.entity.Note;
 
@@ -14,14 +10,18 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.inject.Inject;
+
 public class NoteRepository {
-    private final NoteDao noteDao;
+    private NoteDao noteDao;
 
     private LiveData<List<Note>> notes;
 
-    public NoteRepository(Application application) {
-        NoteDatabase noteDatabase = NoteDatabase.getInstance(application);
-        noteDao = noteDatabase.getNoteDao();
+    ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+    @Inject
+    public NoteRepository(NoteDao noteDao) {
+        this.noteDao = noteDao;
     }
 
     public LiveData<List<Note>> getAllNotes() {
@@ -30,8 +30,6 @@ public class NoteRepository {
     }
 
     public void insertNote(Note note) {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
 
         executorService.execute(() -> {
             // inserting note
@@ -40,8 +38,6 @@ public class NoteRepository {
     }
 
     public void updateNote(Note note) {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
 
         executorService.execute(() -> {
             // updating note
@@ -50,8 +46,6 @@ public class NoteRepository {
     }
 
     public void deleteNote(Note note) {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
 
         executorService.execute(() -> {
             // deleting note
