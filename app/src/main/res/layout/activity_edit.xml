@@ -5,10 +5,10 @@
     <data>
         <variable
             name="note"
-            type="com.kimikevin.el_apunte.model.entity.Note" />
+            type="com.kimikevin.elapunte.model.entity.Note" />
         <variable
             name="handler"
-            type="com.kimikevin.el_apunte.view.EditActivity.EditClickHandler" />
+            type="com.kimikevin.elapunte.view.EditActivity.EditClickHandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

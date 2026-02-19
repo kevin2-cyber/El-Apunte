@@ -1,4 +1,4 @@
-package com.kimikevin.el_apunte.view.adapter;
+package com.kimikevin.elapunte.view.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.kimikevin.el_apunte.R;
-import com.kimikevin.el_apunte.databinding.NoteItemBinding;
-import com.kimikevin.el_apunte.model.entity.Note;
+import com.kimikevin.elapunte.R;
+import com.kimikevin.elapunte.databinding.NoteItemBinding;
+import com.kimikevin.elapunte.model.entity.Note;
 
 import java.util.Random;
 

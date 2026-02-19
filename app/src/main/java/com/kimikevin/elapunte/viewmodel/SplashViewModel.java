@@ -1,4 +1,4 @@
-package com.kimikevin.el_apunte.viewmodel;
+package com.kimikevin.elapunte.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

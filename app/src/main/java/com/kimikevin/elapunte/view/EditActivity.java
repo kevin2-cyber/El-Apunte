@@ -1,4 +1,4 @@
-package com.kimikevin.el_apunte.view;
+package com.kimikevin.elapunte.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,9 +11,9 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
-import com.kimikevin.el_apunte.R;
-import com.kimikevin.el_apunte.databinding.ActivityEditBinding;
-import com.kimikevin.el_apunte.model.entity.Note;
+import com.kimikevin.elapunte.R;
+import com.kimikevin.elapunte.databinding.ActivityEditBinding;
+import com.kimikevin.elapunte.model.entity.Note;
 
 public class EditActivity extends AppCompatActivity {
     public static final String NOTE_ID = "note_id";

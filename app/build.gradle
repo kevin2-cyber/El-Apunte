@@ -1,15 +1,17 @@
 plugins {
     alias(libs.plugins.androidApplication)
+    id "com.google.protobuf"
+    id "com.google.dagger.hilt.android"
 }
 
 android {
-    namespace 'com.kimikevin.el_apunte'
-    compileSdk 35
+    namespace 'com.kimikevin.elapunte'
+    compileSdk 36
 
     defaultConfig {
-        applicationId "com.kimikevin.el_apunte"
+        applicationId "com.kimikevin.elapunte"
         minSdk 30
-        targetSdk 35
+        targetSdk 36
         versionCode 1
         versionName "1.0"
 
@@ -33,7 +35,7 @@ android {
 }
 
 dependencies {
-    def room_version = "2.6.1"
+    def room_version = "2.8.4"
 
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
@@ -43,7 +45,41 @@ dependencies {
     implementation libs.material
     implementation libs.activity
     implementation libs.constraintlayout
+
+    // gRPC & Protobuf for Android
+    implementation libs.grpc.okhttp  // Uses OkHttp for network
+    implementation libs.grpc.protobuf.lite  // The "Lite" version
+    implementation libs.grpc.stub
+    implementation libs.javax.annotation
+
+    // hilt
+    implementation libs.hilt.android
+    annotationProcessor libs.hilt.compiler
+
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
+}
+
+protobuf {
+    protoc {
+        artifact = libs.protobuf.protoc
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.62.2"
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                java {
+                    option 'lite'
+                }
+            }
+            task.plugins {
+                grpc {}
+            }
+        }
+    }
 }

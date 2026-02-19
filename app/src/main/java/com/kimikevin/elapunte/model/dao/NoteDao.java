@@ -1,4 +1,4 @@
-package com.kimikevin.el_apunte.model.dao;
+package com.kimikevin.elapunte.model.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -7,7 +7,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.kimikevin.el_apunte.model.entity.Note;
+import com.kimikevin.elapunte.model.entity.Note;
 
 import java.util.List;
 
@@ -24,9 +24,6 @@ public interface NoteDao {
 
     @Query("SELECT * FROM note_table")
     LiveData<List<Note>> getAllNotes();
-
-    @Insert
-    void insertAll(Note... notes);
 
     @Query("SELECT COUNT(*) FROM note_table")
     int getCount();

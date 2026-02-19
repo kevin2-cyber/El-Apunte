@@ -1,4 +1,4 @@
-package com.kimikevin.el_apunte.util;
+package com.kimikevin.elapunte.util;
 
 
 import java.time.Instant;

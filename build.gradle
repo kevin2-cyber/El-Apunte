@@ -1,4 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     alias(libs.plugins.androidApplication) apply false
+    id 'com.google.protobuf' version '0.9.6' apply false
+    //noinspection NewerVersionAvailable
+    id 'com.google.dagger.hilt.android' version '2.55' apply false
 }

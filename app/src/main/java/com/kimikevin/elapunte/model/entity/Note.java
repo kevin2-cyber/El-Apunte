@@ -1,4 +1,4 @@
-package com.kimikevin.el_apunte.model.entity;
+package com.kimikevin.elapunte.model.entity;
 
 
 import androidx.annotation.NonNull;
@@ -10,7 +10,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.kimikevin.el_apunte.BR;
+
+import com.kimikevin.elapunte.BR;
 
 import java.util.Objects;
 

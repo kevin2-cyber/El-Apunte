@@ -1,8 +1,8 @@
-package com.kimikevin.el_apunte.view;
+package com.kimikevin.elapunte.view;
 
 
-import static com.kimikevin.el_apunte.util.AppConstants.THEME_KEY;
-import static com.kimikevin.el_apunte.util.AppConstants.PREF_KEY;
+import static com.kimikevin.elapunte.util.AppConstants.THEME_KEY;
+import static com.kimikevin.elapunte.util.AppConstants.PREF_KEY;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -18,8 +18,8 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.kimikevin.el_apunte.R;
-import com.kimikevin.el_apunte.databinding.ThemeBottomSheetLayoutBinding;
+import com.kimikevin.elapunte.R;
+import com.kimikevin.elapunte.databinding.ThemeBottomSheetLayoutBinding;
 
 public class ThemeBottomSheet extends BottomSheetDialogFragment {
     ThemeBottomSheetLayoutBinding binding;
