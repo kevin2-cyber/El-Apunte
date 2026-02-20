@@ -16,6 +16,14 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+
+        buildConfigField "String", "GRPC_HOST", "\"${properties.getProperty("GRPC_HOST")}\""
+
+        manifestPlaceholders = [grpcHost: properties.getProperty("GRPC_HOST")]
+        resourceConfigurations += ['en', 'fr', 'es', 'zh', 'de', 'ja', 'ru', 'ko', 'pt', 'in']
     }
 
     buildTypes {
@@ -31,11 +39,12 @@ android {
 
     buildFeatures{
         dataBinding true
+        buildConfig true
     }
 }
 
 dependencies {
-    def room_version = "2.8.4"
+    def room_version = "2.6.1"
 
     annotationProcessor "androidx.room:room-compiler:$room_version"
 

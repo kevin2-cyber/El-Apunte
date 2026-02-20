@@ -19,21 +19,22 @@ service NoteService {
 
 // The core Entity
 message NoteResponse {
-  int32 id = 1;              // Corresponds to @PrimaryKey private int id
+  string id = 1;              // Corresponds to @PrimaryKey private int id
   string title = 2;          // private String title
   string content = 3;        // private String content
   string formatted_date = 4; // private String formattedDate
 }
 
-// Request object for creating (No ID, because Room auto-generates it)
+// Request object for creating (UUID generated client-side)
 message CreateNoteRequest {
-  string title = 1;
-  string content = 2;
-  string formatted_date = 3;
+  string id = 1;
+  string title = 2;
+  string content = 3;
+  string formatted_date = 4;
 }
 
 message NoteIdRequest {
-  int32 id = 1;
+  string id = 1;
 }
 
 // Wrapper for a list of notes

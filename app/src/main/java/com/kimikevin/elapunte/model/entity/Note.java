@@ -14,12 +14,14 @@ import androidx.room.PrimaryKey;
 import com.kimikevin.elapunte.BR;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity(tableName = "note_table")
 public class Note extends BaseObservable {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey()
     @ColumnInfo(name = "note_id")
-    private int id;
+    @NonNull
+    private String id;
     @ColumnInfo(name = "title")
     private String title;
     @ColumnInfo(name = "content")
@@ -27,27 +29,23 @@ public class Note extends BaseObservable {
     @ColumnInfo(name = "formatted_date")
     private String formattedDate;
 
-    public Note(int id, String title, String content) {
-        this.id = id;
+    public Note(String title, String content) {
+        this.id = UUID.randomUUID().toString();
         this.title = title;
         this.content = content;
     }
 
-    @Ignore
-    public Note(String title, String content) {
-        this.title = title;
-        this.content = content;
-    }
 
     @Ignore
     public Note() {}
 
+    @NonNull
     @Bindable
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
         notifyPropertyChanged(BR.id);
     }
@@ -98,7 +96,7 @@ public class Note extends BaseObservable {
      if (this == obj) return true;
      if (obj == null || getClass() != obj.getClass()) return false;
      Note note = (Note) obj;
-     return id == note.id
+     return Objects.equals(id, note.id)
              && title.equals(note.title)
              && content.equals(note.content)
              && Objects.equals(formattedDate, note.formattedDate);
