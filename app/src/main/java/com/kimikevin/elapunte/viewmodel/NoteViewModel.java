@@ -2,11 +2,8 @@ package com.kimikevin.elapunte.viewmodel;
 
 import static com.kimikevin.elapunte.util.AppConstants.NOTE_LOG_TAG;
 
-import android.app.Application;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -24,14 +21,18 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 public class NoteViewModel extends ViewModel {
     private final NoteRepository repository;
 
+    private final LiveData<List<Note>> allNotes;
+
     @Inject
     public NoteViewModel(NoteRepository repository) {
         this.repository = repository;
-        getAllNotes();
+        allNotes = repository.getAllNotes();
+
+        repository.syncNotes();
     }
 
     public LiveData<List<Note>> getAllNotes() {
-        return repository.getAllNotes();
+        return allNotes;
     }
 
     public void insertNote(Note note) {

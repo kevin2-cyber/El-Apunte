@@ -47,7 +47,7 @@ public class NoteActivity extends AppCompatActivity {
     private NoteClickHandler handler;
     private ArrayList<Note> noteList = new ArrayList<>();
     private NoteAdapter noteAdapter;
-    private int selectedNoteId = -1;
+    private String selectedNoteId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -174,7 +174,7 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     private void handleEditNoteResult(Intent data) {
-        if (selectedNoteId == -1) return;
+        if (selectedNoteId == null) return;
 
         Note note = new Note(
                 data.getStringExtra(NOTE_TITLE),
