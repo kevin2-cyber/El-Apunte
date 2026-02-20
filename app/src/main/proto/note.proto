@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.kimikevin.elapunte.proto";
+option java_outer_classname = "NoteProto";
+
+service NoteService {
+  rpc CreateNote (CreateNoteRequest) returns (NoteResponse);
+  // --- Read ---
+  rpc GetNote (NoteIdRequest) returns (NoteResponse);
+  rpc GetAllNotes (Empty) returns (NoteListResponse);
+
+  // --- Update ---
+  rpc UpdateNote (NoteResponse) returns (NoteResponse);
+
+  // --- Delete ---
+  rpc DeleteNote (NoteIdRequest) returns (Empty);
+}
+
+// The core Entity
+message NoteResponse {
+  int32 id = 1;              // Corresponds to @PrimaryKey private int id
+  string title = 2;          // private String title
+  string content = 3;        // private String content
+  string formatted_date = 4; // private String formattedDate
+}
+
+// Request object for creating (No ID, because Room auto-generates it)
+message CreateNoteRequest {
+  string title = 1;
+  string content = 2;
+  string formatted_date = 3;
+}
+
+message NoteIdRequest {
+  int32 id = 1;
+}
+
+// Wrapper for a list of notes
+message NoteListResponse {
+  repeated NoteResponse notes = 1;
+}
+
+// Standard empty message
+message Empty {}
