@@ -19,8 +19,8 @@ import java.util.UUID;
 @Entity(tableName = "note_table")
 public class Note extends BaseObservable {
     @PrimaryKey()
-    @ColumnInfo(name = "note_id")
     @NonNull
+    @ColumnInfo(name = "note_id")
     private String id;
     @ColumnInfo(name = "title")
     private String title;
@@ -31,16 +31,23 @@ public class Note extends BaseObservable {
     @ColumnInfo(name = "timestamp")
     private long timestamp;
 
+    private boolean isSynced = false;
+
+    @ColumnInfo(name = "pending_action")
+    private String pendingAction; // "INSERT", "UPDATE", "DELETE", or null
+
     public Note(String title, String content) {
-        this.id = UUID.randomUUID().toString();
+        id = UUID.randomUUID().toString();
         this.title = title;
         this.content = content;
         this.timestamp = System.currentTimeMillis();
+        isSynced = false;
+        pendingAction = null;
     }
-
 
     @Ignore
     public Note() {}
+
 
     @NonNull
     @Bindable
@@ -89,6 +96,22 @@ public class Note extends BaseObservable {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public boolean isSynced() {
+        return isSynced;
+    }
+
+    public void setSynced(boolean synced) {
+        isSynced = synced;
+    }
+
+    public String getPendingAction() {
+        return pendingAction;
+    }
+
+    public void setPendingAction(String pendingAction) {
+        this.pendingAction = pendingAction;
     }
 
     @NonNull
