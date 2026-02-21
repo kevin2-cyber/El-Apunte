@@ -38,6 +38,7 @@ public class NoteViewModel extends ViewModel {
     public void insertNote(Note note) {
         try {
             long timestamp = System.currentTimeMillis();
+            note.setTimestamp(timestamp);
             note.setFormattedDate(TimeAgoUtil.getTimeUsing24HourFormat(timestamp));
             repository.insertNote(note);
         } catch (Exception e) {
@@ -47,6 +48,9 @@ public class NoteViewModel extends ViewModel {
 
     public void updateNote(Note note) {
         try {
+            long timestamp = System.currentTimeMillis();
+            note.setTimestamp(timestamp);
+            note.setFormattedDate(TimeAgoUtil.getTimeUsing24HourFormat(timestamp));
             repository.updateNote(note);
         } catch (Exception e) {
             Log.e(NOTE_LOG_TAG, "Error updating note", e);

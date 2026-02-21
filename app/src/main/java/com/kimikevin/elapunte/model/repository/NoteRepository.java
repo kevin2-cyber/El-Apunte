@@ -57,6 +57,7 @@ public class NoteRepository {
                     localNote.setTitle(networkNote.getTitle());
                     localNote.setContent(networkNote.getContent());
                     localNote.setFormattedDate(networkNote.getFormattedDate());
+                    localNote.setTimestamp(System.currentTimeMillis());
 
                     noteDao.insert(localNote);
                 }

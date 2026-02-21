@@ -23,7 +23,7 @@ public interface NoteDao {
     @Delete
     void delete(Note note);
 
-    @Query("SELECT * FROM note_table")
+    @Query("SELECT * FROM note_table ORDER BY timestamp DESC")
     LiveData<List<Note>> getAllNotes();
 
     @Query("SELECT COUNT(*) FROM note_table")

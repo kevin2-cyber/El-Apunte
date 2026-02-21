@@ -12,6 +12,7 @@ import static com.kimikevin.elapunte.view.EditActivity.NOTE_TITLE;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -36,7 +37,6 @@ import com.kimikevin.elapunte.viewmodel.NoteViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -48,6 +48,7 @@ public class NoteActivity extends AppCompatActivity {
     private ArrayList<Note> noteList = new ArrayList<>();
     private NoteAdapter noteAdapter;
     private String selectedNoteId;
+    private String currentQuery = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,8 +61,8 @@ public class NoteActivity extends AppCompatActivity {
         binding.setClickHandler(handler);
         binding.setLifecycleOwner(this);
 
-        setupViewModel();
         setupUI();
+        setupViewModel();
     }
 
     private void applySavedTheme() {
@@ -73,7 +74,15 @@ public class NoteActivity extends AppCompatActivity {
     private void setupViewModel() {
         noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
         noteViewModel.getAllNotes().observe(this, notes -> {
-            noteAdapter.submitList(notes); // Automatic diff handling
+            noteList.clear();
+            noteList.addAll(notes);
+
+            if (TextUtils.isEmpty(currentQuery)) {
+                noteAdapter.submitList(new ArrayList<>(notes));
+            } else {
+                filterNotes(currentQuery);
+            }
+
             binding.emptyState.setVisibility(notes.isEmpty() ? View.VISIBLE : View.GONE);
         });
     }
@@ -98,6 +107,7 @@ public class NoteActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                currentQuery = newText;
                 filterNotes(newText);
                 return true;
             }
@@ -128,13 +138,17 @@ public class NoteActivity extends AppCompatActivity {
 
     private void filterNotes(String query) {
         try {
-            List<Note> filtered = noteList.stream()
-                    .filter(n -> TextUtils.isEmpty(query) ||
-                            n.getTitle().toLowerCase().contains(query.toLowerCase()) ||
-                            n.getContent().toLowerCase().contains(query.toLowerCase()))
-                    .collect(Collectors.toList());
+            List<Note> filtered = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                filtered = noteList.stream()
+                        .filter(n -> TextUtils.isEmpty(query) ||
+                                n.getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                                n.getContent().toLowerCase().contains(query.toLowerCase()))
+                        .toList();
+            }
 
-            noteAdapter.submitList(filtered);
+            assert filtered != null;
+            noteAdapter.submitList(new ArrayList<>(filtered));
             binding.emptyState.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
         } catch (Exception e) {
             Log.e(NOTE_LOG_TAG, "Filter error", e);
