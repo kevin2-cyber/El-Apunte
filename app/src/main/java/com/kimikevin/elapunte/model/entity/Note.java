@@ -19,8 +19,8 @@ import java.util.UUID;
 @Entity(tableName = "note_table")
 public class Note extends BaseObservable {
     @PrimaryKey()
-    @ColumnInfo(name = "note_id")
     @NonNull
+    @ColumnInfo(name = "note_id")
     private String id;
     @ColumnInfo(name = "title")
     private String title;
@@ -28,16 +28,26 @@ public class Note extends BaseObservable {
     private String content;
     @ColumnInfo(name = "formatted_date")
     private String formattedDate;
+    @ColumnInfo(name = "timestamp")
+    private long timestamp;
+
+    private boolean isSynced = false;
+
+    @ColumnInfo(name = "pending_action")
+    private String pendingAction; // "INSERT", "UPDATE", "DELETE", or null
 
     public Note(String title, String content) {
-        this.id = UUID.randomUUID().toString();
+        id = UUID.randomUUID().toString();
         this.title = title;
         this.content = content;
+        this.timestamp = System.currentTimeMillis();
+        isSynced = false;
+        pendingAction = null;
     }
-
 
     @Ignore
     public Note() {}
+
 
     @NonNull
     @Bindable
@@ -80,6 +90,30 @@ public class Note extends BaseObservable {
         notifyPropertyChanged(BR.formattedDate);
     }
 
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public boolean isSynced() {
+        return isSynced;
+    }
+
+    public void setSynced(boolean synced) {
+        isSynced = synced;
+    }
+
+    public String getPendingAction() {
+        return pendingAction;
+    }
+
+    public void setPendingAction(String pendingAction) {
+        this.pendingAction = pendingAction;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -99,11 +133,12 @@ public class Note extends BaseObservable {
      return Objects.equals(id, note.id)
              && title.equals(note.title)
              && content.equals(note.content)
-             && Objects.equals(formattedDate, note.formattedDate);
+             && Objects.equals(formattedDate, note.formattedDate)
+             && timestamp == note.timestamp;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id,title,content,formattedDate);
+        return Objects.hash(id,title,content,formattedDate,timestamp);
     }
 }

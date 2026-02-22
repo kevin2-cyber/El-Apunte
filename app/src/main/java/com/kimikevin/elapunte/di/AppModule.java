@@ -8,6 +8,7 @@ import com.kimikevin.elapunte.BuildConfig;
 import com.kimikevin.elapunte.model.NoteDatabase;
 import com.kimikevin.elapunte.model.dao.NoteDao;
 import com.kimikevin.elapunte.proto.NoteServiceGrpc;
+import com.kimikevin.elapunte.util.NetworkMonitor;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -67,5 +68,11 @@ public class AppModule {
     @Named("gRPCExecutor")
     public ExecutorService provideGrpcExecutor() {
         return Executors.newFixedThreadPool(4);
+    }
+
+    @Provides
+    @Singleton
+    public NetworkMonitor provideNetworkMonitor(@ApplicationContext Context context) {
+        return new NetworkMonitor(context);
     }
 }
