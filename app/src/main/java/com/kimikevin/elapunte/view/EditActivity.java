@@ -1,5 +1,10 @@
 package com.kimikevin.elapunte.view;
 
+import static com.kimikevin.elapunte.util.AppConstants.NOTE_CONTENT;
+import static com.kimikevin.elapunte.util.AppConstants.NOTE_ID;
+import static com.kimikevin.elapunte.util.AppConstants.NOTE_TIME;
+import static com.kimikevin.elapunte.util.AppConstants.NOTE_TITLE;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,10 +21,6 @@ import com.kimikevin.elapunte.databinding.ActivityEditBinding;
 import com.kimikevin.elapunte.model.entity.Note;
 
 public class EditActivity extends AppCompatActivity {
-    public static final String NOTE_ID = "note_id";
-    public static final String NOTE_TITLE = "note_title";
-    public static final String NOTE_CONTENT = "note_content";
-    public static final String NOTE_TIME = "note_time";
 
     private ActivityEditBinding binding;
     private Note note;
