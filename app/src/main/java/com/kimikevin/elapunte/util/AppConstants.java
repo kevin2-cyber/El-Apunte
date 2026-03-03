@@ -10,4 +10,10 @@ public class AppConstants {
     // request codes
     public static final int ADD_NOTE_REQUEST_CODE = 1;
     public static final int EDIT_NOTE_REQUEST_CODE = 2;
+
+    // note constants
+    public static final String NOTE_ID = "note_id";
+    public static final String NOTE_TITLE = "note_title";
+    public static final String NOTE_CONTENT = "note_content";
+    public static final String NOTE_TIME = "note_time";
 }

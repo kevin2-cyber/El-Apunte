@@ -6,8 +6,9 @@ import static com.kimikevin.elapunte.util.AppConstants.NOTE_LOG_TAG;
 import static com.kimikevin.elapunte.util.AppConstants.PREF_KEY;
 import static com.kimikevin.elapunte.util.AppConstants.THEME_KEY;
 import static com.kimikevin.elapunte.util.AppConstants.TAG;
-import static com.kimikevin.elapunte.view.EditActivity.NOTE_CONTENT;
-import static com.kimikevin.elapunte.view.EditActivity.NOTE_TITLE;
+import static com.kimikevin.elapunte.util.AppConstants.NOTE_CONTENT;
+import static com.kimikevin.elapunte.util.AppConstants.NOTE_ID;
+import static com.kimikevin.elapunte.util.AppConstants.NOTE_TITLE;
 
 import android.content.Context;
 import android.content.Intent;
@@ -140,7 +141,8 @@ public class NoteActivity extends AppCompatActivity {
         try {
             List<Note> filtered = null;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                filtered = noteList.stream()
+                filtered = noteList
+                        .stream()
                         .filter(n -> TextUtils.isEmpty(query) ||
                                 n.getTitle().toLowerCase().contains(query.toLowerCase()) ||
                                 n.getContent().toLowerCase().contains(query.toLowerCase()))
@@ -157,7 +159,7 @@ public class NoteActivity extends AppCompatActivity {
 
     private void openEditActivity(Note note) {
         Intent intent = new Intent(this, EditActivity.class);
-        intent.putExtra(EditActivity.NOTE_ID, note.getId());
+        intent.putExtra(NOTE_ID, note.getId());
         intent.putExtra(NOTE_TITLE, note.getTitle());
         intent.putExtra(NOTE_CONTENT, note.getContent());
         startActivityIfNeeded(intent, EDIT_NOTE_REQUEST_CODE);

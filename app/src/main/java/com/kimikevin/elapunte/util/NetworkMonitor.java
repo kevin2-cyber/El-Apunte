@@ -20,18 +20,18 @@ import javax.inject.Singleton;
 public class NetworkMonitor {
     private static final String TAG = "NetworkMonitor";
     private final ConnectivityManager connectivityManager;
-    private final MutableLiveData<Boolean> isConnected = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> connected = new MutableLiveData<>(false);
     // Thread-safe flag for background thread checks (LiveData.getValue() is unreliable off main thread)
-    private final AtomicBoolean connected = new AtomicBoolean(false);
+    private final AtomicBoolean currentlyConnected = new AtomicBoolean(false);
 
     @Inject
     public NetworkMonitor(Context context) {
         connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         // Synchronously determine current state BEFORE any async callbacks
-        boolean currentlyConnected = checkCurrentConnection();
-        connected.set(currentlyConnected);
-        isConnected.postValue(currentlyConnected);
-        Log.d(TAG, "Initial connectivity: " + currentlyConnected);
+        boolean isCurrentlyConnected = checkCurrentConnection();
+        currentlyConnected.set(isCurrentlyConnected);
+        connected.postValue(isCurrentlyConnected);
+        Log.d(TAG, "Initial connectivity: " + isCurrentlyConnected);
         registerCallback();
     }
 
@@ -58,15 +58,15 @@ public class NetworkMonitor {
             @Override
             public void onAvailable(@NonNull Network network) {
                 Log.d(TAG, "Network available");
-                connected.set(true);
-                isConnected.postValue(true);
+                currentlyConnected.set(true);
+                connected.postValue(true);
             }
 
             @Override
             public void onLost(@NonNull Network network) {
                 Log.d(TAG, "Network lost");
-                connected.set(false);
-                isConnected.postValue(false);
+                currentlyConnected.set(false);
+                connected.postValue(false);
             }
         });
     }
@@ -74,15 +74,15 @@ public class NetworkMonitor {
     /**
      * Observable for UI / ViewModel use (main-thread).
      */
-    public LiveData<Boolean> getIsConnected() {
-        return isConnected;
+    public LiveData<Boolean> isConnected() {
+        return connected;
     }
 
     /**
      * Thread-safe check for background / executor threads.
      */
     public boolean isCurrentlyConnected() {
-        return connected.get();
+        return currentlyConnected.get();
     }
 }
 

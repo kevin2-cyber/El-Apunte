@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.kimikevin.elapunte.model.entity.Note;
 import com.kimikevin.elapunte.model.repository.NoteRepository;
-import com.kimikevin.elapunte.util.NetworkMonitor;
 import com.kimikevin.elapunte.util.TimeAgoUtil;
 
 import java.util.List;
@@ -40,7 +39,7 @@ public class NoteViewModel extends ViewModel {
                 repository.syncNotes();
             }
         };
-        repository.getNetworkMonitor().getIsConnected().observeForever(connectivityObserver);
+        repository.getNetworkMonitor().isConnected().observeForever(connectivityObserver);
     }
 
     public LiveData<List<Note>> getAllNotes() {
@@ -81,6 +80,6 @@ public class NoteViewModel extends ViewModel {
     protected void onCleared() {
         super.onCleared();
         // Clean up the forever observer to prevent leaks
-        repository.getNetworkMonitor().getIsConnected().removeObserver(connectivityObserver);
+        repository.getNetworkMonitor().isConnected().removeObserver(connectivityObserver);
     }
 }
