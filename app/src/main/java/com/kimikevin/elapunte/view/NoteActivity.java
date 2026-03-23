@@ -50,12 +50,18 @@ public class NoteActivity extends AppCompatActivity {
     private NoteAdapter noteAdapter;
     private String selectedNoteId;
     private String currentQuery = "";
+    private boolean isReverseLayout = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         applySavedTheme();
+
+        if (savedInstanceState != null) {
+            currentQuery = savedInstanceState.getString("CURRENT_QUERY", "");
+            isReverseLayout = savedInstanceState.getBoolean("IS_REVERSE_LAYOUT", false);
+        }
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_note);
         handler = new NoteClickHandler(this);
@@ -132,6 +138,8 @@ public class NoteActivity extends AppCompatActivity {
         });
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setReverseLayout(isReverseLayout);
+        layoutManager.setStackFromEnd(isReverseLayout);
         binding.rvNotes.setLayoutManager(layoutManager);
         binding.rvNotes.setItemAnimator(new DefaultItemAnimator());
         binding.rvNotes.setAdapter(noteAdapter);
@@ -163,6 +171,13 @@ public class NoteActivity extends AppCompatActivity {
         intent.putExtra(NOTE_TITLE, note.getTitle());
         intent.putExtra(NOTE_CONTENT, note.getContent());
         startActivityIfNeeded(intent, EDIT_NOTE_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@androidx.annotation.NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("CURRENT_QUERY", currentQuery);
+        outState.putBoolean("IS_REVERSE_LAYOUT", isReverseLayout);
     }
 
     @Override
@@ -216,11 +231,11 @@ public class NoteActivity extends AppCompatActivity {
         }
 
         public void onFilterClick(View view) {
+            isReverseLayout = !isReverseLayout;
             LinearLayoutManager manager = (LinearLayoutManager) binding.rvNotes.getLayoutManager();
             if (manager != null) {
-                boolean reverseLayout = !manager.getReverseLayout();
-                manager.setReverseLayout(reverseLayout);
-                manager.setStackFromEnd(reverseLayout);
+                manager.setReverseLayout(isReverseLayout);
+                manager.setStackFromEnd(isReverseLayout);
             }
         }
     }

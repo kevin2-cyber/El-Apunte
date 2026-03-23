@@ -16,6 +16,7 @@ import com.kimikevin.elapunte.proto.NoteListResponse;
 import com.kimikevin.elapunte.proto.NoteResponse;
 import com.kimikevin.elapunte.proto.NoteServiceGrpc;
 import com.kimikevin.elapunte.util.NetworkMonitor;
+import com.kimikevin.elapunte.util.TimeAgoUtil;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -189,7 +190,7 @@ public class NoteRepository {
                 .setId(note.getId())
                 .setTitle(note.getTitle() != null ? note.getTitle() : "")
                 .setContent(note.getContent() != null ? note.getContent() : "")
-                .setFormattedDate(note.getFormattedDate() != null ? note.getFormattedDate() : "")
+                .setFormattedDate(TimeAgoUtil.getBackendDate(note.getTimestamp()))
                 .build();
         grpcStub.withDeadlineAfter(GRPC_DEADLINE_SECONDS, TimeUnit.SECONDS).createNote(request);
     }
@@ -199,7 +200,7 @@ public class NoteRepository {
                 .setId(note.getId())
                 .setTitle(note.getTitle() != null ? note.getTitle() : "")
                 .setContent(note.getContent() != null ? note.getContent() : "")
-                .setFormattedDate(note.getFormattedDate() != null ? note.getFormattedDate() : "")
+                .setFormattedDate(TimeAgoUtil.getBackendDate(note.getTimestamp()))
                 .build();
         grpcStub.withDeadlineAfter(GRPC_DEADLINE_SECONDS, TimeUnit.SECONDS).updateNote(request);
     }
