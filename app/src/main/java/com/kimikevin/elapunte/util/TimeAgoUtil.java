@@ -41,4 +41,10 @@ public class TimeAgoUtil {
             return DateTimeFormatter.ofPattern("dd/MM/yyyy").format(messageDate);
         }
     }
+
+    public static String getBackendDate(long timestamp) {
+        Instant instant = Instant.ofEpochMilli(timestamp);
+        return DateTimeFormatter.ofPattern("dd-MM-yyyy-HH-mm")
+                .format(instant.atZone(ZoneId.systemDefault()));
+    }
 }

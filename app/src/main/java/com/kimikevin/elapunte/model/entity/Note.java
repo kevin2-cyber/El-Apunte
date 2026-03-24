@@ -12,6 +12,7 @@ import androidx.room.PrimaryKey;
 
 
 import com.kimikevin.elapunte.BR;
+import com.kimikevin.elapunte.util.TimeAgoUtil;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -83,6 +84,11 @@ public class Note extends BaseObservable {
     @Bindable
     public String getFormattedDate() {
         return formattedDate;
+    }
+
+    @Bindable
+    public String getDisplayDate() {
+        return TimeAgoUtil.getTimeUsing24HourFormat(timestamp);
     }
 
     public void setFormattedDate(String formattedDate) {
