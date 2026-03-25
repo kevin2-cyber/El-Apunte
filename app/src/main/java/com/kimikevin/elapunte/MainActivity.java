@@ -13,18 +13,21 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.splashscreen.SplashScreen;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.kimikevin.elapunte.databinding.ActivityMainBinding;
 import com.kimikevin.elapunte.viewmodel.SplashViewModel;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
+    ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
         applySavedTheme();
 
         SplashViewModel splashViewModel = new ViewModelProvider(this).get(SplashViewModel.class);
@@ -33,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             return isLoading == null || !isLoading;
         });
 
-        setContentView(R.layout.activity_main);
+        setContentView(binding.getRoot());
     }
 
     private void applySavedTheme() {
