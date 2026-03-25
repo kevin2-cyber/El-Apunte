@@ -16,6 +16,7 @@
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="?attr/colorOnSurface"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <com.google.android.material.divider.MaterialDivider
@@ -37,6 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Off"
+                android:textColor="?attr/colorOnSurface"
                 android:layoutDirection="rtl"
                 android:textAlignment="textStart"
                 android:layout_gravity="start"/>
@@ -46,6 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="On"
+                android:textColor="?attr/colorOnSurface"
                 android:layoutDirection="rtl"
                 android:textAlignment="textStart"
                 android:layout_gravity="start"/>
@@ -55,6 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Use device theme"
+                android:textColor="?attr/colorOnSurface"
                 android:layoutDirection="rtl"
                 android:textAlignment="textStart"
                 android:layout_gravity="start"/>

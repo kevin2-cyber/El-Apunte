@@ -18,12 +18,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ElApunte"
         tools:targetApi="33">
-        <activity
-            android:name=".view.NoteActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.EditActivity"
-            android:exported="false" />
+        <!-- Disable default WorkManager init so HiltWorkerFactory is used instead -->
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

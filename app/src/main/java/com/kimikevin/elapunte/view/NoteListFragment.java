@@ -1,37 +1,31 @@
 package com.kimikevin.elapunte.view;
 
-import static com.kimikevin.elapunte.util.AppConstants.ADD_NOTE_REQUEST_CODE;
-import static com.kimikevin.elapunte.util.AppConstants.EDIT_NOTE_REQUEST_CODE;
-import static com.kimikevin.elapunte.util.AppConstants.NOTE_LOG_TAG;
-import static com.kimikevin.elapunte.util.AppConstants.PREF_KEY;
-import static com.kimikevin.elapunte.util.AppConstants.THEME_KEY;
-import static com.kimikevin.elapunte.util.AppConstants.TAG;
 import static com.kimikevin.elapunte.util.AppConstants.NOTE_CONTENT;
 import static com.kimikevin.elapunte.util.AppConstants.NOTE_ID;
+import static com.kimikevin.elapunte.util.AppConstants.NOTE_LOG_TAG;
 import static com.kimikevin.elapunte.util.AppConstants.NOTE_TITLE;
+import static com.kimikevin.elapunte.util.AppConstants.TAG;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.SearchView;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.kimikevin.elapunte.R;
-import com.kimikevin.elapunte.databinding.ActivityNoteBinding;
+import com.kimikevin.elapunte.databinding.FragmentNoteListBinding;
 import com.kimikevin.elapunte.model.entity.Note;
 import com.kimikevin.elapunte.view.adapter.NoteAdapter;
 import com.kimikevin.elapunte.viewmodel.NoteViewModel;
@@ -42,45 +36,42 @@ import java.util.List;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class NoteActivity extends AppCompatActivity {
-    private ActivityNoteBinding binding;
+public class NoteListFragment extends Fragment {
+    private FragmentNoteListBinding binding;
     private NoteViewModel noteViewModel;
-    private NoteClickHandler handler;
-    private ArrayList<Note> noteList = new ArrayList<>();
+    private final ArrayList<Note> noteList = new ArrayList<>();
     private NoteAdapter noteAdapter;
-    private String selectedNoteId;
     private String currentQuery = "";
     private boolean isReverseLayout = false;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        applySavedTheme();
-
         if (savedInstanceState != null) {
             currentQuery = savedInstanceState.getString("CURRENT_QUERY", "");
             isReverseLayout = savedInstanceState.getBoolean("IS_REVERSE_LAYOUT", false);
         }
+    }
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_note);
-        handler = new NoteClickHandler(this);
-        binding.setClickHandler(handler);
-        binding.setLifecycleOwner(this);
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_note_list, container, false);
+        binding.setClickHandler(new NoteClickHandler());
+        binding.setLifecycleOwner(getViewLifecycleOwner());
+        return binding.getRoot();
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setupUI();
         setupViewModel();
     }
 
-    private void applySavedTheme() {
-        SharedPreferences sharedPreferences = getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
-        int savedMode = sharedPreferences.getInt(THEME_KEY, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-        AppCompatDelegate.setDefaultNightMode(savedMode);
-    }
-
     private void setupViewModel() {
-        noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
-        noteViewModel.getAllNotes().observe(this, notes -> {
+        noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
+        noteViewModel.getAllNotes().observe(getViewLifecycleOwner(), notes -> {
             noteList.clear();
             noteList.addAll(notes);
 
@@ -97,7 +88,7 @@ public class NoteActivity extends AppCompatActivity {
     private void setupUI() {
         binding.themeSwitch.setOnClickListener(view -> {
             ThemeBottomSheet themeBottomSheet = new ThemeBottomSheet();
-            themeBottomSheet.show(getSupportFragmentManager(), TAG);
+            themeBottomSheet.show(getParentFragmentManager(), TAG);
         });
 
         setupSearchView();
@@ -106,7 +97,7 @@ public class NoteActivity extends AppCompatActivity {
 
     private void setupSearchView() {
         binding.searchView.clearFocus();
-        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        binding.searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -122,22 +113,26 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     private void initRecyclerView() {
-        noteAdapter = new NoteAdapter(this);
+        noteAdapter = new NoteAdapter(requireContext());
         noteAdapter.setListener(new NoteAdapter.OnItemClickListener() {
             @Override
             public void onNoteClick(Note note) {
-                selectedNoteId = note.getId();
-                openEditActivity(note);
+                Bundle args = new Bundle();
+                args.putString(NOTE_ID, note.getId());
+                args.putString(NOTE_TITLE, note.getTitle());
+                args.putString(NOTE_CONTENT, note.getContent());
+                Navigation.findNavController(requireView())
+                        .navigate(R.id.action_noteListFragment_to_editNoteFragment, args);
             }
 
             @Override
             public void onNoteDelete(Note note) {
                 noteViewModel.deleteNote(note);
-                Toast.makeText(NoteActivity.this, "Note deleted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Note deleted", Toast.LENGTH_SHORT).show();
             }
         });
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
         layoutManager.setReverseLayout(isReverseLayout);
         layoutManager.setStackFromEnd(isReverseLayout);
         binding.rvNotes.setLayoutManager(layoutManager);
@@ -149,8 +144,7 @@ public class NoteActivity extends AppCompatActivity {
         try {
             List<Note> filtered = null;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                filtered = noteList
-                        .stream()
+                filtered = noteList.stream()
                         .filter(n -> TextUtils.isEmpty(query) ||
                                 n.getTitle().toLowerCase().contains(query.toLowerCase()) ||
                                 n.getContent().toLowerCase().contains(query.toLowerCase()))
@@ -165,69 +159,23 @@ public class NoteActivity extends AppCompatActivity {
         }
     }
 
-    private void openEditActivity(Note note) {
-        Intent intent = new Intent(this, EditActivity.class);
-        intent.putExtra(NOTE_ID, note.getId());
-        intent.putExtra(NOTE_TITLE, note.getTitle());
-        intent.putExtra(NOTE_CONTENT, note.getContent());
-        startActivityIfNeeded(intent, EDIT_NOTE_REQUEST_CODE);
-    }
-
     @Override
-    protected void onSaveInstanceState(@androidx.annotation.NonNull Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("CURRENT_QUERY", currentQuery);
         outState.putBoolean("IS_REVERSE_LAYOUT", isReverseLayout);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode != RESULT_OK || data == null) return;
-
-        if (requestCode == ADD_NOTE_REQUEST_CODE) {
-            handleAddNoteResult(data);
-        } else if (requestCode == EDIT_NOTE_REQUEST_CODE) {
-            handleEditNoteResult(data);
-        }
-    }
-
-    private void handleAddNoteResult(Intent data) {
-        String title = data.getStringExtra(NOTE_TITLE);
-        String content = data.getStringExtra(NOTE_CONTENT);
-
-        if (!TextUtils.isEmpty(title) || !TextUtils.isEmpty(content)) {
-            Note note = new Note(title, content);
-            noteViewModel.insertNote(note);
-            Log.i(NOTE_LOG_TAG, "Note added: " + note.getTitle());
-        }
-    }
-
-    private void handleEditNoteResult(Intent data) {
-        if (selectedNoteId == null) return;
-
-        Note note = new Note(
-                data.getStringExtra(NOTE_TITLE),
-                data.getStringExtra(NOTE_CONTENT)
-        );
-        note.setId(selectedNoteId);
-        noteViewModel.updateNote(note);
-        Log.i(NOTE_LOG_TAG, "Note updated: " + note.getTitle());
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     public class NoteClickHandler {
-        private final Context context;
-
-        public NoteClickHandler(Context context) {
-            this.context = context;
-        }
-
         public void onFabClick(View view) {
-            startActivityIfNeeded(
-                    new Intent(context, EditActivity.class),
-                    ADD_NOTE_REQUEST_CODE
-            );
+            Navigation.findNavController(view)
+                    .navigate(R.id.action_noteListFragment_to_editNoteFragment);
         }
 
         public void onFilterClick(View view) {

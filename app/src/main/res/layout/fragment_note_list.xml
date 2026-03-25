@@ -5,15 +5,14 @@
     <data>
         <variable
             name="clickHandler"
-            type="com.kimikevin.elapunte.view.NoteActivity.NoteClickHandler" />
+            type="com.kimikevin.elapunte.view.NoteListFragment.NoteClickHandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        android:id="@+id/main"
-        tools:context=".view.NoteActivity">
+        tools:context=".view.NoteListFragment">
 
         <TextView
             android:id="@+id/app_name"
@@ -23,6 +22,7 @@
             android:layout_marginStart="16dp"
             android:text="@string/app_name"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="?attr/colorOnSurface"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -105,14 +105,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/no_notes_found"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="?attr/colorOnSurface" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/add_first_note"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="?attr/colorOnSurfaceVariant" />
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
