@@ -3,9 +3,16 @@ package com.kimikevin.elapunte.model.repository;
 
 import static com.kimikevin.elapunte.util.AppConstants.NOTE_LOG_TAG;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
+import androidx.work.BackoffPolicy;
+import androidx.work.Constraints;
+import androidx.work.ExistingWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import com.kimikevin.elapunte.model.dao.NoteDao;
 import com.kimikevin.elapunte.model.entity.Note;
@@ -25,13 +32,17 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import dagger.hilt.android.qualifiers.ApplicationContext;
+
 import io.grpc.ConnectivityState;
 import io.grpc.ManagedChannel;
 import io.grpc.StatusRuntimeException;
 
 public class NoteRepository {
     private static final long GRPC_DEADLINE_SECONDS = 10;
+    private static final String SYNC_WORK_NAME = "note_pending_sync";
 
+    private final Context context;
     private final NoteDao noteDao;
     private final NoteServiceGrpc.NoteServiceBlockingStub grpcStub;
     private final ManagedChannel channel;
@@ -41,11 +52,13 @@ public class NoteRepository {
     ExecutorService networkExecutor;
 
     @Inject
-    public NoteRepository(NoteDao noteDao,
+    public NoteRepository(@ApplicationContext Context context,
+                          NoteDao noteDao,
                           NoteServiceGrpc.NoteServiceBlockingStub grpcStub,
                           ManagedChannel channel,
                           @Named("gRPCExecutor") ExecutorService networkExecutor,
                           NetworkMonitor networkMonitor) {
+        this.context = context;
         this.noteDao = noteDao;
         this.grpcStub = grpcStub;
         this.channel = channel;
@@ -183,6 +196,37 @@ public class NoteRepository {
         }
     }
 
+    /**
+     * Public synchronous entry point for NoteSyncWorker.
+     * Runs on the Worker's background thread (via the gRPCExecutor Future).
+     */
+    public void syncPendingNotesSync() {
+        syncPendingNotesInternal();
+    }
+
+    /**
+     * Enqueues a one-time WorkManager sync task that runs only when the device
+     * is connected. Uses KEEP policy so duplicate enqueues are ignored while
+     * an equivalent job is already pending or running.
+     */
+    private void enqueueSyncWork() {
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        OneTimeWorkRequest syncRequest = new OneTimeWorkRequest.Builder(com.kimikevin.elapunte.worker.NoteSyncWorker.class)
+                .setConstraints(constraints)
+                .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 15, TimeUnit.SECONDS)
+                .build();
+
+        WorkManager.getInstance(context).enqueueUniqueWork(
+                SYNC_WORK_NAME,
+                ExistingWorkPolicy.KEEP,
+                syncRequest
+        );
+        Log.d(NOTE_LOG_TAG, "enqueueSyncWork: pending sync work enqueued");
+    }
+
     // ── gRPC push helpers ────────────────────────────────────────────────
 
     private void pushInsert(Note note) {
@@ -234,6 +278,7 @@ public class NoteRepository {
                 }
             } else {
                 Log.d(NOTE_LOG_TAG, "insertNote: offline, pending sync id=" + note.getId());
+                enqueueSyncWork();
             }
         });
     }
@@ -259,6 +304,7 @@ public class NoteRepository {
                 }
             } else {
                 Log.d(NOTE_LOG_TAG, "updateNote: offline, pending sync id=" + note.getId());
+                enqueueSyncWork();
             }
         });
     }
@@ -284,6 +330,7 @@ public class NoteRepository {
                     }
                 } else {
                     Log.d(NOTE_LOG_TAG, "deleteNote: offline, marked for deletion id=" + note.getId());
+                    enqueueSyncWork();
                 }
             } else {
                 // Note was created offline and never synced — just delete locally

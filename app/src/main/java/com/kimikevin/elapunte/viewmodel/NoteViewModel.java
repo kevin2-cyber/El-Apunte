@@ -5,7 +5,6 @@ import static com.kimikevin.elapunte.util.AppConstants.NOTE_LOG_TAG;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.kimikevin.elapunte.model.entity.Note;
@@ -22,24 +21,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 public class NoteViewModel extends ViewModel {
     private final NoteRepository repository;
     private final LiveData<List<Note>> allNotes;
-    private final Observer<Boolean> connectivityObserver;
 
     @Inject
     public NoteViewModel(NoteRepository repository) {
         this.repository = repository;
         allNotes = repository.getAllNotes();
-
-        // Sync on startup
+        // Attempt a full sync (push pending + pull remote) on startup.
+        // Ongoing offline-→-online sync is handled by NoteSyncWorker via WorkManager.
         repository.syncNotes();
-
-        // Observe network changes — do a full sync when back online
-        connectivityObserver = isConnected -> {
-            if (Boolean.TRUE.equals(isConnected)) {
-                Log.d(NOTE_LOG_TAG, "Network restored, running full sync...");
-                repository.syncNotes();
-            }
-        };
-        repository.getNetworkMonitor().isConnected().observeForever(connectivityObserver);
     }
 
     public LiveData<List<Note>> getAllNotes() {
@@ -73,12 +62,5 @@ public class NoteViewModel extends ViewModel {
         } catch (Exception e) {
             Log.e(NOTE_LOG_TAG, "Error deleting note", e);
         }
-    }
-
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-        // Clean up the forever observer to prevent leaks
-        repository.getNetworkMonitor().isConnected().removeObserver(connectivityObserver);
     }
 }
