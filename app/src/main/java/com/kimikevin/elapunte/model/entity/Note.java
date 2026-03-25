@@ -38,7 +38,7 @@ public class Note extends BaseObservable {
     private String pendingAction; // "INSERT", "UPDATE", "DELETE", or null
 
     public Note(String title, String content) {
-        id = UUID.randomUUID().toString();
+        this.id = UUID.randomUUID().toString();
         this.title = title;
         this.content = content;
         this.timestamp = System.currentTimeMillis();
