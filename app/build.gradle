@@ -61,6 +61,10 @@ dependencies {
     implementation libs.grpc.stub
     implementation libs.javax.annotation
 
+    // navigation
+    implementation libs.navigation.fragment
+    implementation libs.navigation.ui
+
     // hilt
     implementation libs.hilt.android
     annotationProcessor libs.hilt.compiler

@@ -8,14 +8,15 @@
             type="com.kimikevin.elapunte.model.entity.Note" />
         <variable
             name="handler"
-            type="com.kimikevin.elapunte.view.EditActivity.EditClickHandler" />
+            type="com.kimikevin.elapunte.view.EditNoteFragment.SaveClickHandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
-        tools:context=".view.EditActivity">
+        android:fitsSystemWindows="true"
+        tools:context=".view.EditNoteFragment">
 
         <Button
             android:id="@+id/save_btn"
