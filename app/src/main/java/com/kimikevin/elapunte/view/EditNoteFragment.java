@@ -53,9 +53,14 @@ public class EditNoteFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_note, container, false);
 
-        note = new Note();
-        note.setTitle(originalTitle);
-        note.setContent(originalContent);
+        if (noteId != null) {
+            note = new Note();
+            note.setId(noteId);
+            note.setTitle(originalTitle);
+            note.setContent(originalContent);
+        } else {
+            note = new Note(originalTitle, originalContent);
+        }
 
         binding.setNote(note);
         binding.setHandler(new SaveClickHandler());
@@ -95,7 +100,6 @@ public class EditNoteFragment extends Fragment {
             }
 
             if (noteId != null) {
-                note.setId(noteId);
                 noteViewModel.updateNote(note);
             } else {
                 noteViewModel.insertNote(note);

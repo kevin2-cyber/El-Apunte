@@ -32,13 +32,14 @@ public class Note extends BaseObservable {
     @ColumnInfo(name = "timestamp")
     private long timestamp;
 
+    @ColumnInfo(name = "is_synced")
     private boolean isSynced = false;
 
     @ColumnInfo(name = "pending_action")
     private String pendingAction; // "INSERT", "UPDATE", "DELETE", or null
 
     public Note(String title, String content) {
-        this.id = UUID.randomUUID().toString();
+        id = UUID.randomUUID().toString();
         this.title = title;
         this.content = content;
         this.timestamp = System.currentTimeMillis();

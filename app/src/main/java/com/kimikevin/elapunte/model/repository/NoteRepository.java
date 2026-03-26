@@ -4,6 +4,8 @@ package com.kimikevin.elapunte.model.repository;
 import static com.kimikevin.elapunte.util.AppConstants.NOTE_LOG_TAG;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -22,7 +24,6 @@ import com.kimikevin.elapunte.proto.NoteIdRequest;
 import com.kimikevin.elapunte.proto.NoteListResponse;
 import com.kimikevin.elapunte.proto.NoteResponse;
 import com.kimikevin.elapunte.proto.NoteServiceGrpc;
-import com.kimikevin.elapunte.util.NetworkMonitor;
 import com.kimikevin.elapunte.util.TimeAgoUtil;
 
 import java.util.List;
@@ -46,7 +47,6 @@ public class NoteRepository {
     private final NoteDao noteDao;
     private final NoteServiceGrpc.NoteServiceBlockingStub grpcStub;
     private final ManagedChannel channel;
-    private final NetworkMonitor networkMonitor;
     private final Object syncLock = new Object();
 
     ExecutorService networkExecutor;
@@ -56,22 +56,31 @@ public class NoteRepository {
                           NoteDao noteDao,
                           NoteServiceGrpc.NoteServiceBlockingStub grpcStub,
                           ManagedChannel channel,
-                          @Named("gRPCExecutor") ExecutorService networkExecutor,
-                          NetworkMonitor networkMonitor) {
+                          @Named("gRPCExecutor") ExecutorService networkExecutor) {
         this.context = context;
         this.noteDao = noteDao;
         this.grpcStub = grpcStub;
         this.channel = channel;
         this.networkExecutor = networkExecutor;
-        this.networkMonitor = networkMonitor;
     }
 
     /**
      * Quick check: device has network and gRPC channel is not shut down.
      * Kicks the channel to start connecting if idle.
      */
+    private boolean isCurrentlyConnected() {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm == null) return false;
+        android.net.Network network = cm.getActiveNetwork();
+        if (network == null) return false;
+        NetworkCapabilities caps = cm.getNetworkCapabilities(network);
+        return caps != null &&
+                (caps.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                 caps.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR));
+    }
+
     private boolean isBackendReachable() {
-        if (!networkMonitor.isCurrentlyConnected()) {
+        if (!isCurrentlyConnected()) {
             return false;
         }
         ConnectivityState state = channel.getState(true); // true = request connect if IDLE
@@ -81,10 +90,6 @@ public class NoteRepository {
 
     public LiveData<List<Note>> getAllNotes() {
         return noteDao.getAllNotes();
-    }
-
-    public NetworkMonitor getNetworkMonitor() {
-        return networkMonitor;
     }
 
     public void syncNotes() {
@@ -275,6 +280,7 @@ public class NoteRepository {
                     Log.d(NOTE_LOG_TAG, "insertNote: synced to backend OK id=" + note.getId());
                 } catch (Exception e) {
                     Log.e(NOTE_LOG_TAG, "insertNote: gRPC push failed, will retry later: " + e.getClass().getSimpleName() + " - " + e.getMessage(), e);
+                    enqueueSyncWork();
                 }
             } else {
                 Log.d(NOTE_LOG_TAG, "insertNote: offline, pending sync id=" + note.getId());
@@ -301,6 +307,7 @@ public class NoteRepository {
                     Log.d(NOTE_LOG_TAG, "updateNote: synced to backend OK id=" + note.getId());
                 } catch (Exception e) {
                     Log.e(NOTE_LOG_TAG, "updateNote: gRPC push failed: " + e.getClass().getSimpleName() + " - " + e.getMessage(), e);
+                    enqueueSyncWork();
                 }
             } else {
                 Log.d(NOTE_LOG_TAG, "updateNote: offline, pending sync id=" + note.getId());
@@ -313,7 +320,7 @@ public class NoteRepository {
         networkExecutor.execute(() -> {
             Log.d(NOTE_LOG_TAG, "deleteNote: id=" + note.getId() + " isSynced=" + note.isSynced() + " pendingAction=" + note.getPendingAction());
 
-            if (note.isSynced() || (note.getPendingAction() != null && !"INSERT".equals(note.getPendingAction()))) {
+            if (!"INSERT".equals(note.getPendingAction())) {
                 // Note exists on backend — soft-delete until backend confirms
                 note.setPendingAction("DELETE");
                 note.setSynced(false);
@@ -326,7 +333,7 @@ public class NoteRepository {
                         Log.d(NOTE_LOG_TAG, "deleteNote: synced to backend OK id=" + note.getId());
                     } catch (Exception e) {
                         Log.e(NOTE_LOG_TAG, "deleteNote: gRPC push failed: " + e.getClass().getSimpleName() + " - " + e.getMessage(), e);
-                        // Stays marked as DELETE pending
+                        enqueueSyncWork();
                     }
                 } else {
                     Log.d(NOTE_LOG_TAG, "deleteNote: offline, marked for deletion id=" + note.getId());
