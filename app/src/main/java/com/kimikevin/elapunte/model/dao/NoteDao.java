@@ -26,10 +26,10 @@ public interface NoteDao {
     @Query("SELECT * FROM note_table WHERE pending_action != 'DELETE' OR pending_action IS NULL ORDER BY timestamp DESC")
     LiveData<List<Note>> getAllNotes();
 
-    @Query("SELECT * FROM note_table WHERE isSynced = 0 AND pending_action IS NOT NULL")
+    @Query("SELECT * FROM note_table WHERE is_synced = 0 AND pending_action IS NOT NULL")
     List<Note> getUnsyncedNotes();
 
-    @Query("UPDATE note_table SET isSynced = 1, pending_action = NULL WHERE note_id = :noteId")
+    @Query("UPDATE note_table SET is_synced = 1, pending_action = NULL WHERE note_id = :noteId")
     void markAsSynced(String noteId);
 
     @Query("SELECT COUNT(*) FROM note_table")
