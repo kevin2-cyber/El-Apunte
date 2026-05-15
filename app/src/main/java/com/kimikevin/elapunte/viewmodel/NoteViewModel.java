@@ -36,31 +36,14 @@ public class NoteViewModel extends ViewModel {
     }
 
     public void insertNote(Note note) {
-        try {
-            long timestamp = System.currentTimeMillis();
-            note.setTimestamp(timestamp);
-            note.setFormattedDate(TimeAgoUtil.getTimeUsing24HourFormat(timestamp));
-            repository.insertNote(note);
-        } catch (Exception e) {
-            Log.e(NOTE_LOG_TAG, "Error inserting note", e);
-        }
+        repository.insertNote(note);
     }
 
     public void updateNote(Note note) {
-        try {
-            long timestamp = System.currentTimeMillis();
-            note.setTimestamp(timestamp);
-            repository.updateNote(note);
-        } catch (Exception e) {
-            Log.e(NOTE_LOG_TAG, "Error updating note", e);
-        }
+       repository.updateNote(note);
     }
 
     public void deleteNote(Note note) {
-        try {
-            repository.deleteNote(note);
-        } catch (Exception e) {
-            Log.e(NOTE_LOG_TAG, "Error deleting note", e);
-        }
+      repository.deleteNote(note);
     }
 }

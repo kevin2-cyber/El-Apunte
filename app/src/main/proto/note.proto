@@ -11,7 +11,7 @@ service NoteService {
   rpc GetAllNotes (Empty) returns (NoteListResponse);
 
   // --- Update ---
-  rpc UpdateNote (NoteResponse) returns (NoteResponse);
+  rpc UpdateNote (UpdateNoteRequest) returns (NoteResponse);
 
   // --- Delete ---
   rpc DeleteNote (NoteIdRequest) returns (Empty);
@@ -40,6 +40,13 @@ message NoteIdRequest {
 // Wrapper for a list of notes
 message NoteListResponse {
   repeated NoteResponse notes = 1;
+}
+
+message UpdateNoteRequest {
+  string id = 1;
+  string title = 2;
+  string content = 3;
+  string formatted_date = 4;
 }
 
 // Standard empty message

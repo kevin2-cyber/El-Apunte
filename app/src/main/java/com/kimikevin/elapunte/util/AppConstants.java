@@ -7,10 +7,6 @@ public class AppConstants {
     public static final String TAG = "ModalBottomSheet";
     public static final String THEME_KEY = "theme_key";
 
-    // request codes
-    public static final int ADD_NOTE_REQUEST_CODE = 1;
-    public static final int EDIT_NOTE_REQUEST_CODE = 2;
-
     // note constants
     public static final String NOTE_ID = "note_id";
     public static final String NOTE_TITLE = "note_title";

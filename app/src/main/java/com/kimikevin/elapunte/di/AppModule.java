@@ -2,7 +2,10 @@ package com.kimikevin.elapunte.di;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.room.Room;
+import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.kimikevin.elapunte.BuildConfig;
 import com.kimikevin.elapunte.model.NoteDatabase;
@@ -33,9 +36,15 @@ public class AppModule {
     @Singleton
     public NoteDatabase provideNoteDatabase(@ApplicationContext Context context) {
         return Room.databaseBuilder(context, NoteDatabase.class, "note_database")
-                .fallbackToDestructiveMigration()
                 .build();
     }
+
+    static final Migration MIGRATION = new Migration(7,8) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE note_table ADD COLUMN pending_action TEXT");
+        }
+    };
 
     @Provides
     @Singleton
@@ -55,9 +64,8 @@ public class AppModule {
         return OkHttpChannelBuilder
                 .forAddress(GRPC_HOST, GRPC_PORT)
                 .usePlaintext()
-                .keepAliveTime(30, TimeUnit.SECONDS)
+                .keepAliveTime(60, TimeUnit.SECONDS)
                 .keepAliveTimeout(10, TimeUnit.SECONDS)
-                .keepAliveWithoutCalls(true)
                 .build();
     }
 

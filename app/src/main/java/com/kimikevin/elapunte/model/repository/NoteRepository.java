@@ -24,9 +24,13 @@ import com.kimikevin.elapunte.proto.NoteIdRequest;
 import com.kimikevin.elapunte.proto.NoteListResponse;
 import com.kimikevin.elapunte.proto.NoteResponse;
 import com.kimikevin.elapunte.proto.NoteServiceGrpc;
+import com.kimikevin.elapunte.proto.UpdateNoteRequest;
+import com.kimikevin.elapunte.util.NoteMapper;
 import com.kimikevin.elapunte.util.TimeAgoUtil;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -49,7 +53,7 @@ public class NoteRepository {
     private final ManagedChannel channel;
     private final Object syncLock = new Object();
 
-    ExecutorService networkExecutor;
+    private final ExecutorService networkExecutor;
 
     @Inject
     public NoteRepository(@ApplicationContext Context context,
@@ -105,39 +109,31 @@ public class NoteRepository {
 
                 // Then pull remote notes
                 Empty request = Empty.newBuilder().build();
-                NoteListResponse response = grpcStub.withDeadlineAfter(GRPC_DEADLINE_SECONDS, TimeUnit.SECONDS).getAllNotes(request);
+                NoteListResponse response = grpcStub
+                        .withDeadlineAfter(GRPC_DEADLINE_SECONDS, TimeUnit.SECONDS)
+                        .getAllNotes(request);
+
+                // Query once and build a Set for 0(1) lookup
+                List<Note> unsyncedNotes = noteDao.getUnsyncedNotes();
+                Set<String> pendingIds = new HashSet<>();
+
+                for (Note n : unsyncedNotes) {
+                    pendingIds.add(n.getId());
+                }
 
                 for (NoteResponse networkNote : response.getNotesList()) {
                     // Check if this note has pending local changes — don't overwrite
-                    List<Note> pending = noteDao.getUnsyncedNotes();
-                    boolean hasPendingChange = false;
-                    for (Note p : pending) {
-                        if (p.getId().equals(networkNote.getId())) {
-                            hasPendingChange = true;
-                            break;
-                        }
-                    }
-                    if (hasPendingChange) {
-                        Log.d(NOTE_LOG_TAG, "syncNotes: skipping pull for note with pending local changes: " + networkNote.getId());
-                        continue;
-                    }
+                  if (pendingIds.contains(networkNote.getId())) {
+                      Log.d(NOTE_LOG_TAG, "Skipping pull for pending note: " + networkNote.getId());
+                      continue;
+                  }
 
-                    Note localNote = new Note();
-                    localNote.setId(networkNote.getId());
-                    localNote.setTitle(networkNote.getTitle());
-                    localNote.setContent(networkNote.getContent());
-                    localNote.setFormattedDate(networkNote.getFormattedDate());
-                    localNote.setTimestamp(System.currentTimeMillis());
-                    localNote.setSynced(true);
-                    localNote.setPendingAction(null);
-
-                    noteDao.insert(localNote);
+                  Note localNote = NoteMapper.fromProto(networkNote);
+                  noteDao.insert(localNote);
                 }
-                Log.d(NOTE_LOG_TAG, "syncNotes: pulled " + response.getNotesList().size() + " notes from backend");
+                Log.d(NOTE_LOG_TAG, "Pulled " + response.getNotesList().size() + " notes");
             } catch (StatusRuntimeException e) {
-                Log.e(NOTE_LOG_TAG, "syncNotes: " + e.getMessage(), e);
-            } catch (Exception e) {
-                Log.e(NOTE_LOG_TAG, "syncNotes error", e);
+                Log.e(NOTE_LOG_TAG, "syncNotes gRPC error: " + e.getMessage(), e);
             }
         });
     }
@@ -235,17 +231,12 @@ public class NoteRepository {
     // ── gRPC push helpers ────────────────────────────────────────────────
 
     private void pushInsert(Note note) {
-        CreateNoteRequest request = CreateNoteRequest.newBuilder()
-                .setId(note.getId())
-                .setTitle(note.getTitle() != null ? note.getTitle() : "")
-                .setContent(note.getContent() != null ? note.getContent() : "")
-                .setFormattedDate(TimeAgoUtil.getBackendDate(note.getTimestamp()))
-                .build();
+        CreateNoteRequest request = NoteMapper.toCreateRequest(note);
         grpcStub.withDeadlineAfter(GRPC_DEADLINE_SECONDS, TimeUnit.SECONDS).createNote(request);
     }
 
     private void pushUpdate(Note note) {
-        NoteResponse request = NoteResponse.newBuilder()
+        UpdateNoteRequest request = UpdateNoteRequest.newBuilder()
                 .setId(note.getId())
                 .setTitle(note.getTitle() != null ? note.getTitle() : "")
                 .setContent(note.getContent() != null ? note.getContent() : "")
@@ -266,24 +257,24 @@ public class NoteRepository {
     public void insertNote(Note note) {
         networkExecutor.execute(() -> {
             // Always save locally first
+            long timestamp = System.currentTimeMillis();
+            note.setTimestamp(timestamp);
+            note.setFormattedDate(TimeAgoUtil.getTimeUsing24HourFormat(timestamp));
             note.setPendingAction("INSERT");
             note.setSynced(false);
+
             noteDao.insert(note);
             Log.d(NOTE_LOG_TAG, "insertNote: saved locally id=" + note.getId());
 
-            // Try to sync immediately if backend reachable
             if (isBackendReachable()) {
                 try {
-                    Log.d(NOTE_LOG_TAG, "insertNote: attempting gRPC push...");
                     pushInsert(note);
                     noteDao.markAsSynced(note.getId());
-                    Log.d(NOTE_LOG_TAG, "insertNote: synced to backend OK id=" + note.getId());
                 } catch (Exception e) {
-                    Log.e(NOTE_LOG_TAG, "insertNote: gRPC push failed, will retry later: " + e.getClass().getSimpleName() + " - " + e.getMessage(), e);
+                    Log.e(NOTE_LOG_TAG, "insertNote: push failed", e);
                     enqueueSyncWork();
                 }
             } else {
-                Log.d(NOTE_LOG_TAG, "insertNote: offline, pending sync id=" + note.getId());
                 enqueueSyncWork();
             }
         });

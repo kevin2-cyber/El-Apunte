@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase;
 import com.kimikevin.elapunte.model.dao.NoteDao;
 import com.kimikevin.elapunte.model.entity.Note;
 
-@Database(entities = {Note.class}, version = 8, exportSchema = false)
+@Database(entities = {Note.class}, version = 8)
 public abstract class NoteDatabase extends RoomDatabase {
     public abstract NoteDao getNoteDao();
 }

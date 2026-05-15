@@ -42,4 +42,5 @@ hilt-work-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hi
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
+room = { id = "androidx.room", version.ref = "roomRuntime" }
 
