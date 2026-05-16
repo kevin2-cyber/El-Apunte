@@ -22,6 +22,7 @@ import java.util.Random;
 public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteViewHolder> {
     private final Context context;
     private OnItemClickListener listener;
+    private static final Random RANDOM = new Random();
 
     // Step 1: Implement DiffUtil properly
     private static final DiffUtil.ItemCallback<Note> DIFF_CALLBACK =
@@ -98,8 +99,9 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteViewHolder> {
 
             // Set random card color
             int[] colors = context.getResources().getIntArray(R.array.note_accent_colors);
-            int randomColor = colors[new Random().nextInt(colors.length)];
-            binding.card.setCardBackgroundColor(randomColor);
+            // Deterministic: same note always gets same color, stable on scroll
+            int colorIndex = Math.abs(note.getId().hashCode()) % colors.length;
+            binding.card.setCardBackgroundColor(colors[colorIndex]);
 
             // Add animation
             binding.card.startAnimation(

@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "google/protobuf/empty.proto";
+
 option java_multiple_files = true;
 option java_package = "com.kimikevin.elapunte.proto";
 option java_outer_classname = "NoteProto";
@@ -8,13 +10,18 @@ service NoteService {
   rpc CreateNote (CreateNoteRequest) returns (NoteResponse);
   // --- Read ---
   rpc GetNote (NoteIdRequest) returns (NoteResponse);
-  rpc GetAllNotes (Empty) returns (NoteListResponse);
+  rpc GetAllNotes (GetAllNotesRequest) returns (NoteListResponse);
 
   // --- Update ---
-  rpc UpdateNote (NoteResponse) returns (NoteResponse);
+  rpc UpdateNote (UpdateNoteRequest) returns (NoteResponse);
 
   // --- Delete ---
-  rpc DeleteNote (NoteIdRequest) returns (Empty);
+  rpc DeleteNote (NoteIdRequest) returns (google.protobuf.Empty);
+}
+
+message GetAllNotesRequest {
+  int32 page = 1;
+  int32 size = 2;
 }
 
 // The core Entity
@@ -42,5 +49,9 @@ message NoteListResponse {
   repeated NoteResponse notes = 1;
 }
 
-// Standard empty message
-message Empty {}
+message UpdateNoteRequest {
+  string id = 1;
+  string title = 2;
+  string content = 3;
+  string formatted_date = 4;
+}

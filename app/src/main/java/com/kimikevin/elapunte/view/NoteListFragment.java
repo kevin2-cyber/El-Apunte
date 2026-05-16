@@ -32,6 +32,7 @@ import com.kimikevin.elapunte.viewmodel.NoteViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -141,22 +142,17 @@ public class NoteListFragment extends Fragment {
     }
 
     private void filterNotes(String query) {
-        try {
-            List<Note> filtered = null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                filtered = noteList.stream()
-                        .filter(n -> TextUtils.isEmpty(query) ||
-                                n.getTitle().toLowerCase().contains(query.toLowerCase()) ||
-                                n.getContent().toLowerCase().contains(query.toLowerCase()))
-                        .toList();
-            }
+        if (noteList.isEmpty()) return;
 
-            assert filtered != null;
-            noteAdapter.submitList(new ArrayList<>(filtered));
-            binding.emptyState.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
-        } catch (Exception e) {
-            Log.e(NOTE_LOG_TAG, "Filter error", e);
-        }
+        List<Note> filtered = noteList.stream()
+                    .filter(n -> TextUtils.isEmpty(query) ||
+                            n.getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                            n.getContent().toLowerCase().contains(query.toLowerCase()))
+                    .collect(Collectors.toList());
+
+
+        noteAdapter.submitList(new ArrayList<>(filtered));
+        binding.emptyState.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     @Override

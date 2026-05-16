@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     id "com.google.protobuf" version "0.9.6"
     id "com.google.dagger.hilt.android"
+    alias(libs.plugins.room)
 }
 
 android {
@@ -26,9 +27,14 @@ android {
         resourceConfigurations += ['en', 'fr', 'es', 'zh', 'de', 'ja', 'ru', 'ko', 'pt', 'in']
     }
 
+    room {
+        schemaDirectory "$projectDir/schemas"
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

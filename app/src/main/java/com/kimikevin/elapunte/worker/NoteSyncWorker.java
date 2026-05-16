@@ -24,36 +24,28 @@ import dagger.assisted.AssistedInject;
 
 @HiltWorker
 public class NoteSyncWorker extends Worker {
-    private static final int SYNC_TIMEOUT_SECONDS = 30;
 
     private final NoteRepository repository;
-    private final ExecutorService networkExecutor;
 
     @AssistedInject
     public NoteSyncWorker(
             @Assisted @NonNull Context context,
             @Assisted @NonNull WorkerParameters params,
-            NoteRepository repository,
-            @Named("gRPCExecutor") ExecutorService networkExecutor) {
+            NoteRepository repository) {
         super(context, params);
         this.repository = repository;
-        this.networkExecutor = networkExecutor;
     }
 
     @NonNull
     @Override
     public Result doWork() {
-        Log.d(NOTE_LOG_TAG, "NoteSyncWorker: starting pending sync");
+        Log.d(NOTE_LOG_TAG, " Start pending sync");
         try {
-            Future<?> future = networkExecutor.submit(repository::syncPendingNotesSync);
-            future.get(SYNC_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-            Log.d(NOTE_LOG_TAG, "NoteSyncWorker: sync completed successfully");
+            repository.syncPendingNotesSync();
+            Log.d(NOTE_LOG_TAG, "Sync completed successfully");
             return Result.success();
-        } catch (TimeoutException e) {
-            Log.w(NOTE_LOG_TAG, "NoteSyncWorker: sync timed out, will retry");
-            return Result.retry();
         } catch (Exception e) {
-            Log.e(NOTE_LOG_TAG, "NoteSyncWorker: sync failed", e);
+            Log.e(NOTE_LOG_TAG, "Sync failed: " + e.getMessage(), e);
             return Result.retry();
         }
     }
