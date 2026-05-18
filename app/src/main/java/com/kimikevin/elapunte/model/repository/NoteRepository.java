@@ -4,6 +4,7 @@ import static com.kimikevin.elapunte.util.AppConstants.NOTE_LOG_TAG;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.util.Log;
 
@@ -17,19 +18,10 @@ import androidx.work.WorkManager;
 
 import com.kimikevin.elapunte.model.dao.NoteDao;
 import com.kimikevin.elapunte.model.entity.Note;
-import com.kimikevin.elapunte.proto.CreateNoteRequest;
-import com.kimikevin.elapunte.proto.GetAllNotesRequest;
-import com.kimikevin.elapunte.proto.NoteIdRequest;
-import com.kimikevin.elapunte.proto.NoteListResponse;
-import com.kimikevin.elapunte.proto.NoteResponse;
-import com.kimikevin.elapunte.proto.NoteServiceGrpc;
-import com.kimikevin.elapunte.proto.UpdateNoteRequest;
-import com.kimikevin.elapunte.util.NoteMapper;
 import com.kimikevin.elapunte.util.TimeAgoUtil;
+import com.kimikevin.elapunte.worker.NoteSyncWorker;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -38,9 +30,6 @@ import javax.inject.Named;
 
 import dagger.hilt.android.qualifiers.ApplicationContext;
 
-import io.grpc.ConnectivityState;
-import io.grpc.ManagedChannel;
-import io.grpc.StatusRuntimeException;
 
 public class NoteRepository {
     private static final long GRPC_DEADLINE_SECONDS = 10;
@@ -49,21 +38,16 @@ public class NoteRepository {
 
     private final Context context;
     private final NoteDao noteDao;
-    private final NoteServiceGrpc.NoteServiceBlockingStub grpcStub;
-    private final ManagedChannel channel;
     private final Object syncLock = new Object();
-    private final ExecutorService networkExecutor;
+
+    public final ExecutorService networkExecutor;
 
     @Inject
     public NoteRepository(@ApplicationContext Context context,
                           NoteDao noteDao,
-                          NoteServiceGrpc.NoteServiceBlockingStub grpcStub,
-                          ManagedChannel channel,
                           @Named("gRPCExecutor") ExecutorService networkExecutor) {
         this.context = context;
         this.noteDao = noteDao;
-        this.grpcStub = grpcStub;
-        this.channel = channel;
         this.networkExecutor = networkExecutor;
     }
 
@@ -72,7 +56,7 @@ public class NoteRepository {
     private boolean isCurrentlyConnected() {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm == null) return false;
-        android.net.Network network = cm.getActiveNetwork();
+        Network network = cm.getActiveNetwork();
         if (network == null) return false;
         NetworkCapabilities caps = cm.getNetworkCapabilities(network);
         return caps != null &&
@@ -81,10 +65,11 @@ public class NoteRepository {
     }
 
     private boolean isBackendReachable() {
-        if (!isCurrentlyConnected()) return false;
-        ConnectivityState state = channel.getState(true);
-        Log.d(NOTE_LOG_TAG, "isBackendReachable: state=" + state);
-        return state != ConnectivityState.SHUTDOWN;
+//        if (!isCurrentlyConnected()) return false;
+//        ConnectivityState state = channel.getState(true);
+//        Log.d(NOTE_LOG_TAG, "isBackendReachable: state=" + state);
+//        return state != ConnectivityState.SHUTDOWN;
+        return false;
     }
 
     // ── Local read ───────────────────────────────────────────────────────────
@@ -96,63 +81,63 @@ public class NoteRepository {
     // ── Full sync (push pending + pull remote) ───────────────────────────────
 
     public void syncNotes() {
-        networkExecutor.execute(() -> {
-            if (!isBackendReachable()) {
-                Log.d(NOTE_LOG_TAG, "syncNotes: backend not reachable, skipping full sync");
-                return;
-            }
-
-            try {
-                // Step 1 — push all pending local changes first
-                syncPendingNotesInternal();
-
-                // Step 2 — build Set of pending IDs once for O(1) lookup
-                List<Note> unsyncedNotes = noteDao.getUnsyncedNotes();
-                Set<String> pendingIds = new HashSet<>();
-                for (Note n : unsyncedNotes) {
-                    pendingIds.add(n.getId());
-                }
-
-                // Step 3 — pull remote notes page by page
-                int page = 0;
-                boolean hasMore = true;
-
-                while (hasMore) {
-                    GetAllNotesRequest request = GetAllNotesRequest.newBuilder()
-                            .setPage(page)
-                            .setSize(PAGE_SIZE)
-                            .build();
-
-                    NoteListResponse response = grpcStub
-                            .withDeadlineAfter(GRPC_DEADLINE_SECONDS, TimeUnit.SECONDS)
-                            .getAllNotes(request);
-
-                    List<NoteResponse> notes = response.getNotesList();
-
-                    for (NoteResponse networkNote : notes) {
-                        // Skip notes with pending local changes — don't overwrite
-                        if (pendingIds.contains(networkNote.getId())) {
-                            Log.d(NOTE_LOG_TAG, "syncNotes: skipping pending note id=" + networkNote.getId());
-                            continue;
-                        }
-                        noteDao.insert(NoteMapper.fromProto(networkNote));
-                    }
-
-                    Log.d(NOTE_LOG_TAG, "syncNotes: pulled page=" + page + " count=" + notes.size());
-
-                    // If we got a full page there may be more — otherwise we're done
-                    hasMore = notes.size() == PAGE_SIZE;
-                    page++;
-                }
-
-                Log.d(NOTE_LOG_TAG, "syncNotes: all pages pulled successfully totalPages=" + page);
-
-            } catch (StatusRuntimeException e) {
-                Log.e(NOTE_LOG_TAG, "syncNotes gRPC error: " + e.getStatus(), e);
-            } catch (Exception e) {
-                Log.e(NOTE_LOG_TAG, "syncNotes error", e);
-            }
-        });
+//        networkExecutor.execute(() -> {
+//            if (!isBackendReachable()) {
+//                Log.d(NOTE_LOG_TAG, "syncNotes: backend not reachable, skipping full sync");
+//                return;
+//            }
+//
+//            try {
+//                // Step 1 — push all pending local changes first
+//                syncPendingNotesInternal();
+//
+//                // Step 2 — build Set of pending IDs once for O(1) lookup
+//                List<Note> unsyncedNotes = noteDao.getUnsyncedNotes();
+//                Set<String> pendingIds = new HashSet<>();
+//                for (Note n : unsyncedNotes) {
+//                    pendingIds.add(n.getId());
+//                }
+//
+//                // Step 3 — pull remote notes page by page
+//                int page = 0;
+//                boolean hasMore = true;
+//
+//                while (hasMore) {
+//                    GetAllNotesRequest request = GetAllNotesRequest.newBuilder()
+//                            .setPage(page)
+//                            .setSize(PAGE_SIZE)
+//                            .build();
+//
+//                    NoteListResponse response = grpcStub
+//                            .withDeadlineAfter(GRPC_DEADLINE_SECONDS, TimeUnit.SECONDS)
+//                            .getAllNotes(request);
+//
+//                    List<NoteResponse> notes = response.getNotesList();
+//
+//                    for (NoteResponse networkNote : notes) {
+//                        // Skip notes with pending local changes — don't overwrite
+//                        if (pendingIds.contains(networkNote.getId())) {
+//                            Log.d(NOTE_LOG_TAG, "syncNotes: skipping pending note id=" + networkNote.getId());
+//                            continue;
+//                        }
+//                        noteDao.insert(NoteMapper.fromProto(networkNote));
+//                    }
+//
+//                    Log.d(NOTE_LOG_TAG, "syncNotes: pulled page=" + page + " count=" + notes.size());
+//
+//                    // If we got a full page there may be more — otherwise we're done
+//                    hasMore = notes.size() == PAGE_SIZE;
+//                    page++;
+//                }
+//
+//                Log.d(NOTE_LOG_TAG, "syncNotes: all pages pulled successfully totalPages=" + page);
+//
+//            } catch (StatusRuntimeException e) {
+//                Log.e(NOTE_LOG_TAG, "syncNotes gRPC error: " + e.getStatus(), e);
+//            } catch (Exception e) {
+//                Log.e(NOTE_LOG_TAG, "syncNotes error", e);
+//            }
+//        });
     }
 
     // ── Pending sync ─────────────────────────────────────────────────────────
@@ -220,7 +205,7 @@ public class NoteRepository {
                 .build();
 
         OneTimeWorkRequest syncRequest = new OneTimeWorkRequest.Builder(
-                com.kimikevin.elapunte.worker.NoteSyncWorker.class)
+                NoteSyncWorker.class)
                 .setConstraints(constraints)
                 .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 15, TimeUnit.SECONDS)
                 .build();
@@ -236,24 +221,24 @@ public class NoteRepository {
     // ── gRPC push helpers ────────────────────────────────────────────────────
 
     private void pushInsert(Note note) {
-        CreateNoteRequest request = NoteMapper.toCreateRequest(note);
-        grpcStub.withDeadlineAfter(GRPC_DEADLINE_SECONDS, TimeUnit.SECONDS).createNote(request);
+//        CreateNoteRequest request = NoteMapper.toCreateRequest(note);
+//        grpcStub.withDeadlineAfter(GRPC_DEADLINE_SECONDS, TimeUnit.SECONDS).createNote(request);
     }
 
     private void pushUpdate(Note note) {
-        UpdateNoteRequest request = UpdateNoteRequest.newBuilder()
-                .setId(note.getId())
-                .setTitle(note.getTitle() != null ? note.getTitle() : "")
-                .setContent(note.getContent() != null ? note.getContent() : "")
-                .build();
-        grpcStub.withDeadlineAfter(GRPC_DEADLINE_SECONDS, TimeUnit.SECONDS).updateNote(request);
+//        UpdateNoteRequest request = UpdateNoteRequest.newBuilder()
+//                .setId(note.getId())
+//                .setTitle(note.getTitle() != null ? note.getTitle() : "")
+//                .setContent(note.getContent() != null ? note.getContent() : "")
+//                .build();
+//        grpcStub.withDeadlineAfter(GRPC_DEADLINE_SECONDS, TimeUnit.SECONDS).updateNote(request);
     }
 
     private void pushDelete(Note note) {
-        NoteIdRequest request = NoteIdRequest.newBuilder()
-                .setId(note.getId())
-                .build();
-        grpcStub.withDeadlineAfter(GRPC_DEADLINE_SECONDS, TimeUnit.SECONDS).deleteNote(request);
+//        NoteIdRequest request = NoteIdRequest.newBuilder()
+//                .setId(note.getId())
+//                .build();
+//        grpcStub.withDeadlineAfter(GRPC_DEADLINE_SECONDS, TimeUnit.SECONDS).deleteNote(request);
     }
 
     // ── Public CRUD (offline-first) ──────────────────────────────────────────

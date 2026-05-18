@@ -20,10 +20,10 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-# gRPC
--keep class io.grpc.** { *; }
--keep class com.google.protobuf.** { *; }
--keep class com.kimikevin.elapunte.proto.** { *; }
+## gRPC
+#-keep class io.grpc.** { *; }
+#-keep class com.google.protobuf.** { *; }
+#-keep class com.kimikevin.elapunte.proto.** { *; }
 
 # Hilt
 -keep class dagger.hilt.** { *; }

@@ -11,5 +11,4 @@ public class AppConstants {
     public static final String NOTE_ID = "note_id";
     public static final String NOTE_TITLE = "note_title";
     public static final String NOTE_CONTENT = "note_content";
-    public static final String NOTE_TIME = "note_time";
 }
