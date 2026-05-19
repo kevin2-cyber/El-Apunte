@@ -4,6 +4,7 @@ import static com.kimikevin.elapunte.util.AppConstants.NOTE_LOG_TAG;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.util.Log;
 
@@ -17,16 +18,13 @@ import androidx.work.WorkManager;
 
 import com.kimikevin.elapunte.model.dao.NoteDao;
 import com.kimikevin.elapunte.model.entity.Note;
-import com.kimikevin.elapunte.proto.CreateNoteRequest;
-import com.kimikevin.elapunte.proto.GetAllNotesRequest;
-import com.kimikevin.elapunte.proto.NoteIdRequest;
-import com.kimikevin.elapunte.proto.NoteListResponse;
-import com.kimikevin.elapunte.proto.NoteResponse;
-import com.kimikevin.elapunte.proto.NoteServiceGrpc;
-import com.kimikevin.elapunte.proto.UpdateNoteRequest;
+import com.kimikevin.elapunte.model.network.NoteApi;
+import com.kimikevin.elapunte.model.network.NoteDto;
 import com.kimikevin.elapunte.util.NoteMapper;
 import com.kimikevin.elapunte.util.TimeAgoUtil;
+import com.kimikevin.elapunte.worker.NoteSyncWorker;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,54 +35,42 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import dagger.hilt.android.qualifiers.ApplicationContext;
+import retrofit2.Response;
 
-import io.grpc.ConnectivityState;
-import io.grpc.ManagedChannel;
-import io.grpc.StatusRuntimeException;
 
 public class NoteRepository {
-    private static final long GRPC_DEADLINE_SECONDS = 10;
     private static final String SYNC_WORK_NAME = "note_pending_sync";
     private static final int PAGE_SIZE = 20;
 
     private final Context context;
     private final NoteDao noteDao;
-    private final NoteServiceGrpc.NoteServiceBlockingStub grpcStub;
-    private final ManagedChannel channel;
+    private final NoteApi noteApi;
     private final Object syncLock = new Object();
-    private final ExecutorService networkExecutor;
+
+    public final ExecutorService networkExecutor;
 
     @Inject
     public NoteRepository(@ApplicationContext Context context,
                           NoteDao noteDao,
-                          NoteServiceGrpc.NoteServiceBlockingStub grpcStub,
-                          ManagedChannel channel,
-                          @Named("gRPCExecutor") ExecutorService networkExecutor) {
+                          NoteApi noteApi,
+                          @Named("networkExecutor") ExecutorService networkExecutor) {
         this.context = context;
         this.noteDao = noteDao;
-        this.grpcStub = grpcStub;
-        this.channel = channel;
+        this.noteApi = noteApi;
         this.networkExecutor = networkExecutor;
     }
 
     // ── Connectivity ─────────────────────────────────────────────────────────
 
-    private boolean isCurrentlyConnected() {
+    private boolean isBackendReachable() {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm == null) return false;
-        android.net.Network network = cm.getActiveNetwork();
+        Network network = cm.getActiveNetwork();
         if (network == null) return false;
         NetworkCapabilities caps = cm.getNetworkCapabilities(network);
         return caps != null &&
                 (caps.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
                         caps.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR));
-    }
-
-    private boolean isBackendReachable() {
-        if (!isCurrentlyConnected()) return false;
-        ConnectivityState state = channel.getState(true);
-        Log.d(NOTE_LOG_TAG, "isBackendReachable: state=" + state);
-        return state != ConnectivityState.SHUTDOWN;
     }
 
     // ── Local read ───────────────────────────────────────────────────────────
@@ -97,68 +83,79 @@ public class NoteRepository {
 
     public void syncNotes() {
         networkExecutor.execute(() -> {
-            if (!isBackendReachable()) {
-                Log.d(NOTE_LOG_TAG, "syncNotes: backend not reachable, skipping full sync");
-                return;
-            }
-
             try {
-                // Step 1 — push all pending local changes first
-                syncPendingNotesInternal();
-
-                // Step 2 — build Set of pending IDs once for O(1) lookup
-                List<Note> unsyncedNotes = noteDao.getUnsyncedNotes();
-                Set<String> pendingIds = new HashSet<>();
-                for (Note n : unsyncedNotes) {
-                    pendingIds.add(n.getId());
-                }
-
-                // Step 3 — pull remote notes page by page
-                int page = 0;
-                boolean hasMore = true;
-
-                while (hasMore) {
-                    GetAllNotesRequest request = GetAllNotesRequest.newBuilder()
-                            .setPage(page)
-                            .setSize(PAGE_SIZE)
-                            .build();
-
-                    NoteListResponse response = grpcStub
-                            .withDeadlineAfter(GRPC_DEADLINE_SECONDS, TimeUnit.SECONDS)
-                            .getAllNotes(request);
-
-                    List<NoteResponse> notes = response.getNotesList();
-
-                    for (NoteResponse networkNote : notes) {
-                        // Skip notes with pending local changes — don't overwrite
-                        if (pendingIds.contains(networkNote.getId())) {
-                            Log.d(NOTE_LOG_TAG, "syncNotes: skipping pending note id=" + networkNote.getId());
-                            continue;
-                        }
-                        noteDao.insert(NoteMapper.fromProto(networkNote));
-                    }
-
-                    Log.d(NOTE_LOG_TAG, "syncNotes: pulled page=" + page + " count=" + notes.size());
-
-                    // If we got a full page there may be more — otherwise we're done
-                    hasMore = notes.size() == PAGE_SIZE;
-                    page++;
-                }
-
-                Log.d(NOTE_LOG_TAG, "syncNotes: all pages pulled successfully totalPages=" + page);
-
-            } catch (StatusRuntimeException e) {
-                Log.e(NOTE_LOG_TAG, "syncNotes gRPC error: " + e.getStatus(), e);
+                syncNotesInternal();
             } catch (Exception e) {
-                Log.e(NOTE_LOG_TAG, "syncNotes error", e);
+                Log.e(NOTE_LOG_TAG, "syncNotes async error: " + e.getMessage(), e);
             }
         });
+    }
+
+    public void syncNotesSync() throws IOException {
+        syncNotesInternal();
+    }
+
+    private void syncNotesInternal() throws IOException {
+        if (!isBackendReachable()) {
+            Log.d(NOTE_LOG_TAG, "syncNotes: backend not reachable, skipping full sync");
+            return;
+        }
+
+        // Step 1 — push all pending local changes first
+        syncPendingNotesInternal();
+
+        // Step 2 — build Set of pending IDs once for O(1) lookup
+        List<Note> unsyncedNotes = noteDao.getUnsyncedNotes();
+        Set<String> pendingIds = new HashSet<>();
+        for (Note n : unsyncedNotes) {
+            pendingIds.add(n.getId());
+        }
+
+        // Step 3 — pull remote notes page by page
+        int page = 0;
+        boolean hasMore = true;
+
+        while (hasMore) {
+            Response<List<NoteDto>> response =
+                    noteApi.getAllNotes(page, PAGE_SIZE).execute();
+
+            if (!response.isSuccessful() || response.body() == null) {
+                throw new IOException("syncNotes: HTTP " + response.code());
+            }
+
+            List<NoteDto> notes = response.body();
+
+            for (NoteDto networkNote : notes) {
+                if (pendingIds.contains(networkNote.getId())) {
+                    Log.d(NOTE_LOG_TAG, "syncNotes: skipping pending note id=" + networkNote.getId());
+                    continue;
+                }
+                noteDao.insert(NoteMapper.fromDto(networkNote));
+            }
+
+            Log.d(NOTE_LOG_TAG, "syncNotes: pulled page=" + page + " count=" + notes.size());
+
+            hasMore = notes.size() == PAGE_SIZE;
+            page++;
+        }
+
+        Log.d(NOTE_LOG_TAG, "syncNotes: all pages pulled successfully totalPages=" + page);
     }
 
     // ── Pending sync ─────────────────────────────────────────────────────────
 
     public void syncPendingNotes() {
-        networkExecutor.execute(this::syncPendingNotesInternal);
+        networkExecutor.execute(() -> {
+            try {
+                syncPendingNotesInternal();
+            } catch (Exception e) {
+                Log.e(NOTE_LOG_TAG, "syncPendingNotes async error: " + e.getMessage(), e);
+            }
+        });
+    }
+
+    public void syncPendingNotesSync() {
+        syncPendingNotesInternal();
     }
 
     private void syncPendingNotesInternal() {
@@ -208,10 +205,6 @@ public class NoteRepository {
         }
     }
 
-    public void syncPendingNotesSync() {
-        syncPendingNotesInternal();
-    }
-
     // ── WorkManager enqueue ──────────────────────────────────────────────────
 
     private void enqueueSyncWork() {
@@ -220,7 +213,7 @@ public class NoteRepository {
                 .build();
 
         OneTimeWorkRequest syncRequest = new OneTimeWorkRequest.Builder(
-                com.kimikevin.elapunte.worker.NoteSyncWorker.class)
+                NoteSyncWorker.class)
                 .setConstraints(constraints)
                 .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 15, TimeUnit.SECONDS)
                 .build();
@@ -233,27 +226,48 @@ public class NoteRepository {
         Log.d(NOTE_LOG_TAG, "enqueueSyncWork: pending sync work enqueued");
     }
 
-    // ── gRPC push helpers ────────────────────────────────────────────────────
+    // ── REST push helpers ────────────────────────────────────────────────────
 
-    private void pushInsert(Note note) {
-        CreateNoteRequest request = NoteMapper.toCreateRequest(note);
-        grpcStub.withDeadlineAfter(GRPC_DEADLINE_SECONDS, TimeUnit.SECONDS).createNote(request);
+    private void pushInsert(Note note) throws IOException {
+        String tempId = note.getId();
+        NoteDto payload = NoteMapper.toDto(note);
+        payload.setId(null); // server is the source of truth for IDs
+        Response<NoteDto> response = noteApi.createNote(payload).execute();
+        if (!response.isSuccessful()) {
+            throw new IOException("createNote failed: HTTP " + response.code());
+        }
+        NoteDto body = response.body();
+        if (body == null || body.getId() == null) {
+            throw new IOException("createNote: response missing id");
+        }
+        if (!body.getId().equals(tempId)) {
+            // Adopt the server-assigned ID locally so subsequent pulls don't duplicate the row.
+            noteDao.deleteById(tempId);
+            note.setId(body.getId());
+            noteDao.insert(note);
+            Log.d(NOTE_LOG_TAG, "pushInsert: adopted serverId=" + body.getId() + " (was tempId=" + tempId + ")");
+        }
     }
 
-    private void pushUpdate(Note note) {
-        UpdateNoteRequest request = UpdateNoteRequest.newBuilder()
-                .setId(note.getId())
-                .setTitle(note.getTitle() != null ? note.getTitle() : "")
-                .setContent(note.getContent() != null ? note.getContent() : "")
-                .build();
-        grpcStub.withDeadlineAfter(GRPC_DEADLINE_SECONDS, TimeUnit.SECONDS).updateNote(request);
+    private void pushUpdate(Note note) throws IOException {
+        Response<NoteDto> response = noteApi.updateNote(note.getId(), NoteMapper.toDto(note)).execute();
+        if (response.code() == 404) {
+            // Server doesn't know this note — fall back to create.
+            // Self-heals notes that were edited before their initial INSERT ever synced.
+            Log.d(NOTE_LOG_TAG, "pushUpdate: 404 fallback to create id=" + note.getId());
+            pushInsert(note);
+            return;
+        }
+        if (!response.isSuccessful()) {
+            throw new IOException("updateNote failed: HTTP " + response.code());
+        }
     }
 
-    private void pushDelete(Note note) {
-        NoteIdRequest request = NoteIdRequest.newBuilder()
-                .setId(note.getId())
-                .build();
-        grpcStub.withDeadlineAfter(GRPC_DEADLINE_SECONDS, TimeUnit.SECONDS).deleteNote(request);
+    private void pushDelete(Note note) throws IOException {
+        Response<Void> response = noteApi.deleteNote(note.getId()).execute();
+        if (!response.isSuccessful() && response.code() != 404) {
+            throw new IOException("deleteNote failed: HTTP " + response.code());
+        }
     }
 
     // ── Public CRUD (offline-first) ──────────────────────────────────────────
@@ -262,7 +276,7 @@ public class NoteRepository {
         networkExecutor.execute(() -> {
             long timestamp = System.currentTimeMillis();
             note.setTimestamp(timestamp);
-            note.setFormattedDate(TimeAgoUtil.getTimeUsing24HourFormat(timestamp));
+            note.setFormattedDate(TimeAgoUtil.formatChatTimestamp(timestamp));
             note.setPendingAction("INSERT");
             note.setSynced(false);
 
@@ -287,19 +301,30 @@ public class NoteRepository {
 
     public void updateNote(Note note) {
         networkExecutor.execute(() -> {
-            note.setPendingAction("UPDATE");
+            long timestamp = System.currentTimeMillis();
+            note.setTimestamp(timestamp);
+            note.setFormattedDate(TimeAgoUtil.formatChatTimestamp(timestamp));
+
+            // Preserve INSERT if the note has never been pushed to the server —
+            // the eventual POST will carry the latest title/content.
+            String existing = noteDao.getPendingActionById(note.getId());
+            String action = "INSERT".equals(existing) ? "INSERT" : "UPDATE";
+            note.setPendingAction(action);
             note.setSynced(false);
             noteDao.insert(note);
-            Log.d(NOTE_LOG_TAG, "updateNote: saved locally id=" + note.getId());
+            Log.d(NOTE_LOG_TAG, "updateNote: saved locally id=" + note.getId() + " action=" + action);
 
             if (isBackendReachable()) {
                 try {
-                    Log.d(NOTE_LOG_TAG, "updateNote: attempting gRPC push...");
-                    pushUpdate(note);
+                    if ("INSERT".equals(action)) {
+                        pushInsert(note);
+                    } else {
+                        pushUpdate(note);
+                    }
                     noteDao.markAsSynced(note.getId());
                     Log.d(NOTE_LOG_TAG, "updateNote: synced to backend id=" + note.getId());
                 } catch (Exception e) {
-                    Log.e(NOTE_LOG_TAG, "updateNote: gRPC push failed: " + e.getMessage(), e);
+                    Log.e(NOTE_LOG_TAG, "updateNote: push failed: " + e.getMessage(), e);
                     enqueueSyncWork();
                 }
             } else {
@@ -316,7 +341,6 @@ public class NoteRepository {
                     + " pendingAction=" + note.getPendingAction());
 
             if (!"INSERT".equals(note.getPendingAction())) {
-                // Note exists on backend — soft-delete until backend confirms
                 note.setPendingAction("DELETE");
                 note.setSynced(false);
                 noteDao.insert(note);
@@ -327,7 +351,7 @@ public class NoteRepository {
                         noteDao.delete(note);
                         Log.d(NOTE_LOG_TAG, "deleteNote: synced to backend id=" + note.getId());
                     } catch (Exception e) {
-                        Log.e(NOTE_LOG_TAG, "deleteNote: gRPC push failed: " + e.getMessage(), e);
+                        Log.e(NOTE_LOG_TAG, "deleteNote: push failed: " + e.getMessage(), e);
                         enqueueSyncWork();
                     }
                 } else {
@@ -335,7 +359,6 @@ public class NoteRepository {
                     enqueueSyncWork();
                 }
             } else {
-                // Created offline and never synced — delete locally only
                 noteDao.delete(note);
                 Log.d(NOTE_LOG_TAG, "deleteNote: removed offline-only note id=" + note.getId());
             }

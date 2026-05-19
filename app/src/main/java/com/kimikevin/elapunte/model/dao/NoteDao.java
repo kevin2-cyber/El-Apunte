@@ -32,6 +32,12 @@ public interface NoteDao {
     @Query("UPDATE note_table SET is_synced = 1, pending_action = NULL WHERE note_id = :noteId")
     void markAsSynced(String noteId);
 
+    @Query("SELECT pending_action FROM note_table WHERE note_id = :noteId LIMIT 1")
+    String getPendingActionById(String noteId);
+
+    @Query("DELETE FROM note_table WHERE note_id = :noteId")
+    void deleteById(String noteId);
+
     @Query("SELECT COUNT(*) FROM note_table")
     int getCount();
 }

@@ -10,7 +10,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.kimikevin.elapunte.BuildConfig;
 import com.kimikevin.elapunte.model.NoteDatabase;
 import com.kimikevin.elapunte.model.dao.NoteDao;
-import com.kimikevin.elapunte.proto.NoteServiceGrpc;
+import com.kimikevin.elapunte.model.network.NoteApi;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -23,19 +24,22 @@ import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
-import io.grpc.ManagedChannel;
-import io.grpc.okhttp.OkHttpChannelBuilder;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 @InstallIn(SingletonComponent.class)
 public class AppModule {
-    private static final String GRPC_HOST = BuildConfig.GRPC_HOST;
-    private static final int GRPC_PORT = 9090;
+    private static final String API_BASE_URL =
+            "http://" + BuildConfig.API_HOST + ":" + BuildConfig.API_PORT + "/api/v1/";
 
     @Provides
     @Singleton
     public NoteDatabase provideNoteDatabase(@ApplicationContext Context context) {
         return Room.databaseBuilder(context, NoteDatabase.class, "note_database")
+                .addMigrations(MIGRATION)
                 .build();
     }
 
@@ -54,26 +58,40 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public NoteServiceGrpc.NoteServiceBlockingStub provideNoteServiceBlockingStub(ManagedChannel channel) {
-        return NoteServiceGrpc.newBlockingStub(channel);
+    @Named("networkExecutor")
+    public ExecutorService provideNetworkExecutor() {
+        return Executors.newFixedThreadPool(4);
     }
 
     @Provides
     @Singleton
-    public ManagedChannel provideGrpcChannel() {
-        return OkHttpChannelBuilder
-                .forAddress(GRPC_HOST, GRPC_PORT)
-                .usePlaintext()
-                .keepAliveTime(60, TimeUnit.SECONDS)
-                .keepAliveTimeout(10, TimeUnit.SECONDS)
+    public OkHttpClient provideOkHttpClient() {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(BuildConfig.DEBUG
+                ? HttpLoggingInterceptor.Level.BODY
+                : HttpLoggingInterceptor.Level.NONE);
+
+        return new OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
                 .build();
     }
 
     @Provides
     @Singleton
-    @Named("gRPCExecutor")
-    public ExecutorService provideGrpcExecutor() {
-        return Executors.newFixedThreadPool(4);
+    public Retrofit provideRetrofit(OkHttpClient client) {
+        return new Retrofit.Builder()
+                .baseUrl(API_BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
     }
 
+    @Provides
+    @Singleton
+    public NoteApi provideNoteApi(Retrofit retrofit) {
+        return retrofit.create(NoteApi.class);
+    }
 }

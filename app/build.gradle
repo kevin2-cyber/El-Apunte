@@ -1,18 +1,17 @@
 plugins {
     alias(libs.plugins.androidApplication)
-    id "com.google.protobuf" version "0.9.6"
     id "com.google.dagger.hilt.android"
     alias(libs.plugins.room)
 }
 
 android {
     namespace 'com.kimikevin.elapunte'
-    compileSdk 36
+    compileSdk 37
 
     defaultConfig {
         applicationId "com.kimikevin.elapunte"
         minSdk 30
-        targetSdk 36
+        targetSdk 37
         versionCode 1
         versionName "1.0"
 
@@ -21,9 +20,13 @@ android {
         Properties properties = new Properties()
         properties.load(project.rootProject.file("local.properties").newDataInputStream())
 
-        buildConfigField "String", "GRPC_HOST", "\"${properties.getProperty("GRPC_HOST")}\""
+        def apiHost = properties.getProperty("API_HOST")
+        def apiPort = properties.getProperty("API_PORT", "8080")
 
-        manifestPlaceholders = [grpcHost: properties.getProperty("GRPC_HOST")]
+        buildConfigField "String", "API_HOST", "\"${apiHost}\""
+        buildConfigField "int", "API_PORT", "${apiPort}"
+
+        manifestPlaceholders = [apiHost: apiHost]
         resourceConfigurations += ['en', 'fr', 'es', 'zh', 'de', 'ja', 'ru', 'ko', 'pt', 'in']
     }
 
@@ -39,8 +42,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
 
     buildFeatures{
@@ -51,9 +54,8 @@ android {
 }
 
 dependencies {
-    def room_version = "2.6.1"
 
-    annotationProcessor "androidx.room:room-compiler:$room_version"
+    annotationProcessor libs.room.compiler
 
     implementation libs.room.runtime
     implementation libs.core.splashscreen
@@ -62,12 +64,10 @@ dependencies {
     implementation libs.activity
     implementation libs.constraintlayout
 
-    // gRPC & Protobuf for Android
-    implementation libs.grpc.okhttp  // Uses OkHttp for network
-    implementation libs.grpc.protobuf.lite  // The "Lite" version
-    implementation libs.grpc.stub
-    implementation libs.javax.annotation
-
+    implementation libs.retrofit
+    implementation libs.converter.gson
+    implementation libs.okhttp
+    implementation libs.okhttp.logging
     // navigation
     implementation libs.navigation.fragment
     implementation libs.navigation.ui
@@ -84,33 +84,4 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
-}
-
-protobuf {
-    protoc {
-        artifact = "com.google.protobuf:protoc:3.25.1"
-        plugins {
-            create("grpc") {
-                artifact = "io.grpc:protoc-gen-grpc-java:1.79.0"
-            }
-            create("javalite") {
-                // The "Lite" generator for Android
-                artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0"
-            }
-        }
-        generateProtoTasks {
-            all().forEach { task ->
-                task.builtins {
-                    create("java"){
-                        option("lite") // FORCE Java Lite output
-                    }
-                }
-                task.plugins {
-                    create("grpc") {
-                        option("lite") // FORCE gRPC Lite output
-                    }
-                }
-            }
-        }
-    }
 }

@@ -17,12 +17,9 @@ import com.kimikevin.elapunte.R;
 import com.kimikevin.elapunte.databinding.NoteItemBinding;
 import com.kimikevin.elapunte.model.entity.Note;
 
-import java.util.Random;
-
 public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteViewHolder> {
     private final Context context;
     private OnItemClickListener listener;
-    private static final Random RANDOM = new Random();
 
     // Step 1: Implement DiffUtil properly
     private static final DiffUtil.ItemCallback<Note> DIFF_CALLBACK =
@@ -97,9 +94,9 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteViewHolder> {
         void bind(Note note) {
             binding.setNote(note);
 
-            // Set random card color
+            // Set a random card color
             int[] colors = context.getResources().getIntArray(R.array.note_accent_colors);
-            // Deterministic: same note always gets same color, stable on scroll
+            // Deterministic: the same note always gets the same color, stable on scroll
             int colorIndex = Math.abs(note.getId().hashCode()) % colors.length;
             binding.card.setCardBackgroundColor(colors[colorIndex]);
 
