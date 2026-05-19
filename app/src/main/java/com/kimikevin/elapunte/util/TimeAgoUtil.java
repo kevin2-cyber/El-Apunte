@@ -11,6 +11,7 @@ public final class TimeAgoUtil {
     private static final DateTimeFormatter TIME_OF_DAY = DateTimeFormatter.ofPattern("HH:mm");
     private static final DateTimeFormatter DAY_OF_WEEK = DateTimeFormatter.ofPattern("EEEE");
     private static final DateTimeFormatter SHORT_DATE  = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter FULL_DATE   = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     private static final DateTimeFormatter BACKEND     = DateTimeFormatter.ofPattern("dd-MM-yyyy-HH-mm");
 
     private TimeAgoUtil() {}
@@ -44,5 +45,9 @@ public final class TimeAgoUtil {
 
     public static String getBackendDate(long timestamp) {
         return BACKEND.format(Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()));
+    }
+
+    public static String getTimeUsing24HourFormat(long timestamp) {
+        return FULL_DATE.format(Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()));
     }
 }
