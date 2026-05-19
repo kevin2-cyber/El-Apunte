@@ -12,13 +12,6 @@ import androidx.work.WorkerParameters;
 
 import com.kimikevin.elapunte.model.repository.NoteRepository;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
-import javax.inject.Named;
-
 import dagger.assisted.Assisted;
 import dagger.assisted.AssistedInject;
 
@@ -39,9 +32,9 @@ public class NoteSyncWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        Log.d(NOTE_LOG_TAG, " Start pending sync");
+        Log.d(NOTE_LOG_TAG, "Start background sync (push + pull)");
         try {
-            repository.syncPendingNotesSync();
+            repository.syncNotesSync();
             Log.d(NOTE_LOG_TAG, "Sync completed successfully");
             return Result.success();
         } catch (Exception e) {

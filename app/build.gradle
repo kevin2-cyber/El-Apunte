@@ -20,9 +20,13 @@ android {
         Properties properties = new Properties()
         properties.load(project.rootProject.file("local.properties").newDataInputStream())
 
-        buildConfigField "String", "API_HOST", "\"${properties.getProperty("API_HOST")}\""
+        def apiHost = properties.getProperty("API_HOST")
+        def apiPort = properties.getProperty("API_PORT", "8080")
 
-        manifestPlaceholders = [grpcHost: properties.getProperty("API_HOST")]
+        buildConfigField "String", "API_HOST", "\"${apiHost}\""
+        buildConfigField "int", "API_PORT", "${apiPort}"
+
+        manifestPlaceholders = [apiHost: apiHost]
         resourceConfigurations += ['en', 'fr', 'es', 'zh', 'de', 'ja', 'ru', 'ko', 'pt', 'in']
     }
 
@@ -60,8 +64,10 @@ dependencies {
     implementation libs.activity
     implementation libs.constraintlayout
 
-    // retrofit and okHttp
-
+    implementation libs.retrofit
+    implementation libs.converter.gson
+    implementation libs.okhttp
+    implementation libs.okhttp.logging
     // navigation
     implementation libs.navigation.fragment
     implementation libs.navigation.ui

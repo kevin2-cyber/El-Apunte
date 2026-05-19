@@ -89,7 +89,7 @@ public class Note extends BaseObservable {
 
     @Bindable
     public String getDisplayDate() {
-        return TimeAgoUtil.getTimeUsing24HourFormat(timestamp);
+        return TimeAgoUtil.formatChatTimestamp(timestamp);
     }
 
     public void setFormattedDate(String formattedDate) {

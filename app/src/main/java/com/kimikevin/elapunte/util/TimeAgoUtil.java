@@ -1,50 +1,48 @@
 package com.kimikevin.elapunte.util;
 
-
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class TimeAgoUtil {
+public final class TimeAgoUtil {
 
-    public static String getTimeUsing24HourFormat(long timestamp) {
-        Instant instant = Instant.ofEpochMilli(timestamp);
-        LocalDate messageDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate today = LocalDate.now();
+    private static final DateTimeFormatter TIME_OF_DAY = DateTimeFormatter.ofPattern("HH:mm");
+    private static final DateTimeFormatter DAY_OF_WEEK = DateTimeFormatter.ofPattern("EEEE");
+    private static final DateTimeFormatter SHORT_DATE  = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter BACKEND     = DateTimeFormatter.ofPattern("dd-MM-yyyy-HH-mm");
+
+    private TimeAgoUtil() {}
+
+    /**
+     * WhatsApp-style chat list timestamp.
+     *   today      -> "HH:mm"
+     *   yesterday  -> "Yesterday"
+     *   last week  -> day of week (e.g. "Monday")
+     *   older      -> "dd/MM/yyyy"
+     */
+    public static String formatChatTimestamp(long timestamp) {
+        if (timestamp <= 0L) return "";
+
+        ZoneId zone = ZoneId.systemDefault();
+        ZonedDateTime when = Instant.ofEpochMilli(timestamp).atZone(zone);
+        LocalDate messageDate = when.toLocalDate();
+        LocalDate today = LocalDate.now(zone);
 
         if (messageDate.equals(today)) {
-            return DateTimeFormatter.ofPattern("HH:mm")
-                    .format(instant.atZone(ZoneId.systemDefault()));
-        } else if (messageDate.equals(today.minusDays(1))) {
-            return "Yesterday";
-        } else if (messageDate.isAfter(today.minusDays(7))) {
-            return DateTimeFormatter.ofPattern("EEEE").format(messageDate);
-        } else {
-            return DateTimeFormatter.ofPattern("dd/MM/yyyy").format(messageDate);
+            return TIME_OF_DAY.format(when);
         }
-    }
-
-    public static String getTimeUsing12HourFormat(long timestamp) {
-        Instant instant = Instant.ofEpochMilli(timestamp);
-        LocalDate messageDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate today = LocalDate.now();
-
-        if (messageDate.equals(today)) {
-            return DateTimeFormatter.ofPattern("h:mm a")
-                    .format(instant.atZone(ZoneId.systemDefault()));
-        } else if (messageDate.equals(today.minusDays(1))) {
+        if (messageDate.equals(today.minusDays(1))) {
             return "Yesterday";
-        } else if (messageDate.isAfter(today.minusDays(7))) {
-            return DateTimeFormatter.ofPattern("EEEE").format(messageDate);
-        } else {
-            return DateTimeFormatter.ofPattern("dd/MM/yyyy").format(messageDate);
         }
+        if (messageDate.isAfter(today.minusDays(7))) {
+            return DAY_OF_WEEK.format(messageDate);
+        }
+        return SHORT_DATE.format(messageDate);
     }
 
     public static String getBackendDate(long timestamp) {
-        Instant instant = Instant.ofEpochMilli(timestamp);
-        return DateTimeFormatter.ofPattern("dd-MM-yyyy-HH-mm")
-                .format(instant.atZone(ZoneId.systemDefault()));
+        return BACKEND.format(Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()));
     }
 }

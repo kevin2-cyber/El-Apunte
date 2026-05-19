@@ -10,8 +10,11 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.kimikevin.elapunte.BuildConfig;
 import com.kimikevin.elapunte.model.NoteDatabase;
 import com.kimikevin.elapunte.model.dao.NoteDao;
+import com.kimikevin.elapunte.model.network.NoteApi;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -21,12 +24,16 @@ import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 @InstallIn(SingletonComponent.class)
 public class AppModule {
-    private static final String API_HOST = BuildConfig.API_HOST;
-    private static final int API_PORT = 9090;
+    private static final String API_BASE_URL =
+            "http://" + BuildConfig.API_HOST + ":" + BuildConfig.API_PORT + "/api/v1/";
 
     @Provides
     @Singleton
@@ -49,12 +56,42 @@ public class AppModule {
         return database.getNoteDao();
     }
 
-
     @Provides
     @Singleton
-    @Named("gRPCExecutor")
-    public ExecutorService provideGrpcExecutor() {
+    @Named("networkExecutor")
+    public ExecutorService provideNetworkExecutor() {
         return Executors.newFixedThreadPool(4);
     }
 
+    @Provides
+    @Singleton
+    public OkHttpClient provideOkHttpClient() {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(BuildConfig.DEBUG
+                ? HttpLoggingInterceptor.Level.BODY
+                : HttpLoggingInterceptor.Level.NONE);
+
+        return new OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    public Retrofit provideRetrofit(OkHttpClient client) {
+        return new Retrofit.Builder()
+                .baseUrl(API_BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    public NoteApi provideNoteApi(Retrofit retrofit) {
+        return retrofit.create(NoteApi.class);
+    }
 }
