@@ -40,4 +40,7 @@ public interface NoteDao {
 
     @Query("SELECT COUNT(*) FROM note_table")
     int getCount();
+
+    @Query("DELETE FROM note_table")
+    void clearAll();
 }

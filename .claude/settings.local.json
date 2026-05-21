@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Bash(./gradlew :app:compileDebugJavaWithJavac)"
+      "Bash(./gradlew :app:compileDebugJavaWithJavac)",
+      "Bash(curl -s -X POST http://localhost/api/v1/auth/login -H \"Content-Type: application/json\" -d '{\"username\":\"test\",\"password\":\"test\"}')",
+      "Bash(curl -s http://localhost/api/v1/auth/)",
+      "Bash(curl -s -X POST http://localhost/api/v1/auth/login -H \"Content-Type: application/json\" -d '{\"username\":\"admin\",\"password\":\"admin\"}')",
+      "Bash(curl -s -X POST http://localhost/api/v1/auth/register -H \"Content-Type: application/json\" -d '{\"username\":\"test\",\"password\":\"test\"}')",
+      "Bash(curl -v http://localhost/api/v1/auth/)",
+      "Bash(xargs ls -1)"
     ]
   }
 }
