@@ -10,7 +10,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.kimikevin.elapunte.BuildConfig;
 import com.kimikevin.elapunte.model.NoteDatabase;
 import com.kimikevin.elapunte.model.dao.NoteDao;
+import com.kimikevin.elapunte.model.network.AuthApi;
+import com.kimikevin.elapunte.model.network.AuthInterceptor;
 import com.kimikevin.elapunte.model.network.NoteApi;
+import com.kimikevin.elapunte.util.TokenManager;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -43,7 +46,7 @@ public class AppModule {
                 .build();
     }
 
-    static final Migration MIGRATION = new Migration(7,8) {
+    static final Migration MIGRATION = new Migration(7, 8) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE note_table ADD COLUMN pending_action TEXT");
@@ -64,14 +67,41 @@ public class AppModule {
     }
 
     @Provides
+    @Named("apiBaseUrl")
+    public String provideApiBaseUrl() {
+        return API_BASE_URL;
+    }
+
+    // Plain client used only for token refresh (no auth interceptor to avoid loops)
+    @Provides
     @Singleton
-    public OkHttpClient provideOkHttpClient() {
+    @Named("refreshClient")
+    public OkHttpClient provideRefreshClient() {
+        return new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    public AuthInterceptor provideAuthInterceptor(TokenManager tokenManager,
+                                                  @Named("refreshClient") OkHttpClient refreshClient,
+                                                  @Named("apiBaseUrl") String baseUrl) {
+        return new AuthInterceptor(tokenManager, refreshClient, baseUrl);
+    }
+
+    @Provides
+    @Singleton
+    public OkHttpClient provideOkHttpClient(AuthInterceptor authInterceptor) {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(BuildConfig.DEBUG
                 ? HttpLoggingInterceptor.Level.BODY
                 : HttpLoggingInterceptor.Level.NONE);
 
         return new OkHttpClient.Builder()
+                .addInterceptor(authInterceptor)
                 .addInterceptor(logging)
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)
@@ -93,5 +123,11 @@ public class AppModule {
     @Singleton
     public NoteApi provideNoteApi(Retrofit retrofit) {
         return retrofit.create(NoteApi.class);
+    }
+
+    @Provides
+    @Singleton
+    public AuthApi provideAuthApi(Retrofit retrofit) {
+        return retrofit.create(AuthApi.class);
     }
 }

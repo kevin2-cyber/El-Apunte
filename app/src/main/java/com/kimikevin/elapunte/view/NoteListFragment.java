@@ -28,6 +28,7 @@ import com.kimikevin.elapunte.R;
 import com.kimikevin.elapunte.databinding.FragmentNoteListBinding;
 import com.kimikevin.elapunte.model.entity.Note;
 import com.kimikevin.elapunte.view.adapter.NoteAdapter;
+import com.kimikevin.elapunte.viewmodel.AuthViewModel;
 import com.kimikevin.elapunte.viewmodel.NoteViewModel;
 
 import java.util.ArrayList;
@@ -90,6 +91,13 @@ public class NoteListFragment extends Fragment {
         binding.themeSwitch.setOnClickListener(view -> {
             ThemeBottomSheet themeBottomSheet = new ThemeBottomSheet();
             themeBottomSheet.show(getParentFragmentManager(), TAG);
+        });
+
+        binding.btnLogout.setOnClickListener(view -> {
+            AuthViewModel authViewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
+            authViewModel.logout();
+            Navigation.findNavController(requireView())
+                    .navigate(R.id.action_noteListFragment_to_loginFragment);
         });
 
         setupSearchView();

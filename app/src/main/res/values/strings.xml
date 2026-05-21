@@ -23,4 +23,18 @@
     <string name="delete_note_message">Are you sure want to delete this note?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+
+    <string name="tagline">Your notes, everywhere</string>
+
+    <!-- Auth -->
+    <string name="login_title">Sign In</string>
+    <string name="register_title">Create Account</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="action_login">Sign In</string>
+    <string name="action_register">Create Account</string>
+    <string name="go_to_register">Don\'t have an account? Register</string>
+    <string name="go_to_login">Already have an account? Sign in</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="action_logout">Logout</string>
 </resources>
