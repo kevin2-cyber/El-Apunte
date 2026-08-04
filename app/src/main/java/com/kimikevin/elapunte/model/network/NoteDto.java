@@ -1,7 +1,9 @@
 package com.kimikevin.elapunte.model.network;
 
+import java.util.UUID;
+
 public class NoteDto {
-    private String id;
+    private UUID id;
     private String title;
     private String content;
     private String formattedDate;
@@ -9,7 +11,7 @@ public class NoteDto {
 
     public NoteDto() {}
 
-    public NoteDto(String id, String title, String content, String formattedDate, long timestamp) {
+    public NoteDto(UUID id, String title, String content, String formattedDate, long timestamp) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -17,8 +19,8 @@ public class NoteDto {
         this.timestamp = timestamp;
     }
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public UUID getId() { return id; }
+    public void setId(UUID id) { this.id = id; }
 
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }

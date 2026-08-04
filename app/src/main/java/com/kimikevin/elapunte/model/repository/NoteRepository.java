@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -106,7 +107,7 @@ public class NoteRepository {
 
         // Step 2 — build Set of pending IDs once for O(1) lookup
         List<Note> unsyncedNotes = noteDao.getUnsyncedNotes();
-        Set<String> pendingIds = new HashSet<>();
+        Set<UUID> pendingIds = new HashSet<>();
         for (Note n : unsyncedNotes) {
             pendingIds.add(n.getId());
         }
@@ -229,7 +230,7 @@ public class NoteRepository {
     // ── REST push helpers ────────────────────────────────────────────────────
 
     private void pushInsert(Note note) throws IOException {
-        String tempId = note.getId();
+        UUID tempId = note.getId();
         NoteDto payload = NoteMapper.toDto(note);
         payload.setId(null); // server is the source of truth for IDs
         Response<NoteDto> response = noteApi.createNote(payload).execute();
