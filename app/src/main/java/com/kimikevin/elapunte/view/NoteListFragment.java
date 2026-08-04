@@ -33,6 +33,7 @@ import com.kimikevin.elapunte.viewmodel.NoteViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -127,7 +128,7 @@ public class NoteListFragment extends Fragment {
             @Override
             public void onNoteClick(Note note) {
                 Bundle args = new Bundle();
-                args.putString(NOTE_ID, note.getId());
+                args.putString(NOTE_ID, note.getId().toString());
                 args.putString(NOTE_TITLE, note.getTitle());
                 args.putString(NOTE_CONTENT, note.getContent());
                 Navigation.findNavController(requireView())

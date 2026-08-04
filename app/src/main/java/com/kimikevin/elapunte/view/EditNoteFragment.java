@@ -21,7 +21,10 @@ import androidx.navigation.Navigation;
 import com.kimikevin.elapunte.R;
 import com.kimikevin.elapunte.databinding.FragmentEditNoteBinding;
 import com.kimikevin.elapunte.model.entity.Note;
+import com.kimikevin.elapunte.util.AppConstants;
 import com.kimikevin.elapunte.viewmodel.NoteViewModel;
+
+import java.util.UUID;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -30,7 +33,7 @@ public class EditNoteFragment extends Fragment {
     private FragmentEditNoteBinding binding;
     private NoteViewModel noteViewModel;
     private Note note;
-    private String noteId;
+    private UUID noteId;
     private String originalTitle;
     private String originalContent;
 
@@ -39,7 +42,7 @@ public class EditNoteFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         if (args != null) {
-            noteId = args.getString(NOTE_ID);
+            noteId = UUID.fromString(args.getString(AppConstants.NOTE_ID));
             originalTitle = args.getString(NOTE_TITLE, "");
             originalContent = args.getString(NOTE_CONTENT, "");
         } else {
