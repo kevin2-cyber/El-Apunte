@@ -42,14 +42,38 @@ public class AppModule {
     @Singleton
     public NoteDatabase provideNoteDatabase(@ApplicationContext Context context) {
         return Room.databaseBuilder(context, NoteDatabase.class, "note_database")
-                .addMigrations(MIGRATION)
+                .addMigrations(MIGRATION_7_8, MIGRATION_8_9)
                 .build();
     }
 
-    static final Migration MIGRATION = new Migration(7, 8) {
+    static final Migration MIGRATION_7_8 = new Migration(7, 8) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE note_table ADD COLUMN is_synced INTEGER NOT NULL DEFAULT 0");
             database.execSQL("ALTER TABLE note_table ADD COLUMN pending_action TEXT");
+        }
+    };
+
+    static final Migration MIGRATION_8_9 = new Migration(8, 9) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            // Re-create the table to change note_id from BLOB to TEXT
+            database.execSQL("CREATE TABLE note_table_new (" +
+                    "note_id TEXT NOT NULL, " +
+                    "title TEXT, " +
+                    "content TEXT, " +
+                    "formatted_date TEXT, " +
+                    "timestamp INTEGER NOT NULL, " +
+                    "is_synced INTEGER NOT NULL, " +
+                    "pending_action TEXT, " +
+                    "PRIMARY KEY(note_id))");
+
+            database.execSQL("INSERT INTO note_table_new (note_id, title, content, formatted_date, timestamp, is_synced, pending_action) " +
+                    "SELECT CAST(note_id AS TEXT), title, content, formatted_date, timestamp, is_synced, pending_action " +
+                    "FROM note_table");
+
+            database.execSQL("DROP TABLE note_table");
+            database.execSQL("ALTER TABLE note_table_new RENAME TO note_table");
         }
     };
 
