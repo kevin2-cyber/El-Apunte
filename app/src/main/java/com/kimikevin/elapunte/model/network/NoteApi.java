@@ -1,6 +1,7 @@
 package com.kimikevin.elapunte.model.network;
 
 import java.util.List;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -20,8 +21,8 @@ public interface NoteApi {
     Call<NoteDto> createNote(@Body NoteDto note);
 
     @PUT("notes/{id}")
-    Call<NoteDto> updateNote(@Path("id") String id, @Body NoteDto note);
+    Call<NoteDto> updateNote(@Path("id") UUID id, @Body NoteDto note);
 
     @DELETE("notes/{id}")
-    Call<Void> deleteNote(@Path("id") String id);
+    Call<Void> deleteNote(@Path("id") UUID id);
 }

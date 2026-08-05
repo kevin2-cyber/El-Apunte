@@ -45,7 +45,7 @@ public class AuthViewModel extends ViewModel {
     public LiveData<Boolean> getAuthSuccess() { return authSuccess; }
 
     private void observe(LiveData<AuthRepository.AuthResult> source) {
-        source.observeForever(new Observer<AuthRepository.AuthResult>() {
+        source.observeForever(new Observer<>() {
             @Override
             public void onChanged(AuthRepository.AuthResult result) {
                 source.removeObserver(this);

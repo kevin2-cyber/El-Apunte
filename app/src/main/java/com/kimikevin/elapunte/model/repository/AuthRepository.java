@@ -74,12 +74,12 @@ public class AuthRepository {
     }
 
     private String parseError(int code) {
-        switch (code) {
-            case 401: return "Invalid username or password.";
-            case 409: return "Username already taken.";
-            case 400: return "Invalid request. Check your input.";
-            default:  return "Server error (" + code + "). Try again.";
-        }
+        return switch (code) {
+            case 401 -> "Invalid username or password.";
+            case 409 -> "Username already taken.";
+            case 400 -> "Invalid request. Check your input.";
+            default -> "Server error (" + code + "). Try again.";
+        };
     }
 
     public static class AuthResult {

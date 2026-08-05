@@ -22,7 +22,7 @@ public class Note extends BaseObservable {
     @PrimaryKey()
     @NonNull
     @ColumnInfo(name = "note_id")
-    private String id;
+    private UUID id;
     @ColumnInfo(name = "title")
     private String title;
     @ColumnInfo(name = "content")
@@ -39,7 +39,7 @@ public class Note extends BaseObservable {
     private String pendingAction; // "INSERT", "UPDATE", "DELETE", or null
 
     public Note(String title, String content) {
-        id = UUID.randomUUID().toString();
+        id = UUID.randomUUID();
         this.title = title;
         this.content = content;
         this.timestamp = System.currentTimeMillis();
@@ -48,16 +48,18 @@ public class Note extends BaseObservable {
     }
 
     @Ignore
-    public Note() {}
+    public Note() {
+        id = UUID.randomUUID();
+    }
 
 
     @NonNull
     @Bindable
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
         notifyPropertyChanged(BR.id);
     }

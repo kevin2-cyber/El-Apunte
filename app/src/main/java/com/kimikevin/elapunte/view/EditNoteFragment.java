@@ -23,6 +23,8 @@ import com.kimikevin.elapunte.databinding.FragmentEditNoteBinding;
 import com.kimikevin.elapunte.model.entity.Note;
 import com.kimikevin.elapunte.viewmodel.NoteViewModel;
 
+import java.util.UUID;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -30,7 +32,7 @@ public class EditNoteFragment extends Fragment {
     private FragmentEditNoteBinding binding;
     private NoteViewModel noteViewModel;
     private Note note;
-    private String noteId;
+    private UUID noteId;
     private String originalTitle;
     private String originalContent;
 
@@ -38,8 +40,11 @@ public class EditNoteFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-        if (args != null) {
-            noteId = args.getString(NOTE_ID);
+        if (args != null && args.containsKey(NOTE_ID)) {
+            String idStr = args.getString(NOTE_ID);
+            if (idStr != null) {
+                noteId = UUID.fromString(idStr);
+            }
             originalTitle = args.getString(NOTE_TITLE, "");
             originalContent = args.getString(NOTE_CONTENT, "");
         } else {
