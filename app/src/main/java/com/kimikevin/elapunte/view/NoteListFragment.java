@@ -2,14 +2,11 @@ package com.kimikevin.elapunte.view;
 
 import static com.kimikevin.elapunte.util.AppConstants.NOTE_CONTENT;
 import static com.kimikevin.elapunte.util.AppConstants.NOTE_ID;
-import static com.kimikevin.elapunte.util.AppConstants.NOTE_LOG_TAG;
 import static com.kimikevin.elapunte.util.AppConstants.NOTE_TITLE;
 import static com.kimikevin.elapunte.util.AppConstants.TAG;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,12 +25,10 @@ import com.kimikevin.elapunte.R;
 import com.kimikevin.elapunte.databinding.FragmentNoteListBinding;
 import com.kimikevin.elapunte.model.entity.Note;
 import com.kimikevin.elapunte.view.adapter.NoteAdapter;
-import com.kimikevin.elapunte.viewmodel.AuthViewModel;
 import com.kimikevin.elapunte.viewmodel.NoteViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -94,13 +89,6 @@ public class NoteListFragment extends Fragment {
             themeBottomSheet.show(getParentFragmentManager(), TAG);
         });
 
-        binding.btnLogout.setOnClickListener(view -> {
-            AuthViewModel authViewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
-            authViewModel.logout();
-            Navigation.findNavController(requireView())
-                    .navigate(R.id.action_noteListFragment_to_loginFragment);
-        });
-
         setupSearchView();
         initRecyclerView();
     }
@@ -158,7 +146,6 @@ public class NoteListFragment extends Fragment {
                             n.getTitle().toLowerCase().contains(query.toLowerCase()) ||
                             n.getContent().toLowerCase().contains(query.toLowerCase()))
                     .collect(Collectors.toList());
-
 
         noteAdapter.submitList(new ArrayList<>(filtered));
         binding.emptyState.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);

@@ -1,15 +1,11 @@
 package com.kimikevin.elapunte.viewmodel;
 
-import static com.kimikevin.elapunte.util.AppConstants.NOTE_LOG_TAG;
-
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.kimikevin.elapunte.model.entity.Note;
 import com.kimikevin.elapunte.model.repository.NoteRepository;
-import com.kimikevin.elapunte.util.TimeAgoUtil;
 
 import java.util.List;
 
@@ -26,9 +22,6 @@ public class NoteViewModel extends ViewModel {
     public NoteViewModel(NoteRepository repository) {
         this.repository = repository;
         allNotes = repository.getAllNotes();
-        // Attempt a full sync (push pending + pull remote) on startup.
-        // Ongoing offline-→-online sync is handled by NoteSyncWorker via WorkManager.
-        repository.syncNotes();
     }
 
     public LiveData<List<Note>> getAllNotes() {

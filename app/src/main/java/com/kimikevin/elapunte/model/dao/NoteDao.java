@@ -11,7 +11,6 @@ import androidx.room.Update;
 import com.kimikevin.elapunte.model.entity.Note;
 
 import java.util.List;
-import java.util.UUID;
 
 @Dao
 public interface NoteDao {
@@ -24,24 +23,6 @@ public interface NoteDao {
     @Delete
     void delete(Note note);
 
-    @Query("SELECT * FROM note_table WHERE pending_action != 'DELETE' OR pending_action IS NULL ORDER BY timestamp DESC")
+    @Query("SELECT * FROM note_table ORDER BY timestamp DESC")
     LiveData<List<Note>> getAllNotes();
-
-    @Query("SELECT * FROM note_table WHERE is_synced = 0 AND pending_action IS NOT NULL")
-    List<Note> getUnsyncedNotes();
-
-    @Query("UPDATE note_table SET is_synced = 1, pending_action = NULL WHERE note_id = :noteId")
-    void markAsSynced(UUID noteId);
-
-    @Query("SELECT pending_action FROM note_table WHERE note_id = :noteId LIMIT 1")
-    String getPendingActionById(UUID noteId);
-
-    @Query("DELETE FROM note_table WHERE note_id = :noteId")
-    void deleteById(UUID noteId);
-
-    @Query("SELECT COUNT(*) FROM note_table")
-    int getCount();
-
-    @Query("DELETE FROM note_table")
-    void clearAll();
 }
