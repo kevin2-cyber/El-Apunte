@@ -59,6 +59,7 @@ dependencies {
     implementation libs.material
     implementation libs.activity
     implementation libs.constraintlayout
+    implementation libs.timber
 
     // navigation
     implementation libs.navigation.fragment

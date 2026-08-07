@@ -5,16 +5,16 @@ import static com.kimikevin.elapunte.util.AppConstants.THEME_KEY;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.SystemBarStyle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.splashscreen.SplashScreen;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.kimikevin.elapunte.databinding.ActivityMainBinding;
-import com.kimikevin.elapunte.viewmodel.SplashViewModel;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -24,24 +24,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
+        SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        EdgeToEdge.enable(this, SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT));
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        applySavedTheme();
-
-        SplashViewModel splashViewModel = new ViewModelProvider(this).get(SplashViewModel.class);
-        splashScreen.setKeepOnScreenCondition(() -> {
-            Boolean isLoading = splashViewModel.getLoadingStatus().getValue();
-            return isLoading == null || !isLoading;
-        });
-
         setContentView(binding.getRoot());
     }
 
-    private void applySavedTheme() {
-        SharedPreferences sharedPreferences = getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
-        int savedMode = sharedPreferences.getInt(THEME_KEY, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-        AppCompatDelegate.setDefaultNightMode(savedMode);
-    }
+
 }

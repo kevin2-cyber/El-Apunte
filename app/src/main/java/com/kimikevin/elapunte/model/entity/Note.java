@@ -22,7 +22,7 @@ public class Note extends BaseObservable {
     @PrimaryKey()
     @NonNull
     @ColumnInfo(name = "note_id")
-    private UUID id;
+    private UUID id = UUID.randomUUID();
     @ColumnInfo(name = "title")
     private String title;
     @ColumnInfo(name = "content")
@@ -33,16 +33,13 @@ public class Note extends BaseObservable {
     private long timestamp;
 
     public Note(String title, String content) {
-        id = UUID.randomUUID();
         this.title = title;
         this.content = content;
         this.timestamp = System.currentTimeMillis();
     }
 
     @Ignore
-    public Note() {
-        id = UUID.randomUUID();
-    }
+    public Note() {}
 
 
     @NonNull

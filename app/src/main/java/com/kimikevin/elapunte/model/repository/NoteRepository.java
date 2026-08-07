@@ -12,6 +12,8 @@ import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
+import timber.log.Timber;
+
 public class NoteRepository {
     private final NoteDao noteDao;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -30,6 +32,7 @@ public class NoteRepository {
             long timestamp = System.currentTimeMillis();
             note.setTimestamp(timestamp);
             note.setFormattedDate(TimeAgoUtil.formatChatTimestamp(timestamp));
+            Timber.d("Inserting note: %s at %s", note, timestamp);
             noteDao.insert(note);
         });
     }
@@ -39,11 +42,15 @@ public class NoteRepository {
             long timestamp = System.currentTimeMillis();
             note.setTimestamp(timestamp);
             note.setFormattedDate(TimeAgoUtil.formatChatTimestamp(timestamp));
-            noteDao.insert(note);
+            Timber.d("Updating note: %s at %s", note, timestamp);
+            noteDao.update(note);
         });
     }
 
     public void deleteNote(Note note) {
-        executor.execute(() -> noteDao.delete(note));
+        executor.execute(() -> {
+            Timber.d("Deleting note: %s at %s", note, System.currentTimeMillis());
+            noteDao.delete(note);
+        });
     }
 }

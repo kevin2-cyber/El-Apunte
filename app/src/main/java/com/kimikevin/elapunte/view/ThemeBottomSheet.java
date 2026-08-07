@@ -15,7 +15,6 @@ import android.widget.RadioGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.databinding.DataBindingUtil;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.kimikevin.elapunte.R;
@@ -27,8 +26,14 @@ public class ThemeBottomSheet extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.theme_bottom_sheet_layout, container, false);
+        binding = ThemeBottomSheetLayoutBinding.inflate(inflater, container, false);
         return binding.getRoot();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     @Override
