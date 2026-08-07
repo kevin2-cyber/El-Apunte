@@ -22,7 +22,7 @@ public class Note extends BaseObservable {
     @PrimaryKey()
     @NonNull
     @ColumnInfo(name = "note_id")
-    private UUID id;
+    private UUID id = UUID.randomUUID();
     @ColumnInfo(name = "title")
     private String title;
     @ColumnInfo(name = "content")
@@ -32,25 +32,14 @@ public class Note extends BaseObservable {
     @ColumnInfo(name = "timestamp")
     private long timestamp;
 
-    @ColumnInfo(name = "is_synced")
-    private boolean isSynced = false;
-
-    @ColumnInfo(name = "pending_action")
-    private String pendingAction; // "INSERT", "UPDATE", "DELETE", or null
-
     public Note(String title, String content) {
-        id = UUID.randomUUID();
         this.title = title;
         this.content = content;
         this.timestamp = System.currentTimeMillis();
-        isSynced = false;
-        pendingAction = null;
     }
 
     @Ignore
-    public Note() {
-        id = UUID.randomUUID();
-    }
+    public Note() {}
 
 
     @NonNull
@@ -105,22 +94,6 @@ public class Note extends BaseObservable {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public boolean isSynced() {
-        return isSynced;
-    }
-
-    public void setSynced(boolean synced) {
-        isSynced = synced;
-    }
-
-    public String getPendingAction() {
-        return pendingAction;
-    }
-
-    public void setPendingAction(String pendingAction) {
-        this.pendingAction = pendingAction;
     }
 
     @NonNull

@@ -1,17 +1,16 @@
 package com.kimikevin.elapunte.viewmodel;
 
-import static com.kimikevin.elapunte.util.AppConstants.NOTE_LOG_TAG;
-
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 
 import com.kimikevin.elapunte.model.entity.Note;
 import com.kimikevin.elapunte.model.repository.NoteRepository;
-import com.kimikevin.elapunte.util.TimeAgoUtil;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -22,17 +21,53 @@ public class NoteViewModel extends ViewModel {
     private final NoteRepository repository;
     private final LiveData<List<Note>> allNotes;
 
+    private final MutableLiveData<String> _searchQuery;
+    private final MutableLiveData<Boolean> _isReverseLayout;
+    private final MediatorLiveData<List<Note>> _filteredNotes = new MediatorLiveData<>();
+
     @Inject
-    public NoteViewModel(NoteRepository repository) {
+    public NoteViewModel(NoteRepository repository, SavedStateHandle savedStateHandle) {
         this.repository = repository;
         allNotes = repository.getAllNotes();
-        // Attempt a full sync (push pending + pull remote) on startup.
-        // Ongoing offline-→-online sync is handled by NoteSyncWorker via WorkManager.
-        repository.syncNotes();
+
+        this._searchQuery = savedStateHandle.getLiveData("search_query", "");
+        this._isReverseLayout = savedStateHandle.getLiveData("is_reverse", false);
+
+
+        _filteredNotes.addSource(allNotes, notes -> performFilter(notes, _searchQuery.getValue()));
+        _filteredNotes.addSource(_searchQuery, query -> performFilter(allNotes.getValue(), query));
     }
 
-    public LiveData<List<Note>> getAllNotes() {
-        return allNotes;
+    private void performFilter(List<Note> notes, String query) {
+        if (notes == null) return;
+        if (query == null || query.isEmpty()) {
+            _filteredNotes.setValue(notes);
+            return;
+        }
+
+        List<Note> filtered = notes.stream()
+                .filter(n -> n.getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                        n.getContent().toLowerCase().contains(query.toLowerCase()))
+                .collect(Collectors.toList());
+
+        _filteredNotes.setValue(filtered);
+    }
+
+    public void setSearchQuery(String query) {
+        _searchQuery.setValue(query);
+    }
+
+    public LiveData<List<Note>> getFilteredNotes() {
+        return _filteredNotes;
+    }
+
+    public void toggleLayoutOrder() {
+        Boolean current = _isReverseLayout.getValue();
+        _isReverseLayout.setValue(current == null ? false : !current);
+    }
+
+    public LiveData<Boolean> getIsReverseLayout() {
+        return _isReverseLayout;
     }
 
     public void insertNote(Note note) {

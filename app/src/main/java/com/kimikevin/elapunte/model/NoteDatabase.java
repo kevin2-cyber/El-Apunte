@@ -9,7 +9,7 @@ import com.kimikevin.elapunte.model.dao.NoteDao;
 import com.kimikevin.elapunte.model.entity.Note;
 import com.kimikevin.elapunte.util.Converters;
 
-@Database(entities = {Note.class}, version = 9)
+@Database(entities = {Note.class}, version = 1)
 @TypeConverters({Converters.class})
 public abstract class NoteDatabase extends RoomDatabase {
     public abstract NoteDao getNoteDao();

@@ -2,14 +2,10 @@ package com.kimikevin.elapunte.view;
 
 import static com.kimikevin.elapunte.util.AppConstants.NOTE_CONTENT;
 import static com.kimikevin.elapunte.util.AppConstants.NOTE_ID;
-import static com.kimikevin.elapunte.util.AppConstants.NOTE_LOG_TAG;
 import static com.kimikevin.elapunte.util.AppConstants.NOTE_TITLE;
 import static com.kimikevin.elapunte.util.AppConstants.TAG;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,13 +24,9 @@ import com.kimikevin.elapunte.R;
 import com.kimikevin.elapunte.databinding.FragmentNoteListBinding;
 import com.kimikevin.elapunte.model.entity.Note;
 import com.kimikevin.elapunte.view.adapter.NoteAdapter;
-import com.kimikevin.elapunte.viewmodel.AuthViewModel;
 import com.kimikevin.elapunte.viewmodel.NoteViewModel;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -42,18 +34,11 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class NoteListFragment extends Fragment {
     private FragmentNoteListBinding binding;
     private NoteViewModel noteViewModel;
-    private final ArrayList<Note> noteList = new ArrayList<>();
     private NoteAdapter noteAdapter;
-    private String currentQuery = "";
-    private boolean isReverseLayout = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            currentQuery = savedInstanceState.getString("CURRENT_QUERY", "");
-            isReverseLayout = savedInstanceState.getBoolean("IS_REVERSE_LAYOUT", false);
-        }
     }
 
     @Nullable
@@ -74,17 +59,17 @@ public class NoteListFragment extends Fragment {
 
     private void setupViewModel() {
         noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
-        noteViewModel.getAllNotes().observe(getViewLifecycleOwner(), notes -> {
-            noteList.clear();
-            noteList.addAll(notes);
-
-            if (TextUtils.isEmpty(currentQuery)) {
-                noteAdapter.submitList(new ArrayList<>(notes));
-            } else {
-                filterNotes(currentQuery);
-            }
-
+        noteViewModel.getFilteredNotes().observe(getViewLifecycleOwner(), notes -> {
+            noteAdapter.submitList(new ArrayList<>(notes));
             binding.emptyState.setVisibility(notes.isEmpty() ? View.VISIBLE : View.GONE);
+        });
+
+        noteViewModel.getIsReverseLayout().observe(getViewLifecycleOwner(), isReverse -> {
+            LinearLayoutManager manager = (LinearLayoutManager) binding.rvNotes.getLayoutManager();
+            if (manager != null) {
+                manager.setReverseLayout(isReverse);
+                manager.setStackFromEnd(isReverse);
+            }
         });
     }
 
@@ -92,13 +77,6 @@ public class NoteListFragment extends Fragment {
         binding.themeSwitch.setOnClickListener(view -> {
             ThemeBottomSheet themeBottomSheet = new ThemeBottomSheet();
             themeBottomSheet.show(getParentFragmentManager(), TAG);
-        });
-
-        binding.btnLogout.setOnClickListener(view -> {
-            AuthViewModel authViewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
-            authViewModel.logout();
-            Navigation.findNavController(requireView())
-                    .navigate(R.id.action_noteListFragment_to_loginFragment);
         });
 
         setupSearchView();
@@ -115,8 +93,7 @@ public class NoteListFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                currentQuery = newText;
-                filterNotes(newText);
+                noteViewModel.setSearchQuery(newText);
                 return true;
             }
         });
@@ -143,32 +120,9 @@ public class NoteListFragment extends Fragment {
         });
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
-        layoutManager.setReverseLayout(isReverseLayout);
-        layoutManager.setStackFromEnd(isReverseLayout);
         binding.rvNotes.setLayoutManager(layoutManager);
         binding.rvNotes.setItemAnimator(new DefaultItemAnimator());
         binding.rvNotes.setAdapter(noteAdapter);
-    }
-
-    private void filterNotes(String query) {
-        if (noteList.isEmpty()) return;
-
-        List<Note> filtered = noteList.stream()
-                    .filter(n -> TextUtils.isEmpty(query) ||
-                            n.getTitle().toLowerCase().contains(query.toLowerCase()) ||
-                            n.getContent().toLowerCase().contains(query.toLowerCase()))
-                    .collect(Collectors.toList());
-
-
-        noteAdapter.submitList(new ArrayList<>(filtered));
-        binding.emptyState.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("CURRENT_QUERY", currentQuery);
-        outState.putBoolean("IS_REVERSE_LAYOUT", isReverseLayout);
     }
 
     @Override
@@ -184,12 +138,7 @@ public class NoteListFragment extends Fragment {
         }
 
         public void onFilterClick(View view) {
-            isReverseLayout = !isReverseLayout;
-            LinearLayoutManager manager = (LinearLayoutManager) binding.rvNotes.getLayoutManager();
-            if (manager != null) {
-                manager.setReverseLayout(isReverseLayout);
-                manager.setStackFromEnd(isReverseLayout);
-            }
+           noteViewModel.toggleLayoutOrder();
         }
     }
 }

@@ -1,28 +1,31 @@
 package com.kimikevin.elapunte;
 
+import static com.kimikevin.elapunte.util.AppConstants.PREF_KEY;
+import static com.kimikevin.elapunte.util.AppConstants.THEME_KEY;
+
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 
-import androidx.annotation.NonNull;
-import androidx.work.Configuration;
-
-import javax.inject.Inject;
-
-import androidx.hilt.work.HiltWorkerFactory;
-
+import androidx.appcompat.app.AppCompatDelegate;
 
 import dagger.hilt.android.HiltAndroidApp;
+import timber.log.Timber;
 
 @HiltAndroidApp
-public class ElApunteApplication extends Application implements Configuration.Provider {
-
-    @Inject
-    HiltWorkerFactory workerFactory;
-
-    @NonNull
+public class ElApunteApplication extends Application {
     @Override
-    public Configuration getWorkManagerConfiguration() {
-        return new Configuration.Builder()
-                .setWorkerFactory(workerFactory)
-                .build();
+    public void onCreate() {
+        super.onCreate();
+        if (BuildConfig.DEBUG) {
+            Timber.plant();
+        }
+        applySavedTheme();
+    }
+
+    private void applySavedTheme() {
+        SharedPreferences sharedPreferences = getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
+        int savedMode = sharedPreferences.getInt(THEME_KEY, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        AppCompatDelegate.setDefaultNightMode(savedMode);
     }
 }
