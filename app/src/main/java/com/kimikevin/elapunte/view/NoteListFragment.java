@@ -34,18 +34,11 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class NoteListFragment extends Fragment {
     private FragmentNoteListBinding binding;
     private NoteViewModel noteViewModel;
-    private final ArrayList<Note> noteList = new ArrayList<>();
     private NoteAdapter noteAdapter;
-    private String currentQuery = "";
-    private boolean isReverseLayout = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            currentQuery = savedInstanceState.getString("CURRENT_QUERY", "");
-            isReverseLayout = savedInstanceState.getBoolean("IS_REVERSE_LAYOUT", false);
-        }
     }
 
     @Nullable
@@ -70,6 +63,14 @@ public class NoteListFragment extends Fragment {
             noteAdapter.submitList(new ArrayList<>(notes));
             binding.emptyState.setVisibility(notes.isEmpty() ? View.VISIBLE : View.GONE);
         });
+
+        noteViewModel.getIsReverseLayout().observe(getViewLifecycleOwner(), isReverse -> {
+            LinearLayoutManager manager = (LinearLayoutManager) binding.rvNotes.getLayoutManager();
+            if (manager != null) {
+                manager.setReverseLayout(isReverse);
+                manager.setStackFromEnd(isReverse);
+            }
+        });
     }
 
     private void setupUI() {
@@ -92,7 +93,6 @@ public class NoteListFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                currentQuery = newText;
                 noteViewModel.setSearchQuery(newText);
                 return true;
             }
@@ -120,18 +120,9 @@ public class NoteListFragment extends Fragment {
         });
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
-        layoutManager.setReverseLayout(isReverseLayout);
-        layoutManager.setStackFromEnd(isReverseLayout);
         binding.rvNotes.setLayoutManager(layoutManager);
         binding.rvNotes.setItemAnimator(new DefaultItemAnimator());
         binding.rvNotes.setAdapter(noteAdapter);
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("CURRENT_QUERY", currentQuery);
-        outState.putBoolean("IS_REVERSE_LAYOUT", isReverseLayout);
     }
 
     @Override
@@ -147,12 +138,7 @@ public class NoteListFragment extends Fragment {
         }
 
         public void onFilterClick(View view) {
-            isReverseLayout = !isReverseLayout;
-            LinearLayoutManager manager = (LinearLayoutManager) binding.rvNotes.getLayoutManager();
-            if (manager != null) {
-                manager.setReverseLayout(isReverseLayout);
-                manager.setStackFromEnd(isReverseLayout);
-            }
+           noteViewModel.toggleLayoutOrder();
         }
     }
 }

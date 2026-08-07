@@ -3,6 +3,7 @@ package com.kimikevin.elapunte.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 
 import com.kimikevin.elapunte.model.entity.Note;
@@ -20,13 +21,18 @@ public class NoteViewModel extends ViewModel {
     private final NoteRepository repository;
     private final LiveData<List<Note>> allNotes;
 
-    private final MutableLiveData<String> _searchQuery = new MutableLiveData<>("");
+    private final MutableLiveData<String> _searchQuery;
+    private final MutableLiveData<Boolean> _isReverseLayout;
     private final MediatorLiveData<List<Note>> _filteredNotes = new MediatorLiveData<>();
 
     @Inject
-    public NoteViewModel(NoteRepository repository) {
+    public NoteViewModel(NoteRepository repository, SavedStateHandle savedStateHandle) {
         this.repository = repository;
         allNotes = repository.getAllNotes();
+
+        this._searchQuery = savedStateHandle.getLiveData("search_query", "");
+        this._isReverseLayout = savedStateHandle.getLiveData("is_reverse", false);
+
 
         _filteredNotes.addSource(allNotes, notes -> performFilter(notes, _searchQuery.getValue()));
         _filteredNotes.addSource(_searchQuery, query -> performFilter(allNotes.getValue(), query));
@@ -55,8 +61,13 @@ public class NoteViewModel extends ViewModel {
         return _filteredNotes;
     }
 
-    public LiveData<List<Note>> getAllNotes() {
-        return allNotes;
+    public void toggleLayoutOrder() {
+        Boolean current = _isReverseLayout.getValue();
+        _isReverseLayout.setValue(current == null ? false : !current);
+    }
+
+    public LiveData<Boolean> getIsReverseLayout() {
+        return _isReverseLayout;
     }
 
     public void insertNote(Note note) {
