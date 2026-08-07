@@ -5,7 +5,6 @@ import static com.kimikevin.elapunte.util.AppConstants.NOTE_ID;
 import static com.kimikevin.elapunte.util.AppConstants.NOTE_TITLE;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +77,18 @@ public class EditNoteFragment extends Fragment {
                 noteViewModel.setCurrentNote(new Note());
             }
         }
+
+        noteViewModel.getSaveStatus().observe(getViewLifecycleOwner(), status -> {
+            if (status == null) return;
+
+            switch (status) {
+                case EMPTY -> Toast.makeText(requireContext(), R.string.empty_note_error, Toast.LENGTH_LONG).show();
+                case NO_CHANGES -> Toast.makeText(requireContext(), R.string.no_changes_detected, Toast.LENGTH_LONG).show();
+                case SUCCESS -> Navigation.findNavController(requireView()).popBackStack();
+            }
+
+            noteViewModel.resetSaveStatus();
+        });
     }
 
     @Override
@@ -88,32 +99,7 @@ public class EditNoteFragment extends Fragment {
 
     public class SaveClickHandler {
         public void onSubmitButtonClicked(View view) {
-            Note currentNote = noteViewModel.getCurrentNote().getValue();
-            if (currentNote == null) return;
-
-            String title = currentNote.getTitle() != null ? currentNote.getTitle().trim() : "";
-            String content = currentNote.getContent() != null ? currentNote.getContent().trim() : "";
-
-            if (TextUtils.isEmpty(title) && TextUtils.isEmpty(content)) {
-                Toast.makeText(requireContext(), R.string.empty_note_error, Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            boolean hasChanges = !title.equals(originalTitle) || !content.equals(originalContent);
-
-            if (!hasChanges) {
-                Toast.makeText(requireContext(), R.string.no_changes_detected, Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(view).popBackStack();
-                return;
-            }
-
-            if (noteId != null) {
-                noteViewModel.updateNote(currentNote);
-            } else {
-                noteViewModel.insertNote(currentNote);
-            }
-
-            Navigation.findNavController(view).popBackStack();
+         noteViewModel.saveNote(originalTitle, originalContent, noteId != null);
         }
     }
 }
