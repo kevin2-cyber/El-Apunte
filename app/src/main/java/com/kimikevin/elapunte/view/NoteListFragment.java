@@ -6,7 +6,6 @@ import static com.kimikevin.elapunte.util.AppConstants.NOTE_TITLE;
 import static com.kimikevin.elapunte.util.AppConstants.TAG;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,8 +27,6 @@ import com.kimikevin.elapunte.view.adapter.NoteAdapter;
 import com.kimikevin.elapunte.viewmodel.NoteViewModel;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -69,16 +66,8 @@ public class NoteListFragment extends Fragment {
 
     private void setupViewModel() {
         noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
-        noteViewModel.getAllNotes().observe(getViewLifecycleOwner(), notes -> {
-            noteList.clear();
-            noteList.addAll(notes);
-
-            if (TextUtils.isEmpty(currentQuery)) {
-                noteAdapter.submitList(new ArrayList<>(notes));
-            } else {
-                filterNotes(currentQuery);
-            }
-
+        noteViewModel.getFilteredNotes().observe(getViewLifecycleOwner(), notes -> {
+            noteAdapter.submitList(new ArrayList<>(notes));
             binding.emptyState.setVisibility(notes.isEmpty() ? View.VISIBLE : View.GONE);
         });
     }
@@ -104,7 +93,7 @@ public class NoteListFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 currentQuery = newText;
-                filterNotes(newText);
+                noteViewModel.setSearchQuery(newText);
                 return true;
             }
         });
@@ -136,19 +125,6 @@ public class NoteListFragment extends Fragment {
         binding.rvNotes.setLayoutManager(layoutManager);
         binding.rvNotes.setItemAnimator(new DefaultItemAnimator());
         binding.rvNotes.setAdapter(noteAdapter);
-    }
-
-    private void filterNotes(String query) {
-        if (noteList.isEmpty()) return;
-
-        List<Note> filtered = noteList.stream()
-                    .filter(n -> TextUtils.isEmpty(query) ||
-                            n.getTitle().toLowerCase().contains(query.toLowerCase()) ||
-                            n.getContent().toLowerCase().contains(query.toLowerCase()))
-                    .collect(Collectors.toList());
-
-        noteAdapter.submitList(new ArrayList<>(filtered));
-        binding.emptyState.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     @Override
