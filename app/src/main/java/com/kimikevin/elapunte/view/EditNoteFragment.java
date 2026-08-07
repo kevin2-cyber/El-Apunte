@@ -31,7 +31,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class EditNoteFragment extends Fragment {
     private FragmentEditNoteBinding binding;
     private NoteViewModel noteViewModel;
-    private Note note;
     private UUID noteId;
     private String originalTitle;
     private String originalContent;
@@ -57,20 +56,7 @@ public class EditNoteFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_note, container, false);
-
-        if (noteId != null) {
-            note = new Note();
-            note.setId(noteId);
-            note.setTitle(originalTitle);
-            note.setContent(originalContent);
-        } else {
-            note = new Note(originalTitle, originalContent);
-        }
-
-        binding.setNote(note);
         binding.setHandler(new SaveClickHandler());
-        binding.setLifecycleOwner(getViewLifecycleOwner());
-
         return binding.getRoot();
     }
 
@@ -78,6 +64,20 @@ public class EditNoteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
+
+        binding.setVm(noteViewModel);
+
+        binding.setLifecycleOwner(getViewLifecycleOwner());
+
+        if (noteViewModel.getCurrentNote().getValue() == null) {
+            if (noteId != null) {
+                Note note = new Note(originalTitle, originalContent);
+                note.setId(noteId);
+                noteViewModel.setCurrentNote(note);
+            } else {
+                noteViewModel.setCurrentNote(new Note());
+            }
+        }
     }
 
     @Override
@@ -88,8 +88,11 @@ public class EditNoteFragment extends Fragment {
 
     public class SaveClickHandler {
         public void onSubmitButtonClicked(View view) {
-            String title = note.getTitle() != null ? note.getTitle().trim() : "";
-            String content = note.getContent() != null ? note.getContent().trim() : "";
+            Note currentNote = noteViewModel.getCurrentNote().getValue();
+            if (currentNote == null) return;
+
+            String title = currentNote.getTitle() != null ? currentNote.getTitle().trim() : "";
+            String content = currentNote.getContent() != null ? currentNote.getContent().trim() : "";
 
             if (TextUtils.isEmpty(title) && TextUtils.isEmpty(content)) {
                 Toast.makeText(requireContext(), R.string.empty_note_error, Toast.LENGTH_LONG).show();
@@ -105,9 +108,9 @@ public class EditNoteFragment extends Fragment {
             }
 
             if (noteId != null) {
-                noteViewModel.updateNote(note);
+                noteViewModel.updateNote(currentNote);
             } else {
-                noteViewModel.insertNote(note);
+                noteViewModel.insertNote(currentNote);
             }
 
             Navigation.findNavController(view).popBackStack();

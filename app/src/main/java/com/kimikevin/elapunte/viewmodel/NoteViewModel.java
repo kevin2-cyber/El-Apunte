@@ -23,6 +23,7 @@ public class NoteViewModel extends ViewModel {
 
     private final MutableLiveData<String> _searchQuery;
     private final MutableLiveData<Boolean> _isReverseLayout;
+    private final MutableLiveData<Note> _currentNote = new MutableLiveData<>();
     private final MediatorLiveData<List<Note>> _filteredNotes = new MediatorLiveData<>();
 
     @Inject
@@ -68,6 +69,14 @@ public class NoteViewModel extends ViewModel {
 
     public LiveData<Boolean> getIsReverseLayout() {
         return _isReverseLayout;
+    }
+
+    public LiveData<Note> getCurrentNote() {
+        return _currentNote;
+    }
+
+    public void setCurrentNote(Note note) {
+        _currentNote.setValue(note);
     }
 
     public void insertNote(Note note) {
