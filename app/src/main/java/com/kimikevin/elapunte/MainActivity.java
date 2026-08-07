@@ -1,17 +1,11 @@
 package com.kimikevin.elapunte;
 
-import static com.kimikevin.elapunte.util.AppConstants.PREF_KEY;
-import static com.kimikevin.elapunte.util.AppConstants.THEME_KEY;
-
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.SystemBarStyle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.splashscreen.SplashScreen;
 
 import com.kimikevin.elapunte.databinding.ActivityMainBinding;

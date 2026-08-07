@@ -18,7 +18,8 @@ public class ElApunteApplication extends Application {
     public void onCreate() {
         super.onCreate();
         if (BuildConfig.DEBUG) {
-            Timber.plant();
+            Timber.Tree tree = new Timber.DebugTree();
+            Timber.plant(tree);
         }
         applySavedTheme();
     }

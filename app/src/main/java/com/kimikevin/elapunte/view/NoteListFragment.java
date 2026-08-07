@@ -3,7 +3,7 @@ package com.kimikevin.elapunte.view;
 import static com.kimikevin.elapunte.util.AppConstants.NOTE_CONTENT;
 import static com.kimikevin.elapunte.util.AppConstants.NOTE_ID;
 import static com.kimikevin.elapunte.util.AppConstants.NOTE_TITLE;
-import static com.kimikevin.elapunte.util.AppConstants.TAG;
+import static com.kimikevin.elapunte.util.AppConstants.BOTTOM_SHEET_TAG;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -76,7 +76,7 @@ public class NoteListFragment extends Fragment {
     private void setupUI() {
         binding.themeSwitch.setOnClickListener(view -> {
             ThemeBottomSheet themeBottomSheet = new ThemeBottomSheet();
-            themeBottomSheet.show(getParentFragmentManager(), TAG);
+            themeBottomSheet.show(getParentFragmentManager(), BOTTOM_SHEET_TAG);
         });
 
         setupSearchView();
