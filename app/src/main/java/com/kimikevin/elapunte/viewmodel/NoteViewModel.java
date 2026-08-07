@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.kimikevin.elapunte.model.entity.Note;
 import com.kimikevin.elapunte.model.repository.NoteRepository;
+import com.kimikevin.elapunte.model.repository.ThemeRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,6 +20,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 @HiltViewModel
 public class NoteViewModel extends ViewModel {
     private final NoteRepository repository;
+    private final ThemeRepository themeRepository;
     private final LiveData<List<Note>> allNotes;
 
     private final MutableLiveData<String> _searchQuery;
@@ -29,8 +31,9 @@ public class NoteViewModel extends ViewModel {
     private final MediatorLiveData<List<Note>> _filteredNotes = new MediatorLiveData<>();
 
     @Inject
-    public NoteViewModel(NoteRepository repository, SavedStateHandle savedStateHandle) {
+    public NoteViewModel(NoteRepository repository, ThemeRepository themeRepository, SavedStateHandle savedStateHandle) {
         this.repository = repository;
+        this.themeRepository = themeRepository;
         allNotes = repository.getAllNotes();
 
         this._searchQuery = savedStateHandle.getLiveData("search_query", "");
@@ -118,5 +121,13 @@ public class NoteViewModel extends ViewModel {
 
     public void deleteNote(Note note) {
       repository.deleteNote(note);
+    }
+
+    public int getThemeMode() {
+        return themeRepository.getThemeMode();
+    }
+
+    public void setThemeMode(int mode) {
+        themeRepository.setThemeMode(mode);
     }
 }
