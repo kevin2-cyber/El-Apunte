@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.kimikevin.elapunte.model.entity.Note;
 import com.kimikevin.elapunte.model.repository.NoteRepository;
+import com.kimikevin.elapunte.model.repository.ThemeRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,15 +20,20 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 @HiltViewModel
 public class NoteViewModel extends ViewModel {
     private final NoteRepository repository;
+    private final ThemeRepository themeRepository;
     private final LiveData<List<Note>> allNotes;
 
     private final MutableLiveData<String> _searchQuery;
     private final MutableLiveData<Boolean> _isReverseLayout;
+    private final MutableLiveData<Note> _currentNote = new MutableLiveData<>();
+    public enum SaveStatus { EMPTY, NO_CHANGES, SUCCESS}
+    private final MutableLiveData<SaveStatus> _saveStatus = new MutableLiveData<>();
     private final MediatorLiveData<List<Note>> _filteredNotes = new MediatorLiveData<>();
 
     @Inject
-    public NoteViewModel(NoteRepository repository, SavedStateHandle savedStateHandle) {
+    public NoteViewModel(NoteRepository repository, ThemeRepository themeRepository, SavedStateHandle savedStateHandle) {
         this.repository = repository;
+        this.themeRepository = themeRepository;
         allNotes = repository.getAllNotes();
 
         this._searchQuery = savedStateHandle.getLiveData("search_query", "");
@@ -70,15 +76,58 @@ public class NoteViewModel extends ViewModel {
         return _isReverseLayout;
     }
 
-    public void insertNote(Note note) {
-        repository.insertNote(note);
+    public LiveData<Note> getCurrentNote() {
+        return _currentNote;
     }
 
-    public void updateNote(Note note) {
-       repository.updateNote(note);
+    public void setCurrentNote(Note note) {
+        _currentNote.setValue(note);
+    }
+
+    public LiveData<SaveStatus> getSaveStatus() {
+        return _saveStatus;
+    }
+
+    public void saveNote(String originalTitle, String originalContent, boolean isEdit) {
+        Note note = _currentNote.getValue();
+        if (note == null) return;
+
+        String title = note.getTitle() != null ? note.getTitle().trim() : "";
+        String content = note.getContent() != null ? note.getContent().trim() : "";
+
+        if (title.isEmpty() && content.isEmpty()) {
+            _saveStatus.setValue(SaveStatus.EMPTY);
+            return;
+        }
+
+        boolean hasChanges = !title.equals(originalTitle) || !content.equals(originalContent);
+        if (!hasChanges) {
+            _saveStatus.setValue(SaveStatus.NO_CHANGES);
+            return;
+        }
+
+        if (isEdit) {
+            repository.updateNote(note);
+        } else {
+            repository.insertNote(note);
+        }
+
+        _saveStatus.setValue(SaveStatus.SUCCESS);
+    }
+
+    public void resetSaveStatus() {
+        _saveStatus.setValue(null);
     }
 
     public void deleteNote(Note note) {
       repository.deleteNote(note);
+    }
+
+    public int getThemeMode() {
+        return themeRepository.getThemeMode();
+    }
+
+    public void setThemeMode(int mode) {
+        themeRepository.setThemeMode(mode);
     }
 }

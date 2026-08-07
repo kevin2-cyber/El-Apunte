@@ -34,4 +34,5 @@ timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 room = { id = "androidx.room", version.ref = "roomRuntime" }
+navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "navigation" }
 

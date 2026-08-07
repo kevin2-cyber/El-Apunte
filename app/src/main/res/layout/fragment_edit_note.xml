@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
-            name="note"
-            type="com.kimikevin.elapunte.model.entity.Note" />
+            name="vm"
+            type="com.kimikevin.elapunte.viewmodel.NoteViewModel" />
         <variable
             name="handler"
             type="com.kimikevin.elapunte.view.EditNoteFragment.SaveClickHandler" />
@@ -45,7 +45,7 @@
                 android:id="@+id/et_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={note.title}"
+                android:text="@={vm.currentNote.title}"
                 android:inputType="textCapSentences|textMultiLine"
                 android:maxLines="3"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -67,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="top"
-                android:text="@={note.content}"
+                android:text="@={vm.currentNote.content}"
                 android:inputType="textMultiLine"
                 android:minLines="10"/>
         </com.google.android.material.textfield.TextInputLayout>

@@ -1,27 +1,26 @@
 package com.kimikevin.elapunte.view;
 
-
-import static com.kimikevin.elapunte.util.AppConstants.THEME_KEY;
-import static com.kimikevin.elapunte.util.AppConstants.PREF_KEY;
-
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.kimikevin.elapunte.R;
 import com.kimikevin.elapunte.databinding.ThemeBottomSheetLayoutBinding;
+import com.kimikevin.elapunte.viewmodel.NoteViewModel;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class ThemeBottomSheet extends BottomSheetDialogFragment {
     ThemeBottomSheetLayoutBinding binding;
+    NoteViewModel noteViewModel;
 
     @Nullable
     @Override
@@ -39,17 +38,12 @@ public class ThemeBottomSheet extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
 
-        SharedPreferences sharedPreferences = view.getContext().getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-
-        int savedMode = sharedPreferences.getInt(THEME_KEY, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        int savedMode = noteViewModel.getThemeMode();
         setCheckedButton(savedMode);
 
-        RadioGroup radioGroup = binding.radioGroup;
-
-        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+        binding.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             int selectedMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
 
             if (checkedId == R.id.light_theme) {
@@ -58,11 +52,8 @@ public class ThemeBottomSheet extends BottomSheetDialogFragment {
                 selectedMode = AppCompatDelegate.MODE_NIGHT_YES;
             }
 
-            editor.putInt(THEME_KEY, selectedMode).apply();
-            AppCompatDelegate.setDefaultNightMode(selectedMode);
-            dismiss(); // Optional to close bottom sheet after selection
-
-
+            noteViewModel.setThemeMode(selectedMode);
+            dismiss();
         });
     }
 
