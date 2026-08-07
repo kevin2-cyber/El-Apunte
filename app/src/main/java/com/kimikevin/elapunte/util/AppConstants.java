@@ -1,7 +1,6 @@
 package com.kimikevin.elapunte.util;
 
 public class AppConstants {
-    public static final String NOTE_LOG_TAG = "NOTE_DEBUG";
 
     public static final String PREF_KEY = "pref";
     public static final String TAG = "ModalBottomSheet";
