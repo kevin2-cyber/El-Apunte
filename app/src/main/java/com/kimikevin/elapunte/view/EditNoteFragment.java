@@ -1,9 +1,5 @@
 package com.kimikevin.elapunte.view;
 
-import static com.kimikevin.elapunte.util.AppConstants.NOTE_CONTENT;
-import static com.kimikevin.elapunte.util.AppConstants.NOTE_ID;
-import static com.kimikevin.elapunte.util.AppConstants.NOTE_TITLE;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,14 +33,14 @@ public class EditNoteFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-        if (args != null && args.containsKey(NOTE_ID)) {
-            String idStr = args.getString(NOTE_ID);
+        if (getArguments() != null) {
+            EditNoteFragmentArgs args = EditNoteFragmentArgs.fromBundle(getArguments());
+            String idStr = args.getNoteId();
             if (idStr != null) {
                 noteId = UUID.fromString(idStr);
             }
-            originalTitle = args.getString(NOTE_TITLE, "");
-            originalContent = args.getString(NOTE_CONTENT, "");
+            originalTitle = args.getNoteTitle() != null ? args.getNoteTitle() : "";
+            originalContent = args.getNoteContent() != null ? args.getNoteContent() : "";
         } else {
             originalTitle = "";
             originalContent = "";

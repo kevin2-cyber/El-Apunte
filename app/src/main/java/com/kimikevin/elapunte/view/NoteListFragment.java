@@ -1,8 +1,5 @@
 package com.kimikevin.elapunte.view;
 
-import static com.kimikevin.elapunte.util.AppConstants.NOTE_CONTENT;
-import static com.kimikevin.elapunte.util.AppConstants.NOTE_ID;
-import static com.kimikevin.elapunte.util.AppConstants.NOTE_TITLE;
 import static com.kimikevin.elapunte.util.AppConstants.BOTTOM_SHEET_TAG;
 
 import android.os.Bundle;
@@ -104,12 +101,12 @@ public class NoteListFragment extends Fragment {
         noteAdapter.setListener(new NoteAdapter.OnItemClickListener() {
             @Override
             public void onNoteClick(Note note) {
-                Bundle args = new Bundle();
-                args.putString(NOTE_ID, note.getId().toString());
-                args.putString(NOTE_TITLE, note.getTitle());
-                args.putString(NOTE_CONTENT, note.getContent());
-                Navigation.findNavController(requireView())
-                        .navigate(R.id.action_noteListFragment_to_editNoteFragment, args);
+                NoteListFragmentDirections.ActionNoteListFragmentToEditNoteFragment action =
+                        NoteListFragmentDirections.actionNoteListFragmentToEditNoteFragment();
+                action.setNoteId(note.getId().toString());
+                action.setNoteTitle(note.getTitle());
+                action.setNoteContent(note.getContent());
+                Navigation.findNavController(requireView()).navigate(action);
             }
 
             @Override
@@ -133,8 +130,9 @@ public class NoteListFragment extends Fragment {
 
     public class NoteClickHandler {
         public void onFabClick(View view) {
-            Navigation.findNavController(view)
-                    .navigate(R.id.action_noteListFragment_to_editNoteFragment);
+            NoteListFragmentDirections.ActionNoteListFragmentToEditNoteFragment action =
+                    NoteListFragmentDirections.actionNoteListFragmentToEditNoteFragment();
+            Navigation.findNavController(view).navigate(action);
         }
 
         public void onFilterClick(View view) {
