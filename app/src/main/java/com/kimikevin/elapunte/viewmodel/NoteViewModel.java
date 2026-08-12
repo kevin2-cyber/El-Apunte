@@ -1,6 +1,7 @@
 package com.kimikevin.elapunte.viewmodel;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
@@ -123,8 +124,8 @@ public class NoteViewModel extends ViewModel {
       repository.deleteNote(note);
     }
 
-    public int getThemeMode() {
-        return themeRepository.getThemeMode();
+    public LiveData<Integer> getThemeMode() {
+        return LiveDataReactiveStreams.fromPublisher(themeRepository.getThemeMode());
     }
 
     public void setThemeMode(int mode) {

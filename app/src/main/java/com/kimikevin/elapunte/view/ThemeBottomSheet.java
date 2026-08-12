@@ -40,20 +40,26 @@ public class ThemeBottomSheet extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
         noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
 
-        int savedMode = noteViewModel.getThemeMode();
-        setCheckedButton(savedMode);
+        noteViewModel.getThemeMode().observe(getViewLifecycleOwner(), savedMode -> {
+            if (savedMode != null) {
+                // Temporarily remove listener to prevent loop when setting initial state
+                binding.radioGroup.setOnCheckedChangeListener(null);
 
-        binding.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            int selectedMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+                setCheckedButton(savedMode);
 
-            if (checkedId == R.id.light_theme) {
-                selectedMode = AppCompatDelegate.MODE_NIGHT_NO;
-            } else if (checkedId == R.id.dark_theme) {
-                selectedMode = AppCompatDelegate.MODE_NIGHT_YES;
+                binding.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+                    int selectedMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+
+                    if (checkedId == R.id.light_theme) {
+                        selectedMode = AppCompatDelegate.MODE_NIGHT_NO;
+                    } else if (checkedId == R.id.dark_theme) {
+                        selectedMode = AppCompatDelegate.MODE_NIGHT_YES;
+                    }
+
+                    noteViewModel.setThemeMode(selectedMode);
+                    dismiss();
+                });
             }
-
-            noteViewModel.setThemeMode(selectedMode);
-            dismiss();
         });
     }
 

@@ -65,10 +65,15 @@ dependencies {
     // navigation
     implementation libs.navigation.fragment
     implementation libs.navigation.ui
+    implementation libs.lifecycle.reactivestreams
 
     // hilt
     implementation libs.hilt.android
     annotationProcessor libs.hilt.compiler
+    // preferences dataStore
+    implementation libs.datastore.preferences.rxjava3
+    implementation libs.rxjava
+    implementation libs.rxandroid
 
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
