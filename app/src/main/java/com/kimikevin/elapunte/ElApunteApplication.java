@@ -22,6 +22,12 @@ public class ElApunteApplication extends Application {
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
-        AppCompatDelegate.setDefaultNightMode(themeRepository.getThemeMode());
+        // Use blockingFirst() to set the theme as early as possible on startup
+        try {
+            int mode = themeRepository.getThemeMode().blockingFirst();
+            AppCompatDelegate.setDefaultNightMode(mode);
+        } catch (Exception e) {
+            Timber.e(e, "Error loading theme from DataStore");
+        }
     }
 }

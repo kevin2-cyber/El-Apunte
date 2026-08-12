@@ -2,10 +2,14 @@ package com.kimikevin.elapunte.di;
 
 import android.content.Context;
 
+import androidx.datastore.preferences.core.Preferences;
+import androidx.datastore.rxjava3.RxDataStore;
+import androidx.datastore.preferences.rxjava3.RxPreferenceDataStoreBuilder;
 import androidx.room.Room;
 
 import com.kimikevin.elapunte.model.NoteDatabase;
 import com.kimikevin.elapunte.model.dao.NoteDao;
+import static com.kimikevin.elapunte.util.AppConstants.PREF_KEY;
 
 import javax.inject.Singleton;
 
@@ -31,5 +35,11 @@ public class AppModule {
     @Singleton
     public NoteDao provideNoteDao(NoteDatabase database) {
         return database.getNoteDao();
+    }
+
+    @Provides
+    @Singleton
+    public RxDataStore<Preferences> provideDataStore(@ApplicationContext Context context) {
+        return new RxPreferenceDataStoreBuilder(context, PREF_KEY).build();
     }
 }

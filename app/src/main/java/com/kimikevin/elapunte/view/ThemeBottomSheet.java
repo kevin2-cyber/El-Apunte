@@ -40,8 +40,11 @@ public class ThemeBottomSheet extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
         noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
 
-        int savedMode = noteViewModel.getThemeMode();
-        setCheckedButton(savedMode);
+        noteViewModel.getThemeMode().observe(getViewLifecycleOwner(), savedMode -> {
+            if (savedMode != null) {
+                setCheckedButton(savedMode);
+            }
+        });
 
         binding.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             int selectedMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;

@@ -6,15 +6,15 @@ A lightweight, offline-first note-taking app for Android built in Java.
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Language | Java 21 |
-| Database | Room (SQLite) |
-| Architecture | MVVM |
-| UI | XML Views + Data Binding |
+| Layer | Technology                    |
+|---|-------------------------------|
+| Language | Java 17                       |
+| Database | Room (SQLite)                 |
+| Architecture | MVVM                          |
+| UI | XML Views + Data Binding      |
 | Async | `LiveData`, `ExecutorService` |
-| DI | Hilt |
-| Navigation | Jetpack Navigation Component |
+| DI | Hilt                          |
+| Navigation | Jetpack Navigation Component  |
 
 ---
 

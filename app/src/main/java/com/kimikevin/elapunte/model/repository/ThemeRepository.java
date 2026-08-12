@@ -1,33 +1,42 @@
 package com.kimikevin.elapunte.model.repository;
 
-import static com.kimikevin.elapunte.util.AppConstants.PREF_KEY;
 import static com.kimikevin.elapunte.util.AppConstants.THEME_KEY;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.datastore.preferences.core.MutablePreferences;
+import androidx.datastore.preferences.core.Preferences;
+import androidx.datastore.preferences.core.PreferencesKeys;
+import androidx.datastore.rxjava3.RxDataStore;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import dagger.hilt.android.qualifiers.ApplicationContext;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
 
 @Singleton
 public class ThemeRepository {
-    private final SharedPreferences sharedPreferences;
+    private final RxDataStore<Preferences> dataStore;
+    private final Preferences.Key<Integer> themeKey = PreferencesKeys.intKey(THEME_KEY);
 
     @Inject
-    public ThemeRepository(@ApplicationContext Context context) {
-        this.sharedPreferences = context.getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
+    public ThemeRepository(RxDataStore<Preferences> dataStore) {
+        this.dataStore = dataStore;
     }
 
-    public int getThemeMode() {
-        return sharedPreferences.getInt(THEME_KEY, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+    public Flowable<Integer> getThemeMode() {
+        return dataStore.data().map(prefs -> {
+            Integer mode = prefs.get(themeKey);
+            return mode != null ? mode : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+        });
     }
 
     public void setThemeMode(int mode) {
-        sharedPreferences.edit().putInt(THEME_KEY, mode).apply();
+        dataStore.updateDataAsync(prefsIn -> {
+            MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
+            mutablePreferences.set(themeKey, mode);
+            return Single.just(mutablePreferences);
+        }).subscribe();
         AppCompatDelegate.setDefaultNightMode(mode);
     }
 }
