@@ -64,7 +64,7 @@ public class EditNoteFragment extends Fragment {
 
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
-        if (noteViewModel.getCurrentNote().getValue() == null) {
+        if (savedInstanceState == null) {
             if (noteId != null) {
                 Note note = new Note(originalTitle, originalContent);
                 note.setId(noteId);
