@@ -6,14 +6,18 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-public final class TimeAgoUtil {
+public final class Utils {
+
+    public static final String PREF_KEY = "pref";
+    public static final String BOTTOM_SHEET_TAG = "ModalBottomSheet";
+    public static final String THEME_KEY = "theme_key";
 
     private static final DateTimeFormatter TIME_OF_DAY = DateTimeFormatter.ofPattern("HH:mm");
     private static final DateTimeFormatter DAY_OF_WEEK = DateTimeFormatter.ofPattern("EEEE");
     private static final DateTimeFormatter SHORT_DATE  = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 //    private static final DateTimeFormatter BACKEND     = DateTimeFormatter.ofPattern("dd-MM-yyyy-HH-mm");
 
-    private TimeAgoUtil() {}
+    private Utils() {}
 
     /**
      * WhatsApp-style chat list timestamp.

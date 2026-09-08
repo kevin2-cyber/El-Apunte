@@ -1,6 +1,6 @@
 package com.kimikevin.elapunte.model.repository;
 
-import static com.kimikevin.elapunte.util.GlobalConstants.THEME_KEY;
+import static com.kimikevin.elapunte.util.Utils.THEME_KEY;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.datastore.preferences.core.MutablePreferences;

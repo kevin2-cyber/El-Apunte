@@ -12,7 +12,7 @@ import androidx.room.PrimaryKey;
 
 
 import com.kimikevin.elapunte.BR;
-import com.kimikevin.elapunte.util.TimeAgoUtil;
+import com.kimikevin.elapunte.util.Utils;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -80,7 +80,7 @@ public class Note extends BaseObservable {
 
     @Bindable
     public String getDisplayDate() {
-        return TimeAgoUtil.formatChatTimestamp(timestamp);
+        return Utils.formatChatTimestamp(timestamp);
     }
 
     public void setFormattedDate(String formattedDate) {

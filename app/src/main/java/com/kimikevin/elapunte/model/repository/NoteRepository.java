@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 
 import com.kimikevin.elapunte.model.dao.NoteDao;
 import com.kimikevin.elapunte.model.entity.Note;
-import com.kimikevin.elapunte.util.TimeAgoUtil;
+import com.kimikevin.elapunte.util.Utils;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -31,7 +31,7 @@ public class NoteRepository {
         executor.execute(() -> {
             long timestamp = System.currentTimeMillis();
             note.setTimestamp(timestamp);
-            note.setFormattedDate(TimeAgoUtil.formatChatTimestamp(timestamp));
+            note.setFormattedDate(Utils.formatChatTimestamp(timestamp));
             Timber.tag("NoteRepository").d("Inserting note: %s at %s", note, timestamp);
             noteDao.insert(note);
         });
@@ -41,7 +41,7 @@ public class NoteRepository {
         executor.execute(() -> {
             long timestamp = System.currentTimeMillis();
             note.setTimestamp(timestamp);
-            note.setFormattedDate(TimeAgoUtil.formatChatTimestamp(timestamp));
+            note.setFormattedDate(Utils.formatChatTimestamp(timestamp));
             Timber.tag("NoteRepository").d("Updating note: %s at %s", note, timestamp);
             noteDao.update(note);
         });

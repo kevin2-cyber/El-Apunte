@@ -9,7 +9,7 @@ import androidx.room.Room;
 
 import com.kimikevin.elapunte.model.NoteDatabase;
 import com.kimikevin.elapunte.model.dao.NoteDao;
-import static com.kimikevin.elapunte.util.GlobalConstants.PREF_KEY;
+import static com.kimikevin.elapunte.util.Utils.PREF_KEY;
 
 import javax.inject.Singleton;
 
