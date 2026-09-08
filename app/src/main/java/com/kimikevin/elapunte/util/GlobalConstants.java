@@ -1,6 +1,6 @@
 package com.kimikevin.elapunte.util;
 
-public class AppConstants {
+public class GlobalConstants {
 
     public static final String PREF_KEY = "pref";
     public static final String BOTTOM_SHEET_TAG = "ModalBottomSheet";

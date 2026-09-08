@@ -1,6 +1,6 @@
 package com.kimikevin.elapunte.view;
 
-import static com.kimikevin.elapunte.util.AppConstants.BOTTOM_SHEET_TAG;
+import static com.kimikevin.elapunte.util.GlobalConstants.BOTTOM_SHEET_TAG;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
