@@ -1,5 +1,5 @@
 [versions]
-agp = "9.3.1"
+agp = "9.4.0"
 coreSplashscreen = "1.2.0"
 datastorePreferencesRxjava3 = "1.2.1"
 hiltAndroid = "2.60.1"
