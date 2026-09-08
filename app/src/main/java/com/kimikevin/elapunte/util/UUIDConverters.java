@@ -4,7 +4,7 @@ import androidx.room.TypeConverter;
 
 import java.util.UUID;
 
-public class Converters {
+public class UUIDConverters {
     @TypeConverter
     public static String fromUUID(UUID uuid) {
         return uuid == null ? null : uuid.toString();
