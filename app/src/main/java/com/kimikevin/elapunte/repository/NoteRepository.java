@@ -1,9 +1,9 @@
-package com.kimikevin.elapunte.model.repository;
+package com.kimikevin.elapunte.repository;
 
 import androidx.lifecycle.LiveData;
 
-import com.kimikevin.elapunte.model.dao.NoteDao;
-import com.kimikevin.elapunte.model.entity.Note;
+import com.kimikevin.elapunte.data.local.dao.NoteDao;
+import com.kimikevin.elapunte.model.Note;
 import com.kimikevin.elapunte.util.Utils;
 
 import java.util.List;

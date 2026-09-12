@@ -1,12 +1,12 @@
-package com.kimikevin.elapunte.model;
+package com.kimikevin.elapunte.data.local.db;
 
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.kimikevin.elapunte.model.dao.NoteDao;
-import com.kimikevin.elapunte.model.entity.Note;
+import com.kimikevin.elapunte.data.local.dao.NoteDao;
+import com.kimikevin.elapunte.model.Note;
 import com.kimikevin.elapunte.util.UUIDConverters;
 
 @Database(entities = {Note.class}, version = 1)

@@ -1,4 +1,4 @@
-package com.kimikevin.elapunte.view.adapter;
+package com.kimikevin.elapunte.ui.common;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.kimikevin.elapunte.R;
 import com.kimikevin.elapunte.databinding.NoteItemBinding;
-import com.kimikevin.elapunte.model.entity.Note;
+import com.kimikevin.elapunte.model.Note;
 
 public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteViewHolder> {
     private final Context context;

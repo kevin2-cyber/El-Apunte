@@ -1,4 +1,4 @@
-package com.kimikevin.elapunte.model.entity;
+package com.kimikevin.elapunte.model;
 
 
 import androidx.annotation.NonNull;

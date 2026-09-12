@@ -1,4 +1,4 @@
-package com.kimikevin.elapunte;
+package com.kimikevin.elapunte.ui.main;
 
 import android.graphics.Color;
 import android.os.Bundle;

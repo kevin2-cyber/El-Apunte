@@ -5,10 +5,10 @@
     <data>
         <variable
             name="vm"
-            type="com.kimikevin.elapunte.viewmodel.NoteViewModel" />
+            type="com.kimikevin.elapunte.ui.common.NoteViewModel" />
         <variable
             name="handler"
-            type="com.kimikevin.elapunte.view.EditNoteFragment.SaveClickHandler" />
+            type="com.kimikevin.elapunte.ui.editnote.EditNoteFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:padding="16dp"
         android:fitsSystemWindows="true"
-        tools:context=".view.EditNoteFragment">
+        tools:context=".ui.editnote.EditNoteFragment">
 
         <Button
             android:id="@+id/save_btn"

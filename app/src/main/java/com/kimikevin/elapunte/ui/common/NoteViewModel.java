@@ -1,4 +1,4 @@
-package com.kimikevin.elapunte.viewmodel;
+package com.kimikevin.elapunte.ui.common;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
@@ -7,9 +7,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 
-import com.kimikevin.elapunte.model.entity.Note;
-import com.kimikevin.elapunte.model.repository.NoteRepository;
-import com.kimikevin.elapunte.model.repository.ThemeRepository;
+import com.kimikevin.elapunte.model.Note;
+import com.kimikevin.elapunte.repository.NoteRepository;
+import com.kimikevin.elapunte.repository.ThemeRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;

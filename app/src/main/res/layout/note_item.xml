@@ -5,7 +5,7 @@
     <data>
         <variable
             name="note"
-            type="com.kimikevin.elapunte.model.entity.Note" />
+            type="com.kimikevin.elapunte.model.Note" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
