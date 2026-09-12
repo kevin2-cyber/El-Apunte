@@ -4,7 +4,7 @@ import android.app.Application;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
-import com.kimikevin.elapunte.model.repository.ThemeRepository;
+import com.kimikevin.elapunte.repository.ThemeRepository;
 
 import javax.inject.Inject;
 

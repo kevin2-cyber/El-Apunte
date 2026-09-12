@@ -1,4 +1,4 @@
-package com.kimikevin.elapunte.model.dao;
+package com.kimikevin.elapunte.data.local.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -8,7 +8,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.kimikevin.elapunte.model.entity.Note;
+import com.kimikevin.elapunte.model.Note;
 
 import java.util.List;
 

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/noteListFragment"
-        android:name="com.kimikevin.elapunte.view.NoteListFragment"
+        android:name="com.kimikevin.elapunte.ui.notelist.NoteListFragment"
         tools:layout="@layout/fragment_note_list">
         <action
             android:id="@+id/action_noteListFragment_to_editNoteFragment"
@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/editNoteFragment"
-        android:name="com.kimikevin.elapunte.view.EditNoteFragment"
+        android:name="com.kimikevin.elapunte.ui.editnote.EditNoteFragment"
         tools:layout="@layout/fragment_edit_note">
         <argument
             android:name="noteId"

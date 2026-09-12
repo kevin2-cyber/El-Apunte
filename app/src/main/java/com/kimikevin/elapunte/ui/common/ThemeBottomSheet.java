@@ -1,4 +1,4 @@
-package com.kimikevin.elapunte.view;
+package com.kimikevin.elapunte.ui.common;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.kimikevin.elapunte.R;
 import com.kimikevin.elapunte.databinding.ThemeBottomSheetLayoutBinding;
-import com.kimikevin.elapunte.viewmodel.NoteViewModel;
 
 import dagger.hilt.android.AndroidEntryPoint;
 

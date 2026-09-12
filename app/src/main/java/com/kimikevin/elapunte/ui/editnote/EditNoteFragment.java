@@ -1,4 +1,4 @@
-package com.kimikevin.elapunte.view;
+package com.kimikevin.elapunte.ui.editnote;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,8 +15,9 @@ import androidx.navigation.Navigation;
 
 import com.kimikevin.elapunte.R;
 import com.kimikevin.elapunte.databinding.FragmentEditNoteBinding;
-import com.kimikevin.elapunte.model.entity.Note;
-import com.kimikevin.elapunte.viewmodel.NoteViewModel;
+import com.kimikevin.elapunte.model.Note;
+import com.kimikevin.elapunte.ui.EditNoteFragmentArgs;
+import com.kimikevin.elapunte.ui.common.NoteViewModel;
 
 import java.util.UUID;
 

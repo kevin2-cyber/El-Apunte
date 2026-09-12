@@ -5,14 +5,14 @@
     <data>
         <variable
             name="clickHandler"
-            type="com.kimikevin.elapunte.view.NoteListFragment.NoteClickHandler" />
+            type="com.kimikevin.elapunte.ui.notelist.NoteListFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".view.NoteListFragment">
+        tools:context=".ui.notelist.NoteListFragment">
 
         <TextView
             android:id="@+id/app_name"

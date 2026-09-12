@@ -1,4 +1,4 @@
-package com.kimikevin.elapunte.model.repository;
+package com.kimikevin.elapunte.repository;
 
 import static com.kimikevin.elapunte.util.Utils.THEME_KEY;
 
