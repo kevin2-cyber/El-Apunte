@@ -1,4 +1,4 @@
-package com.kimikevin.elapunte.data.local.db;
+package com.kimikevin.elapunte.data.local;
 
 
 import androidx.room.Database;
