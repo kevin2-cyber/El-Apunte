@@ -7,7 +7,7 @@ import androidx.datastore.rxjava3.RxDataStore;
 import androidx.datastore.preferences.rxjava3.RxPreferenceDataStoreBuilder;
 import androidx.room.Room;
 
-import com.kimikevin.elapunte.data.local.db.NoteDatabase;
+import com.kimikevin.elapunte.data.local.NoteDatabase;
 import com.kimikevin.elapunte.data.local.dao.NoteDao;
 import static com.kimikevin.elapunte.util.Utils.PREF_KEY;
 
